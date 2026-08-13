@@ -512,8 +512,680 @@ svg { display: block; }
   display: block;
   width: 100%;
   height: 100%;
-  padding: 2.76cqw;
+  padding: 0;
   overflow: hidden;
+  position: relative;
+  background: var(--gc-surface);
+}
+
+/* =============================================================================
+   12b. DEMO COMPONENTS (Camera, Video, Chat, Metrics, Security, Buttons)
+   All sizes are in cqw relative to the .gc-phone container (100cqw = phone width).
+   ========================================================================== */
+
+.gc-demo-app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--gc-surface);
+  color: var(--gc-ink-900);
+  font-family: var(--gc-font-text);
+  overflow: hidden;
+  user-select: none;
+}
+
+/* --- Top Navigation Bar -------------------------------------------------- */
+.gc-demo-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 12cqw;
+  padding: 0 4cqw;
+  background: var(--gc-surface);
+  border-bottom: 0.25cqw solid var(--gc-blue-tint-100);
+  flex-shrink: 0;
+}
+.gc-demo-topbar-title {
+  font-family: var(--gc-font-display);
+  font-size: 3.8cqw;
+  font-weight: 600;
+  color: var(--gc-ink-900);
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+}
+.gc-demo-topbar-title svg {
+  width: 4cqw;
+  height: 4cqw;
+  color: var(--gc-blue-action);
+}
+.gc-demo-status-dot {
+  width: 2cqw;
+  height: 2cqw;
+  border-radius: 999px;
+  background: var(--gc-google-green);
+  display: inline-block;
+  box-shadow: 0 0 0.8cqw var(--gc-google-green);
+}
+.gc-demo-chip {
+  font-family: var(--gc-font-display);
+  font-size: 2.6cqw;
+  font-weight: 600;
+  padding: 0.8cqw 2.2cqw;
+  border-radius: 999px;
+  background: var(--gc-blue-tint-100);
+  color: var(--gc-blue-action);
+}
+
+/* --- Scrollable Content Area --------------------------------------------- */
+.gc-demo-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 3.5cqw;
+  display: flex;
+  flex-direction: column;
+  gap: 3cqw;
+}
+.gc-demo-body::-webkit-scrollbar { display: none; }
+
+/* -----------------------------------------------------------------------------
+   CAMERA / VISION SCANNER DEMO
+   -------------------------------------------------------------------------- */
+.gc-camera-viewfinder {
+  position: relative;
+  width: 100%;
+  height: 52cqw;
+  border-radius: 3.5cqw;
+  background: linear-gradient(135deg, #1f2328 0%, #0d1117 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 4cqw rgba(0,0,0,0.6);
+}
+.gc-camera-grid {
+  position: absolute;
+  inset: 0;
+  background-size: 8cqw 8cqw;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.05) 0.2cqw, transparent 0.2cqw),
+    linear-gradient(to bottom, rgba(255,255,255,0.05) 0.2cqw, transparent 0.2cqw);
+}
+.gc-camera-scanline {
+  position: absolute;
+  left: 5cqw;
+  right: 5cqw;
+  height: 0.5cqw;
+  background: linear-gradient(90deg, transparent, var(--gc-blue-action), #8ab4f8, var(--gc-blue-action), transparent);
+  box-shadow: 0 0 2cqw #8ab4f8, 0 0 4cqw var(--gc-blue-action);
+  animation: gcScanLine 2.4s ease-in-out infinite alternate;
+}
+@keyframes gcScanLine {
+  0% { top: 12%; opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { top: 84%; opacity: 0.3; }
+}
+.gc-camera-reticle {
+  position: relative;
+  width: 72%;
+  height: 65%;
+  border: 0.35cqw dashed rgba(138, 180, 248, 0.7);
+  border-radius: 2.5cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+.gc-camera-target-tag {
+  position: absolute;
+  top: -3.5cqw;
+  left: 2cqw;
+  background: rgba(26, 115, 232, 0.95);
+  color: #fff;
+  font-size: 2.4cqw;
+  font-weight: 600;
+  padding: 0.6cqw 2cqw;
+  border-radius: 999px;
+  backdrop-filter: blur(0.5cqw);
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+}
+.gc-camera-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 2.5cqw 4cqw;
+  background: #f8f9fa;
+  border-radius: 3.5cqw;
+}
+.gc-camera-shutter {
+  width: 14cqw;
+  height: 14cqw;
+  border-radius: 999px;
+  background: var(--gc-blue-action);
+  border: 0.8cqw solid #ffffff;
+  box-shadow: 0 0 0 0.6cqw var(--gc-blue-brand), 0 1cqw 3cqw rgba(26,115,232,0.35);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.gc-camera-shutter:active {
+  transform: scale(0.92);
+}
+.gc-camera-shutter svg {
+  width: 5cqw;
+  height: 5cqw;
+  color: #ffffff;
+}
+.gc-camera-drawer {
+  background: var(--gc-surface);
+  border: 0.25cqw solid var(--gc-blue-tint-100);
+  border-radius: 3cqw;
+  padding: 3cqw 3.5cqw;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8cqw;
+}
+.gc-camera-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 2.8cqw;
+  font-weight: 600;
+  color: var(--gc-ink-700);
+}
+.gc-camera-drawer-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2.7cqw;
+  color: var(--gc-ink-600);
+}
+.gc-camera-drawer-val {
+  font-weight: 600;
+  color: var(--gc-blue-action);
+  font-family: var(--gc-font-display);
+}
+
+/* -----------------------------------------------------------------------------
+   VIDEO PLAYER & MULTIMODAL ANALYZER DEMO
+   -------------------------------------------------------------------------- */
+.gc-video-player {
+  position: relative;
+  width: 100%;
+  height: 48cqw;
+  border-radius: 3.5cqw;
+  background: linear-gradient(135deg, #1a237e 0%, #0d47a1 50%, #01579b 100%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.5cqw;
+  box-shadow: 0 1cqw 3cqw rgba(0,0,0,0.15);
+}
+.gc-video-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+.gc-video-badge {
+  background: rgba(234, 67, 53, 0.9);
+  color: #fff;
+  font-size: 2.2cqw;
+  font-weight: 700;
+  padding: 0.5cqw 1.8cqw;
+  border-radius: 999px;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+}
+.gc-video-badge-dot {
+  width: 1.4cqw;
+  height: 1.4cqw;
+  border-radius: 999px;
+  background: #fff;
+  animation: gcWavePulse 1.2s infinite;
+}
+.gc-video-center {
+  align-self: center;
+  z-index: 2;
+}
+.gc-video-play-btn {
+  width: 12cqw;
+  height: 12cqw;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.92);
+  color: var(--gc-blue-action);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0.8cqw 2.5cqw rgba(0,0,0,0.25);
+  transition: transform 0.15s, background 0.15s;
+}
+.gc-video-play-btn:active {
+  transform: scale(0.92);
+}
+.gc-video-play-btn svg {
+  width: 5cqw;
+  height: 5cqw;
+  margin-left: 0.5cqw;
+}
+.gc-video-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5cqw;
+  z-index: 2;
+}
+.gc-video-timeline-bar {
+  position: relative;
+  width: 100%;
+  height: 0.9cqw;
+  background: rgba(255,255,255,0.3);
+  border-radius: 999px;
+  cursor: pointer;
+  overflow: hidden;
+}
+.gc-video-timeline-fill {
+  height: 100%;
+  width: 38%;
+  background: var(--gc-blue-header);
+  border-radius: 999px;
+  transition: width 0.2s;
+}
+.gc-video-time-row {
+  display: flex;
+  justify-content: space-between;
+  color: #ffffff;
+  font-size: 2.3cqw;
+  font-family: var(--gc-font-display);
+}
+.gc-video-chapters-title {
+  font-family: var(--gc-font-display);
+  font-size: 3.2cqw;
+  font-weight: 600;
+  color: var(--gc-ink-900);
+}
+.gc-video-chapter-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.2cqw 3cqw;
+  background: #f8f9fa;
+  border-radius: 2.5cqw;
+  font-size: 2.7cqw;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  border: 0.25cqw solid transparent;
+}
+.gc-video-chapter-card.is-active {
+  background: var(--gc-blue-tint-50);
+  border-color: var(--gc-blue-brand);
+  color: var(--gc-blue-action);
+  font-weight: 600;
+}
+.gc-video-chapter-time {
+  font-family: var(--gc-font-display);
+  font-size: 2.4cqw;
+  padding: 0.4cqw 1.6cqw;
+  border-radius: 999px;
+  background: var(--gc-blue-tint-100);
+  color: var(--gc-blue-action);
+  font-weight: 600;
+}
+
+/* -----------------------------------------------------------------------------
+   GEMINI AI CHAT & AGENT BUILDER DEMO
+   -------------------------------------------------------------------------- */
+.gc-chat-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5cqw;
+}
+.gc-chat-msg {
+  max-width: 86%;
+  padding: 2.6cqw 3.4cqw;
+  border-radius: 3.5cqw;
+  font-size: 2.8cqw;
+  line-height: 1.45;
+}
+.gc-chat-msg.is-agent {
+  align-self: flex-start;
+  background: #f8f9fa;
+  color: var(--gc-ink-900);
+  border-bottom-left-radius: 0.8cqw;
+  border: 0.2cqw solid var(--gc-blue-tint-100);
+}
+.gc-chat-msg.is-user {
+  align-self: flex-end;
+  background: var(--gc-blue-action);
+  color: #ffffff;
+  border-bottom-right-radius: 0.8cqw;
+}
+.gc-chat-tool-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2cqw;
+  background: var(--gc-blue-tint-100);
+  color: var(--gc-blue-action);
+  font-size: 2.4cqw;
+  font-weight: 600;
+  padding: 0.8cqw 2cqw;
+  border-radius: 1.6cqw;
+  margin-top: 1.2cqw;
+}
+.gc-chat-tool-badge svg {
+  width: 2.8cqw;
+  height: 2.8cqw;
+}
+.gc-chat-pills {
+  display: flex;
+  gap: 1.8cqw;
+  overflow-x: auto;
+  padding-bottom: 1cqw;
+}
+.gc-chat-pills::-webkit-scrollbar { display: none; }
+.gc-prompt-pill {
+  white-space: nowrap;
+  font-size: 2.5cqw;
+  font-weight: 500;
+  padding: 1.2cqw 2.8cqw;
+  border-radius: 999px;
+  background: var(--gc-blue-tint-50);
+  color: var(--gc-blue-action);
+  border: 0.2cqw solid var(--gc-blue-brand);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.gc-prompt-pill:active,
+.gc-prompt-pill:hover {
+  background: var(--gc-blue-action);
+  color: #ffffff;
+}
+.gc-chat-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+  padding: 2.5cqw 3cqw;
+  border-top: 0.25cqw solid var(--gc-blue-tint-100);
+  background: var(--gc-surface);
+}
+.gc-chat-input {
+  flex: 1;
+  border: 0.25cqw solid #e0e0e0;
+  border-radius: 999px;
+  padding: 2cqw 3.5cqw;
+  font-size: 2.8cqw;
+  font-family: var(--gc-font-text);
+  outline: none;
+  background: #fafafa;
+}
+.gc-chat-input:focus {
+  border-color: var(--gc-blue-action);
+  background: #fff;
+}
+.gc-chat-btn-send {
+  width: 8.5cqw;
+  height: 8.5cqw;
+  border-radius: 999px;
+  background: var(--gc-blue-action);
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.gc-chat-btn-send:active { transform: scale(0.9); }
+.gc-chat-btn-send svg { width: 4cqw; height: 4cqw; }
+
+/* -----------------------------------------------------------------------------
+   METRICS, BIGQUERY SQL & TELEMETRY DEMO
+   -------------------------------------------------------------------------- */
+.gc-metrics-codebox {
+  background: #1e1e24;
+  color: #dcdcdc;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 2.4cqw;
+  line-height: 1.5;
+  padding: 2.5cqw 3cqw;
+  border-radius: 2.5cqw;
+  overflow-x: auto;
+  border-left: 0.8cqw solid var(--gc-blue-action);
+}
+.gc-sql-kw { color: #569cd6; font-weight: 700; }
+.gc-sql-tbl { color: #4ec9b0; }
+.gc-sql-fn { color: #dcdcaa; }
+.gc-metrics-kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2cqw;
+}
+.gc-kpi-card {
+  background: #f8f9fa;
+  border-radius: 2.5cqw;
+  padding: 2.4cqw 3cqw;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8cqw;
+  border: 0.2cqw solid var(--gc-blue-tint-100);
+}
+.gc-kpi-label {
+  font-size: 2.2cqw;
+  color: var(--gc-ink-500);
+}
+.gc-kpi-val {
+  font-family: var(--gc-font-display);
+  font-size: 4cqw;
+  font-weight: 700;
+  color: var(--gc-ink-900);
+}
+.gc-kpi-trend {
+  font-size: 2.1cqw;
+  font-weight: 600;
+  color: var(--gc-google-green);
+}
+.gc-metrics-run-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.8cqw;
+  width: 100%;
+  padding: 2.4cqw;
+  border-radius: 999px;
+  background: var(--gc-blue-action);
+  color: #fff;
+  font-family: var(--gc-font-display);
+  font-size: 3cqw;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0.8cqw 2cqw rgba(26,115,232,0.25);
+  transition: transform 0.15s, background 0.15s;
+}
+.gc-metrics-run-btn:active { transform: scale(0.97); }
+.gc-metrics-run-btn svg { width: 3.6cqw; height: 3.6cqw; }
+
+/* -----------------------------------------------------------------------------
+   SECURITY & ZERO TRUST DEMO
+   -------------------------------------------------------------------------- */
+.gc-security-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3cqw;
+  background: var(--gc-blue-tint-50);
+  border-radius: 3.5cqw;
+  border: 0.25cqw solid var(--gc-blue-brand);
+  gap: 1.5cqw;
+}
+.gc-security-shield-icon {
+  width: 12cqw;
+  height: 12cqw;
+  border-radius: 999px;
+  background: var(--gc-blue-action);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0.8cqw 2.5cqw rgba(26,115,232,0.3);
+}
+.gc-security-shield-icon svg { width: 6cqw; height: 6cqw; }
+.gc-security-status-title {
+  font-family: var(--gc-font-display);
+  font-size: 3.6cqw;
+  font-weight: 700;
+  color: var(--gc-ink-900);
+}
+.gc-security-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.2cqw 3cqw;
+  background: #f8f9fa;
+  border-radius: 2.5cqw;
+  font-size: 2.7cqw;
+}
+.gc-security-check-icon {
+  width: 4.5cqw;
+  height: 4.5cqw;
+  border-radius: 999px;
+  background: var(--gc-google-green);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gc-security-check-icon svg { width: 2.8cqw; height: 2.8cqw; }
+
+/* -----------------------------------------------------------------------------
+   BUTTON SUITE & INTERACTIVE CONTROLS DEMO
+   -------------------------------------------------------------------------- */
+.gc-controls-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2cqw;
+}
+.gc-controls-label {
+  font-family: var(--gc-font-display);
+  font-size: 2.6cqw;
+  font-weight: 600;
+  color: var(--gc-ink-500);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.gc-controls-row {
+  display: flex;
+  gap: 2cqw;
+  align-items: center;
+}
+.gc-btn--tonal {
+  background: var(--gc-blue-tint-100);
+  color: var(--gc-blue-action);
+  font-family: var(--gc-font-display);
+  font-size: 2.8cqw;
+  font-weight: 600;
+  padding: 2cqw 4cqw;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.gc-btn--tonal:active { background: #d2e3fc; }
+
+.gc-segmented {
+  display: flex;
+  background: #f1f3f4;
+  padding: 0.6cqw;
+  border-radius: 999px;
+  width: 100%;
+}
+.gc-segmented-btn {
+  flex: 1;
+  text-align: center;
+  padding: 1.6cqw 0;
+  border-radius: 999px;
+  font-size: 2.6cqw;
+  font-weight: 600;
+  color: var(--gc-ink-600);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.gc-segmented-btn.is-selected {
+  background: #ffffff;
+  color: var(--gc-blue-action);
+  box-shadow: 0 0.4cqw 1cqw rgba(0,0,0,0.1);
+}
+
+.gc-switch-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2cqw 3cqw;
+  background: #f8f9fa;
+  border-radius: 2.5cqw;
+  font-size: 2.8cqw;
+}
+.gc-switch {
+  position: relative;
+  width: 9cqw;
+  height: 5cqw;
+  border-radius: 999px;
+  background: #dadce0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.gc-switch.is-on {
+  background: var(--gc-blue-action);
+}
+.gc-switch-thumb {
+  position: absolute;
+  top: 0.5cqw;
+  left: 0.6cqw;
+  width: 4cqw;
+  height: 4cqw;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 0.4cqw 1cqw rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+.gc-switch.is-on .gc-switch-thumb {
+  transform: translateX(3.8cqw);
+}
+
+.gc-slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2cqw;
+  padding: 2cqw 3cqw;
+  background: #f8f9fa;
+  border-radius: 2.5cqw;
+}
+.gc-slider-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2.6cqw;
+  font-weight: 600;
+}
+.gc-slider-input {
+  width: 100%;
+  accent-color: var(--gc-blue-action);
+  cursor: pointer;
+}
+
+@keyframes gcWavePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
 
 /* -----------------------------------------------------------------------------

@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="../css/tokens.css">
 <link rel="stylesheet" href="../css/cloud-style.css">
 <script src="../js/gc-icons.js"></script>
+<script src="../js/cloud-style.js"></script>
 </head>
 
 <body>
@@ -95,7 +96,47 @@
     <div class="gc-device-slot">
       <div class="gc-phone">
         <div class="gc-phone-screen">
-          <!-- demo goes here -->
+          <div class="gc-demo-app gc-demo-chat" id="gc-chat-demo">
+            <div class="gc-demo-topbar">
+              <span class="gc-demo-topbar-title">
+                <svg><use href="#gc-icon-sparkle"/></svg>
+                Gemini 1.5 Agent
+              </span>
+              <span class="gc-demo-status-dot" title="Online"></span>
+            </div>
+            <div class="gc-demo-body" id="chat-body">
+              <div class="gc-chat-stream" id="chat-stream">
+                <div class="gc-chat-msg is-agent">
+                  Hello! I am your Google Cloud technical assistant. How can I optimize your infrastructure today?
+                </div>
+                <div class="gc-chat-msg is-user">
+                  Analyze cluster autoscaling and recommend concurrency settings.
+                </div>
+                <div class="gc-chat-msg is-agent">
+                  Analyzed live GKE Autopilot telemetry.
+                  <div class="gc-chat-tool-badge">
+                    <svg><use href="#gc-icon-sparkle"/></svg>
+                    VertexAI Tool: MetricsExplorer.query()
+                  </div>
+                  Cluster health is 100%. P99 latency is 14ms across 48k queries/sec.
+                </div>
+              </div>
+            </div>
+            <div class="gc-chat-pills" id="chat-pills">
+              <button class="gc-prompt-pill" data-prompt="Scale GKE Autopilot cluster">Scale GKE Cluster</button>
+              <button class="gc-prompt-pill" data-prompt="Run BigQuery cost audit">Cost Audit</button>
+              <button class="gc-prompt-pill" data-prompt="Verify Zero Trust access">Zero Trust Gate</button>
+            </div>
+            <div class="gc-chat-input-bar">
+              <button class="gc-icon-btn" style="width:7cqw;height:7cqw" aria-label="Voice">
+                <svg><use href="#gc-icon-mic"/></svg>
+              </button>
+              <input type="text" class="gc-chat-input" id="chat-input" placeholder="Ask Gemini..." />
+              <button class="gc-chat-btn-send" id="chat-send-btn" aria-label="Send">
+                <svg><use href="#gc-icon-send"/></svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -49,6 +49,7 @@ templates/            Standalone single-file examples of each screen
   02-menu.html          numbered category list
   03-cards.html         horizontal rail of fact cards
   04-article.html       long-form detail + phone mock
+  05-components.html    interactive demo suite (camera, video, chat, metrics, security, controls)
 
 docs/
   DESIGN-SYSTEM.md    Colour, typography, spacing, motion — the spec

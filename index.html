@@ -160,8 +160,314 @@ function cards(ci) {
     </div>`;
 }
 
+/* --- demo component templates ------------------------------------------- */
+
+function demoCamera(f) {
+  return `
+    <div class="gc-demo-app gc-demo-camera" id="gc-camera-demo">
+      <div class="gc-demo-topbar">
+        <span class="gc-demo-topbar-title">
+          <svg><use href="#gc-icon-camera"/></svg>
+          Vision AI Scanner
+        </span>
+        <span class="gc-demo-chip">LIVE OCR</span>
+      </div>
+      <div class="gc-demo-body">
+        <div class="gc-camera-viewfinder" id="camera-viewfinder">
+          <div class="gc-camera-grid"></div>
+          <div class="gc-camera-scanline"></div>
+          <div class="gc-camera-reticle">
+            <span class="gc-camera-target-tag">
+              <svg style="width:2.2cqw;height:2.2cqw"><use href="#gc-icon-sparkle"/></svg>
+              Gemini Vision: 99.4%
+            </span>
+          </div>
+        </div>
+        <div class="gc-camera-controls">
+          <button class="gc-icon-btn" style="width:8cqw;height:8cqw" aria-label="Mode">
+            <svg><use href="#gc-icon-catalog"/></svg>
+          </button>
+          <button class="gc-camera-shutter" id="camera-shutter-btn" aria-label="Capture">
+            <svg><use href="#gc-icon-camera"/></svg>
+          </button>
+          <button class="gc-icon-btn" style="width:8cqw;height:8cqw" aria-label="Flash">
+            <svg><use href="#gc-icon-sparkle"/></svg>
+          </button>
+        </div>
+        <div class="gc-camera-drawer" id="camera-results-drawer">
+          <div class="gc-camera-drawer-header">
+            <span>Extraction Result</span>
+            <span class="gc-demo-status-dot"></span>
+          </div>
+          <div class="gc-camera-drawer-row">
+            <span>Target Object</span>
+            <span class="gc-camera-drawer-val" id="camera-doc-type">Enterprise Document</span>
+          </div>
+          <div class="gc-camera-drawer-row">
+            <span>Inference Latency</span>
+            <span class="gc-camera-drawer-val" id="camera-latency">24ms (TPU v5p)</span>
+          </div>
+          <div class="gc-camera-drawer-row">
+            <span>Grounding Safety</span>
+            <span class="gc-camera-drawer-val" style="color:var(--gc-google-green)">PASSED · 0 Filter Hit</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function demoVideo(f) {
+  return `
+    <div class="gc-demo-app gc-demo-video" id="gc-video-demo">
+      <div class="gc-demo-topbar">
+        <span class="gc-demo-topbar-title">
+          <svg><use href="#gc-icon-video"/></svg>
+          Cloud on Air Stream
+        </span>
+        <span class="gc-demo-chip">1080p · 60fps</span>
+      </div>
+      <div class="gc-demo-body">
+        <div class="gc-video-player" id="video-player-box">
+          <div class="gc-video-top">
+            <span class="gc-video-badge">
+              <span class="gc-video-badge-dot"></span>
+              ON AIR
+            </span>
+            <button class="gc-icon-btn" style="width:6cqw;height:6cqw;color:#fff;background:rgba(255,255,255,0.15)" aria-label="Volume">
+              <svg><use href="#gc-icon-volume"/></svg>
+            </button>
+          </div>
+          <div class="gc-video-center">
+            <button class="gc-video-play-btn" id="video-toggle-btn" aria-label="Play/Pause">
+              <svg id="video-play-icon"><use href="#gc-icon-play"/></svg>
+            </button>
+          </div>
+          <div class="gc-video-bottom">
+            <div class="gc-video-timeline-bar" id="video-timeline">
+              <div class="gc-video-timeline-fill" id="video-progress" style="width:42%"></div>
+            </div>
+            <div class="gc-video-time-row">
+              <span id="video-time-elapsed">05:14</span>
+              <span>12:30</span>
+            </div>
+          </div>
+        </div>
+        <div class="gc-video-chapters-title">AI Video Chapters</div>
+        <div class="gc-video-chapter-card is-active" data-time="00:00" data-pct="10">
+          <span>01 · Architecture Overview</span>
+          <span class="gc-video-chapter-time">00:00</span>
+        </div>
+        <div class="gc-video-chapter-card" data-time="04:20" data-pct="42">
+          <span>02 · Live Multimodal Demo</span>
+          <span class="gc-video-chapter-time">04:20</span>
+        </div>
+        <div class="gc-video-chapter-card" data-time="08:45" data-pct="70">
+          <span>03 · Production Scaling</span>
+          <span class="gc-video-chapter-time">08:45</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function demoChat(f) {
+  return `
+    <div class="gc-demo-app gc-demo-chat" id="gc-chat-demo">
+      <div class="gc-demo-topbar">
+        <span class="gc-demo-topbar-title">
+          <svg><use href="#gc-icon-sparkle"/></svg>
+          Gemini 1.5 Agent
+        </span>
+        <span class="gc-demo-status-dot" title="Online"></span>
+      </div>
+      <div class="gc-demo-body" id="chat-body">
+        <div class="gc-chat-stream" id="chat-stream">
+          <div class="gc-chat-msg is-agent">
+            Hello! I am your Google Cloud technical assistant. How can I optimize your infrastructure today?
+          </div>
+          <div class="gc-chat-msg is-user">
+            Analyze cluster autoscaling and recommend concurrency settings.
+          </div>
+          <div class="gc-chat-msg is-agent">
+            Analyzed live GKE Autopilot telemetry.
+            <div class="gc-chat-tool-badge">
+              <svg><use href="#gc-icon-sparkle"/></svg>
+              VertexAI Tool: MetricsExplorer.query()
+            </div>
+            Cluster health is 100%. P99 latency is 14ms across 48k queries/sec.
+          </div>
+        </div>
+      </div>
+      <div class="gc-chat-pills" id="chat-pills">
+        <button class="gc-prompt-pill" data-prompt="Scale GKE Autopilot cluster">Scale GKE Cluster</button>
+        <button class="gc-prompt-pill" data-prompt="Run BigQuery cost audit">Cost Audit</button>
+        <button class="gc-prompt-pill" data-prompt="Verify Zero Trust access">Zero Trust Gate</button>
+      </div>
+      <div class="gc-chat-input-bar">
+        <button class="gc-icon-btn" style="width:7cqw;height:7cqw" aria-label="Voice">
+          <svg><use href="#gc-icon-mic"/></svg>
+        </button>
+        <input type="text" class="gc-chat-input" id="chat-input" placeholder="Ask Gemini..." />
+        <button class="gc-chat-btn-send" id="chat-send-btn" aria-label="Send">
+          <svg><use href="#gc-icon-send"/></svg>
+        </button>
+      </div>
+    </div>`;
+}
+
+function demoMetrics(f) {
+  return `
+    <div class="gc-demo-app gc-demo-metrics" id="gc-metrics-demo">
+      <div class="gc-demo-topbar">
+        <span class="gc-demo-topbar-title">
+          <svg><use href="#gc-icon-database"/></svg>
+          BigQuery Studio
+        </span>
+        <span class="gc-demo-chip">1,280 SLOTS</span>
+      </div>
+      <div class="gc-demo-body">
+        <div class="gc-metrics-codebox">
+          <span class="gc-sql-kw">SELECT</span> region, <span class="gc-sql-fn">COUNT</span>(*) <span class="gc-sql-kw">AS</span> reqs,<br>
+          &nbsp;&nbsp;<span class="gc-sql-fn">AVG</span>(latency_ms) <span class="gc-sql-kw">AS</span> p99<br>
+          <span class="gc-sql-kw">FROM</span> <span class="gc-sql-tbl">\`cloud_onair.telemetry\`</span><br>
+          <span class="gc-sql-kw">GROUP BY</span> region <span class="gc-sql-kw">ORDER BY</span> reqs <span class="gc-sql-kw">DESC</span>;
+        </div>
+        <button class="gc-metrics-run-btn" id="metrics-run-btn">
+          <svg><use href="#gc-icon-play"/></svg>
+          <span id="metrics-run-text">Run Query (0.42s)</span>
+        </button>
+        <div class="gc-metrics-kpi-grid">
+          <div class="gc-kpi-card">
+            <span class="gc-kpi-label">Throughput</span>
+            <span class="gc-kpi-val" id="kpi-throughput">48.2k/s</span>
+            <span class="gc-kpi-trend">↑ +14.2%</span>
+          </div>
+          <div class="gc-kpi-card">
+            <span class="gc-kpi-label">P99 Latency</span>
+            <span class="gc-kpi-val" id="kpi-latency">12ms</span>
+            <span class="gc-kpi-trend" style="color:var(--gc-google-green)">✓ Optimal</span>
+          </div>
+          <div class="gc-kpi-card">
+            <span class="gc-kpi-label">Processed</span>
+            <span class="gc-kpi-val">1.8 TB</span>
+            <span class="gc-kpi-trend">Cached</span>
+          </div>
+          <div class="gc-kpi-card">
+            <span class="gc-kpi-label">Slot Capacity</span>
+            <span class="gc-kpi-val">98.4%</span>
+            <span class="gc-kpi-trend" style="color:var(--gc-blue-action)">Autoscaled</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function demoSecurity(f) {
+  return `
+    <div class="gc-demo-app gc-demo-security" id="gc-security-demo">
+      <div class="gc-demo-topbar">
+        <span class="gc-demo-topbar-title">
+          <svg><use href="#gc-icon-shield"/></svg>
+          BeyondCorp Gate
+        </span>
+        <span class="gc-demo-chip">ZERO TRUST</span>
+      </div>
+      <div class="gc-demo-body">
+        <div class="gc-security-hero">
+          <div class="gc-security-shield-icon" id="security-shield">
+            <svg><use href="#gc-icon-shield"/></svg>
+          </div>
+          <span class="gc-security-status-title" id="security-status-text">Identity Verified</span>
+          <span style="font-size:2.4cqw;color:var(--gc-ink-600)">Titan FIDO2 · Contextual Access</span>
+        </div>
+        <div class="gc-security-item">
+          <span>Device Health Attestation</span>
+          <div class="gc-security-check-icon"><svg><use href="#gc-icon-check"/></svg></div>
+        </div>
+        <div class="gc-security-item">
+          <span>IAM Context Policy: Production</span>
+          <div class="gc-security-check-icon"><svg><use href="#gc-icon-check"/></svg></div>
+        </div>
+        <div class="gc-security-item">
+          <span>Threat Defense / SCC Premium</span>
+          <div class="gc-security-check-icon"><svg><use href="#gc-icon-check"/></svg></div>
+        </div>
+        <button class="gc-metrics-run-btn" style="margin-top:auto" id="security-verify-btn">
+          <svg><use href="#gc-icon-shield"/></svg>
+          <span>Re-evaluate Posture</span>
+        </button>
+      </div>
+    </div>`;
+}
+
+function demoButtons(f) {
+  return `
+    <div class="gc-demo-app gc-demo-buttons" id="gc-buttons-demo">
+      <div class="gc-demo-topbar">
+        <span class="gc-demo-topbar-title">
+          <svg><use href="#gc-icon-catalog"/></svg>
+          Cloud UI Kit
+        </span>
+        <span class="gc-demo-chip">CONTROLS</span>
+      </div>
+      <div class="gc-demo-body">
+        <div class="gc-controls-group">
+          <span class="gc-controls-label">Interactive Buttons</span>
+          <div class="gc-controls-row">
+            <button class="gc-btn" style="padding:1.8cqw 3.5cqw;font-size:2.8cqw" id="demo-action-btn">Action</button>
+            <button class="gc-btn--tonal" id="demo-tonal-btn">Tonal</button>
+          </div>
+        </div>
+        <div class="gc-controls-group">
+          <span class="gc-controls-label">Segmented Switch</span>
+          <div class="gc-segmented" id="demo-segmented">
+            <button class="gc-segmented-btn is-selected" data-val="standard">Standard</button>
+            <button class="gc-segmented-btn" data-val="enterprise">Enterprise</button>
+            <button class="gc-segmented-btn" data-val="gemini">Gemini AI</button>
+          </div>
+        </div>
+        <div class="gc-controls-group">
+          <span class="gc-controls-label">Toggle Controls</span>
+          <div class="gc-switch-row">
+            <span>GKE Autoscale</span>
+            <div class="gc-switch is-on" id="demo-switch-1">
+              <div class="gc-switch-thumb"></div>
+            </div>
+          </div>
+          <div class="gc-switch-row">
+            <span>Zero Trust Enforcement</span>
+            <div class="gc-switch is-on" id="demo-switch-2">
+              <div class="gc-switch-thumb"></div>
+            </div>
+          </div>
+        </div>
+        <div class="gc-controls-group">
+          <span class="gc-controls-label">Capacity Slider</span>
+          <div class="gc-slider-row">
+            <div class="gc-slider-top">
+              <span>Max Instances</span>
+              <span id="demo-slider-val" style="color:var(--gc-blue-action)">64 vCPU</span>
+            </div>
+            <input type="range" class="gc-slider-input" id="demo-slider" min="8" max="128" value="64" />
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function demoHtml(type, f) {
+  switch (type) {
+    case 'camera':   return demoCamera(f);
+    case 'video':    return demoVideo(f);
+    case 'metrics':  return demoMetrics(f);
+    case 'security': return demoSecurity(f);
+    case 'buttons':  return demoButtons(f);
+    default:         return demoChat(f);
+  }
+}
+
 function article(ci, fi) {
   const c = CATS[ci], f = c.facts[fi];
+  const demoType = f.demo || 'chat';
   return `
     <div class="gc-detail" style="view-transition-name: gc-detail">
       <div class="gc-breadcrumb">
@@ -183,7 +489,9 @@ function article(ci, fi) {
 
     <div class="gc-device-slot">
       <div class="gc-phone">
-        <div class="gc-phone-screen"><!-- embed a demo here --></div>
+        <div class="gc-phone-screen">
+          ${demoHtml(demoType, f)}
+        </div>
       </div>
     </div>`;
 }
@@ -205,6 +513,7 @@ function render() {
   veil.hidden = (state.view === 'cover' || state.view === 'menu');
   badge.hidden = (state.view !== 'article');
   gcInitRails(screen);
+  gcInitDemos(screen);
 }
 
 function go(next) {
@@ -227,6 +536,20 @@ document.addEventListener('click', e => {
 /* The wordmark is always a route home. */
 document.getElementById('wordmark').addEventListener('click',
   () => go({ view: 'cover' }));
+
+/* Badge cycles through demo modes on article screen. */
+badge.addEventListener('click', () => {
+  if (state.view !== 'article') return;
+  const demoTypes = ['chat', 'camera', 'video', 'metrics', 'security', 'buttons'];
+  const curDemo = CATS[state.cat].facts[state.fact].demo || 'chat';
+  const nextIdx = (demoTypes.indexOf(curDemo) + 1) % demoTypes.length;
+  CATS[state.cat].facts[state.fact].demo = demoTypes[nextIdx];
+  const phoneScreen = document.querySelector('.gc-phone-screen');
+  if (phoneScreen) {
+    phoneScreen.innerHTML = demoHtml(demoTypes[nextIdx], CATS[state.cat].facts[state.fact]);
+    gcInitDemos(phoneScreen);
+  }
+});
 
 gcOnKeys({
   home: () => go({ view: 'cover' }),

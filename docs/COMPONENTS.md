@@ -398,6 +398,21 @@ not the stage. So an embedded demo scales relative to the phone at any stage siz
 
 ---
 
+## Demo components
+
+Interactive Google Cloud demo components embedded in `.gc-phone-screen`:
+
+1. **Vision / Camera Scanner (`.gc-demo-camera`)**: Viewfinder with animated laser scanline, target reticle, tactile shutter capture button, and live metadata drawer.
+2. **Video Player (`.gc-demo-video`)**: Simulated Cloud on Air broadcast player with play/pause, timecode scrubber, and interactive chapter seeking.
+3. **Gemini Agent Chat (`.gc-demo-chat`)**: Generative AI chat interface with user/agent bubbles, tool execution badges (`VertexAI Tool Call`), and prompt pill actions.
+4. **BigQuery SQL & Metrics (`.gc-demo-metrics`)**: Syntax-highlighted SQL editor with interactive "Run Query" button and live KPI cards.
+5. **BeyondCorp Zero Trust Security (`.gc-demo-security`)**: Identity & device posture validator with biometric passkey authentication.
+6. **UI Controls & Buttons (`.gc-demo-buttons`)**: Action buttons, tonal buttons, segmented pill selectors, switches, and sliders.
+
+Standalone showcase: [templates/05-components.html](../templates/05-components.html).
+
+---
+
 ## Footer
 
 ```html
