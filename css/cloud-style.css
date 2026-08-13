@@ -1,0 +1,711 @@
+/* =============================================================================
+   cloud-style — LAYOUT + COMPONENTS
+   Requires tokens.css to be loaded first.
+
+   Class prefix: .gc-
+   Everything is plain CSS. No build step, no framework. Open the HTML from
+   disk and it works.
+   ========================================================================== */
+
+/* -----------------------------------------------------------------------------
+   1. RESET (minimal — only what the design actually depends on)
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  font-family: var(--gc-font-display);
+}
+
+body { line-height: inherit; }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+svg { display: block; }
+
+/* Several components below set `display`, which would otherwise beat the
+   `hidden` attribute. Make `hidden` mean hidden, everywhere. */
+[hidden] { display: none !important; }
+
+/* Hide scrollbars on the horizontal card rail without disabling scrolling. */
+.gc-no-scrollbar { scrollbar-width: none; }
+.gc-no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* -----------------------------------------------------------------------------
+   2. THE STAGE
+   -------------------------------------------------------------------------
+
+   .gc-cover  Full-viewport white canvas. Owns the three geometry variables
+              that position the background ripple. It is NOT the container —
+              it just centres the stage and lets the ripple bleed past it.
+
+   .gc-stage  The 16:9 slide. This is the container query root: every size
+              inside it is a % of ITS width, so the design scales as one
+              unit and never reflows on desktop.
+
+   Geometry:
+     --s    stage width  = min(100vw, 177.78vh)   (177.78 = 16/9 × 100)
+     --h    stage height = --s × 9/16
+     --top  distance from viewport top to the stage's top edge
+   -------------------------------------------------------------------------- */
+.gc-cover {
+  --s: min(100vw, 177.78vh);
+  --h: calc(var(--s) * 9 / 16);
+  --top: calc((100vh - var(--h)) / 2);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--gc-surface);
+}
+
+.gc-stage {
+  container-type: inline-size;   /* <- makes 1cqw == 1% of stage width */
+  position: relative;
+  z-index: 10;
+  width: min(100vw, 177.78vh);
+  aspect-ratio: 16 / 9;
+  font-family: var(--gc-font-display);
+}
+
+/* A white veil that mutes the ripple on content-dense screens.
+   Sits between the ripple (z 0) and the stage (z 10). */
+.gc-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* -----------------------------------------------------------------------------
+   3. RIPPLE — six concentric circles, bottom-right, bleeding off-canvas.
+
+   All six share one centre point, expressed against the STAGE geometry so
+   the ripple stays locked to the slide rather than to the window:
+     x = 18% of stage width in from the right edge
+     y = 71% of the way down the stage
+   Each circle is sized as a fraction of --s and pulled back by
+   translate(50%, -50%) so that shared point is its true centre.
+   -------------------------------------------------------------------------- */
+.gc-ripple {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gc-ripple > i {
+  position: absolute;
+  right: calc(var(--s) * 0.18);
+  top: calc(var(--top) + var(--h) * 0.71);
+  transform: translate(50%, -50%);
+  border-radius: 50%;
+  display: block;
+}
+
+/* Size ramp. Each ring is ~0.78× the previous one. */
+.gc-ripple > i:nth-child(1) { width: calc(var(--s) * 0.780); height: calc(var(--s) * 0.780); background: var(--gc-ripple-01); }
+.gc-ripple > i:nth-child(2) { width: calc(var(--s) * 0.640); height: calc(var(--s) * 0.640); background: var(--gc-ripple-02); }
+.gc-ripple > i:nth-child(3) { width: calc(var(--s) * 0.500); height: calc(var(--s) * 0.500); background: var(--gc-ripple-03); }
+.gc-ripple > i:nth-child(4) { width: calc(var(--s) * 0.370); height: calc(var(--s) * 0.370); background: var(--gc-ripple-04); }
+.gc-ripple > i:nth-child(5) { width: calc(var(--s) * 0.250); height: calc(var(--s) * 0.250); background: var(--gc-ripple-05); }
+.gc-ripple > i:nth-child(6) { width: calc(var(--s) * 0.125); height: calc(var(--s) * 0.125); background: var(--gc-ripple-06); }
+
+/* -----------------------------------------------------------------------------
+   4. WORDMARK
+   Two weights of one word. The bold half is the product name, the light
+   half is the category. Tight tracking, zero leading — it is a logo, not text.
+   -------------------------------------------------------------------------- */
+.gc-wordmark {
+  position: absolute;
+  left: var(--gc-gutter);
+  top: 3.2cqw;
+  display: flex;
+  align-items: center;
+  gap: 1.4cqw;
+  margin: 0;
+}
+
+.gc-wordmark h1,
+.gc-wordmark .gc-wordmark-text {
+  margin: 0;
+  font-family: var(--gc-font-display);
+  font-size: var(--gc-text-wordmark);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--gc-ink-900);
+  cursor: pointer;
+  user-select: none;
+}
+
+.gc-wordmark b   { font-weight: 700; }
+.gc-wordmark span { font-weight: 400; }
+
+/* Small badge that can sit beside the wordmark (e.g. the Cloud toggle). */
+.gc-wordmark-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.9cqw;
+  height: 2.9cqw;
+  border-radius: var(--gc-radius-tile);
+  background: var(--gc-blue-tint-100);
+  color: var(--gc-blue-glyph);
+}
+.gc-wordmark-badge svg { width: 1.9cqw; height: 1.9cqw; }
+
+/* -----------------------------------------------------------------------------
+   5. COVER LEDE — the four-line statement under the wordmark.
+   Bold lines carry the claim, regular lines carry the qualifier.
+   -------------------------------------------------------------------------- */
+.gc-lede {
+  position: absolute;
+  left: var(--gc-gutter-text);
+  top: 20cqw;
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-lede);
+  line-height: 1.3;
+}
+.gc-lede p { margin: 0; }
+.gc-lede .is-strong { font-weight: 700; color: var(--gc-ink-800); }
+.gc-lede .is-soft   { font-weight: 400; color: var(--gc-ink-700); }
+
+/* -----------------------------------------------------------------------------
+   6. BUTTONS
+   -------------------------------------------------------------------------- */
+
+/* Primary pill. On the cover it is absolutely placed; elsewhere drop
+   .gc-btn--cover and position it yourself. */
+.gc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--gc-radius-pill);
+  background: var(--gc-blue-action);
+  color: #fff;
+  font-family: var(--gc-font-display);
+  font-size: var(--gc-text-body-lg);
+  font-weight: 500;
+  padding: 0.9cqw 2.1cqw;
+  box-shadow: var(--gc-shadow-action);
+  transition: background-color var(--gc-dur-hover);
+}
+.gc-btn:hover { background: var(--gc-blue-action-hover); }
+
+.gc-btn--cover {
+  position: absolute;
+  left: var(--gc-gutter-text);
+  top: 36cqw;
+}
+
+/* Circular icon button — the blue navigation affordances (home, back). */
+.gc-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.7cqw;
+  height: 2.7cqw;
+  border-radius: 50%;
+  background: var(--gc-blue-action);
+  color: #fff;
+  box-shadow: var(--gc-shadow-action);
+  transition: background-color var(--gc-dur-hover);
+}
+.gc-icon-btn:hover { background: var(--gc-blue-action-hover); }
+.gc-icon-btn svg { width: 1.4cqw; height: 1.4cqw; }
+
+/* Neutral variant — secondary controls on white. */
+.gc-icon-btn--neutral {
+  background: var(--gc-surface-sunken);
+  color: var(--gc-ink-550);
+  box-shadow: none;
+}
+.gc-icon-btn--neutral:hover { background: var(--gc-surface-hover); }
+.gc-icon-btn--neutral:disabled {
+  color: var(--gc-ink-400);
+  background: var(--gc-surface-sunken);
+  cursor: not-allowed;
+}
+
+/* -----------------------------------------------------------------------------
+   7. ICON TILE — rounded-square holder for a category glyph.
+   Used in menu rows and in breadcrumbs so the same category reads as the
+   same object across screens.
+   -------------------------------------------------------------------------- */
+.gc-icon-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 3.3cqw;
+  height: 3.3cqw;
+  border-radius: var(--gc-radius-tile);
+  background: var(--gc-blue-tint-100);
+  color: var(--gc-blue-glyph);
+}
+.gc-icon-tile svg { width: 1.8cqw; height: 1.8cqw; }
+
+/* Slightly smaller variant used inside the breadcrumb bar. */
+.gc-icon-tile--sm { width: 2.9cqw; height: 2.9cqw; border-radius: 0.7cqw; }
+
+/* -----------------------------------------------------------------------------
+   8. MENU — the numbered category list on the index screen.
+   -------------------------------------------------------------------------- */
+.gc-menu {
+  position: absolute;
+  left: var(--gc-gutter);
+  top: 18cqw;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gc-gap-row);
+  width: 42cqw;
+}
+
+.gc-menu-item {
+  display: flex;
+  align-items: center;
+  height: 4.4cqw;
+  padding-left: 0.55cqw;
+  padding-right: 1.4cqw;
+  border-radius: var(--gc-radius-row);
+  background: var(--gc-blue-tint-070);
+  text-align: left;
+  transition: background-color var(--gc-dur-hover);
+}
+.gc-menu-item:hover { background: var(--gc-blue-tint-090); }
+
+.gc-menu-label {
+  flex: 1;
+  margin-left: 1.2cqw;
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-label);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--gc-blue-brand);
+}
+
+.gc-menu-num {
+  margin-left: 1cqw;
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-label);
+  font-weight: 700;
+  color: var(--gc-blue-numeral);
+}
+
+/* -----------------------------------------------------------------------------
+   9. DETAIL BLOCK — breadcrumb + whatever the screen is about.
+   Shares one anchor position so screens cross-fade in place.
+   -------------------------------------------------------------------------- */
+.gc-detail {
+  position: absolute;
+  left: var(--gc-gutter);
+  right: 1cqw;
+  top: 13cqw;
+  display: flex;
+  flex-direction: column;
+}
+
+.gc-breadcrumb {
+  display: flex;
+  align-items: center;
+}
+.gc-breadcrumb .gc-icon-btn { margin-right: 0.9cqw; }
+
+.gc-breadcrumb-title {
+  flex: 1;
+  margin: 0 0 0 1cqw;
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-heading);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--gc-blue-brand);
+}
+
+.gc-breadcrumb-num {
+  margin-left: 1cqw;
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-heading);
+  font-weight: 700;
+  color: var(--gc-blue-numeral);
+}
+
+/* -----------------------------------------------------------------------------
+   10. FACT CARDS — a horizontal rail of drag-scrollable cards.
+   Desktop: overflow visible, dragged by JS. Mobile: native snap scrolling.
+   -------------------------------------------------------------------------- */
+.gc-rail {
+  position: relative;
+  z-index: 10;
+  margin-top: 2.7cqw;
+  overflow: visible;
+  cursor: grab;
+  touch-action: pan-x;
+  user-select: none;
+}
+.gc-rail:active { cursor: grabbing; }
+
+.gc-rail-track {
+  display: flex;
+  width: max-content;
+  height: 26cqw;
+  gap: var(--gc-gap-card);
+  padding-top: 0.4cqw;
+  padding-bottom: 1.6cqw;
+  will-change: transform;
+}
+
+.gc-card {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 18cqw;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--gc-radius-card);
+  background: var(--gc-blue-tint-080);
+  box-shadow: var(--gc-shadow-card);
+  text-align: left;
+}
+
+.gc-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1cqw 1.3cqw;
+  background: var(--gc-blue-header);
+  color: #fff;
+  font-size: var(--gc-text-card-head);
+  line-height: 1;
+}
+.gc-card-head b    { font-weight: 700; }
+.gc-card-head span { font-weight: 400; }
+.gc-card-head .gc-card-num { font-weight: 600; }
+
+.gc-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.3cqw;
+}
+
+.gc-card-title {
+  margin: 0;
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-body-lg);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--gc-ink-600);
+}
+
+/* Tag chip pinned to the bottom of the card regardless of title length. */
+.gc-tag {
+  margin-top: auto;
+  align-self: flex-start;
+  border-radius: var(--gc-radius-pill);
+  background: var(--gc-blue-header);
+  color: #fff;
+  font-size: var(--gc-text-caption);
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.35cqw 0.8cqw;
+}
+
+/* Pulsing ring — marks a card that opens a live, interactive demo. */
+.gc-card--live { animation: gc-pulse 1.1s ease-in-out infinite; }
+
+@keyframes gc-pulse {
+  0%, 100% { box-shadow: 0 0 0 0.12cqw rgba(53, 118, 232, 0.60),
+                         0 0.4cqw 1.0cqw rgba(53, 118, 232, 0.30); }
+  50%      { box-shadow: 0 0 0 0.20cqw rgba(53, 118, 232, 0.90),
+                         0 0.5cqw 1.4cqw rgba(53, 118, 232, 0.50); }
+}
+
+/* -----------------------------------------------------------------------------
+   11. ARTICLE — the long-form read on a single fact.
+   Constrained to --gc-measure so the line length stays readable while the
+   right half of the stage holds the device mock.
+   -------------------------------------------------------------------------- */
+.gc-article-title {
+  margin: 3cqw 0 0;
+  max-width: var(--gc-measure);
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-title);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--gc-ink-600);
+}
+
+.gc-article-lede {
+  margin: 1.6cqw 0 0;
+  max-width: var(--gc-measure);
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-body-lg);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--gc-blue-brand);
+}
+
+.gc-article-body {
+  margin: 1.2cqw 0 0;
+  max-width: var(--gc-measure);
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-body);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--gc-ink-500);
+}
+
+/* -----------------------------------------------------------------------------
+   12. DEVICE MOCK — the phone that holds a live demo or screenshot.
+   A second container so the demo inside it can also size in cqw, relative
+   to the phone rather than the slide.
+   -------------------------------------------------------------------------- */
+.gc-device-slot {
+  position: absolute;
+  right: 6cqw;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5cqw;
+}
+
+.gc-phone {
+  container-type: inline-size;   /* <- nested container */
+  position: relative;
+  width: 22.5cqw;
+  height: 47cqw;
+  overflow: hidden;
+  border: 0.4cqw solid var(--gc-blue-outline);
+  border-radius: var(--gc-radius-device);
+  background: var(--gc-surface);
+  box-shadow: var(--gc-shadow-device);
+  transition: border-color 0.3s;
+}
+
+/* Inside the phone, sizes are % of the PHONE width. */
+.gc-phone-screen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 2.76cqw;
+  overflow: hidden;
+}
+
+/* -----------------------------------------------------------------------------
+   13. FOOTER — Google Cloud lockup + edition line.
+   The logotype is per-letter spans; the colours are brand-exact.
+   -------------------------------------------------------------------------- */
+.gc-footer-logo {
+  position: absolute;
+  left: var(--gc-gutter-text);
+  bottom: 3.2cqw;
+  display: flex;
+  align-items: baseline;
+  font-size: var(--gc-text-logo);
+  font-weight: 500;
+}
+.gc-footer-logo .gc-cloud { margin-left: 0.7cqw; color: var(--gc-ink-500); }
+
+.gc-g1 { color: var(--gc-google-blue); }
+.gc-o1 { color: var(--gc-google-red); }
+.gc-o2 { color: var(--gc-google-yellow); }
+.gc-g2 { color: var(--gc-google-blue); }
+.gc-l  { color: var(--gc-google-green); }
+.gc-e  { color: var(--gc-google-red); }
+
+.gc-edition {
+  position: absolute;
+  left: 18.7cqw;
+  bottom: 3.35cqw;
+  font-size: var(--gc-text-meta);
+  font-weight: 400;
+  color: var(--gc-ink-500);
+}
+
+/* -----------------------------------------------------------------------------
+   14. VIEW TRANSITIONS
+   Named regions cross-fade independently so the wordmark and ripple stay
+   rock-steady while only the changing content animates.
+   Assign via  style="view-transition-name: gc-detail"  etc.
+   -------------------------------------------------------------------------- */
+/* px is correct here, not cqw: ::view-transition-* pseudo-elements live in a
+   separate overlay tree outside .gc-stage, so cqw would not resolve. These are
+   also transient nudges, not layout — they should not scale with the stage. */
+@keyframes gc-vt-leave { to   { opacity: 0; transform: translateY(-6px); } }
+@keyframes gc-vt-enter { from { opacity: 0; transform: translateY(10px); } }
+
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; }
+
+::view-transition-old(gc-lede),
+::view-transition-old(gc-cta),
+::view-transition-old(gc-menu),
+::view-transition-old(gc-detail) {
+  animation: gc-vt-leave var(--gc-dur-exit) var(--gc-ease-exit) forwards;
+}
+
+::view-transition-new(gc-lede),
+::view-transition-new(gc-cta),
+::view-transition-new(gc-menu),
+::view-transition-new(gc-detail) {
+  animation: gc-vt-enter var(--gc-dur-enter) var(--gc-ease-enter) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(gc-lede),  ::view-transition-new(gc-lede),
+  ::view-transition-old(gc-cta),   ::view-transition-new(gc-cta),
+  ::view-transition-old(gc-menu),  ::view-transition-new(gc-menu),
+  ::view-transition-old(gc-detail),::view-transition-new(gc-detail) {
+    animation-duration: 0.01s;
+    animation-timing-function: linear;
+  }
+  .gc-card--live { animation: none; }
+}
+
+/* =============================================================================
+   15. MOBILE — below 768px the slide becomes a scrolling column.
+
+   The single most important line here is `container-type: normal`. It takes
+   the stage out of container-query mode, so every `cqw` in the design falls
+   back to resolving against the small viewport: 1cqw becomes 1vw. Combined
+   with the token overrides in tokens.css, the whole system re-scales for a
+   phone without a single duplicated component rule.
+
+   Absolute positioning is unwound to `static` so elements simply stack.
+   ========================================================================== */
+@media (max-width: 767px) {
+
+  .gc-cover {
+    height: auto;
+    min-height: 100%;
+    --top: -18vw;              /* pull the ripple up behind the header */
+  }
+
+  .gc-stage {
+    container-type: normal;    /* <- cqw now means vw */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100svh;
+    aspect-ratio: auto;
+    padding: 6cqw 6cqw 8cqw;
+  }
+
+  /* Unwind desktop absolute positioning into normal flow. */
+  .gc-wordmark,
+  .gc-lede,
+  .gc-btn--cover,
+  .gc-menu,
+  .gc-detail,
+  .gc-device-slot,
+  .gc-footer-logo,
+  .gc-edition {
+    position: static;
+    inset: auto;
+    transform: none;
+  }
+
+  .gc-wordmark   { gap: 4cqw; }
+  .gc-lede       { margin-top: 12cqw; }
+  .gc-btn--cover { margin-top: 12cqw; align-self: flex-start; padding: 3cqw 7cqw; }
+  .gc-menu       { margin-top: 9cqw; width: 100%; }
+  .gc-detail     { margin-top: 7cqw; }
+
+  .gc-menu-item {
+    height: 15cqw;
+    padding-left: 2cqw;
+    padding-right: 4.5cqw;
+  }
+  .gc-menu-label { margin-left: 3.5cqw; }
+
+  .gc-icon-tile      { width: 11cqw; height: 11cqw; }
+  .gc-icon-tile--sm  { width: 10cqw; height: 10cqw; border-radius: 2.4cqw; }
+  .gc-icon-tile svg  { width: 6cqw; height: 6cqw; }
+
+  .gc-icon-btn       { width: 9.5cqw; height: 9.5cqw; }
+  .gc-icon-btn svg   { width: 5cqw; height: 5cqw; }
+  .gc-breadcrumb .gc-icon-btn { margin-right: 2.5cqw; }
+  .gc-breadcrumb-title { margin-left: 3cqw; }
+
+  /* Card rail: bleed to the screen edges and snap. */
+  .gc-rail {
+    margin: 6cqw -6cqw 0;
+    padding-inline: 6cqw;
+    scroll-padding-inline: 6cqw;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    cursor: auto;
+    touch-action: auto;
+  }
+  .gc-rail-track {
+    height: 86cqw;
+    gap: 4cqw;
+    padding-top: 1.5cqw;
+    padding-bottom: 3cqw;
+  }
+  .gc-card {
+    width: 60cqw;
+    scroll-snap-align: start;
+  }
+  .gc-card-head { padding: 3cqw 4cqw; }
+  .gc-card-body { padding: 4cqw; }
+
+  .gc-article-title { margin-top: 7cqw; }
+  .gc-article-lede  { margin-top: 4cqw; }
+  .gc-article-body  { margin-top: 3cqw; }
+
+  /* Device mock becomes a full-width block below the prose. */
+  .gc-device-slot {
+    margin-top: 10cqw;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 5cqw;
+  }
+  .gc-phone {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 22.5 / 47;
+    border-width: 1.5cqw;
+  }
+
+  /* Footer sits at the bottom of the scroll, logo and edition side by side. */
+  .gc-footer {
+    display: flex;
+    align-items: baseline;
+    gap: 5cqw;
+    margin-top: auto;
+    padding-top: 12cqw;
+  }
+}
+
+/* On desktop the footer wrapper must not create a box — its two children are
+   positioned absolutely against the stage. `display: contents` removes it. */
+@media (min-width: 768px) {
+  .gc-footer { display: contents; }
+}

@@ -1,0 +1,258 @@
+<!doctype html>
+<!--
+  cloud-style — WORKING DEMO
+
+  A complete four-screen deck rendered from content.js. Use this to check the
+  system end to end, or fork it as the starting point for a real demo.
+
+  Navigation:  click through, or use arrow keys / Escape / Home.
+  Content:     edit content.js. Nothing else needs to change.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!--
+  viewport-fit=cover      enables env(safe-area-inset-*) on notched phones
+  interactive-widget=...  makes the Android keyboard resize the layout rather
+                          than cover it, which matters if you embed a chat
+-->
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<title>cloud-style — Google Cloud demo deck template</title>
+<meta name="theme-color" content="#3f7ae8">
+<link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Text:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/cloud-style.css">
+<script src="js/gc-icons.js"></script>
+<script src="js/cloud-style.js"></script>
+<script src="content.js"></script>
+</head>
+
+<body>
+
+<div class="gc-cover">
+
+  <div class="gc-ripple" aria-hidden="true">
+    <i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+
+  <div class="gc-veil" id="veil" aria-hidden="true" hidden></div>
+
+  <div class="gc-stage">
+
+    <div class="gc-wordmark">
+      <h1 id="wordmark"></h1>
+      <button class="gc-wordmark-badge" id="badge" aria-label="Live demo" hidden>
+        <svg><use href="#gc-icon-cloud"/></svg>
+      </button>
+    </div>
+
+    <!-- Screens render into here. -->
+    <div id="screen"></div>
+
+    <div class="gc-footer">
+      <div class="gc-footer-logo">
+        <span>
+          <span class="gc-g1">G</span><span class="gc-o1">o</span><span class="gc-o2">o</span><span class="gc-g2">g</span><span class="gc-l">l</span><span class="gc-e">e</span>
+        </span>
+        <span class="gc-cloud">Cloud</span>
+      </div>
+      <div class="gc-edition" id="edition"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ---------------------------------------------------------------------------
+   Router. Three states:
+     {view:'cover'}
+     {view:'menu'}
+     {view:'cards',   cat}
+     {view:'article', cat, fact}
+   Each render() writes the whole screen; gcNavigate wraps it so the named
+   regions cross-fade. The wordmark, ripple and footer live outside #screen
+   and therefore never animate.
+   ------------------------------------------------------------------------ */
+
+const B = CONTENT.brand;
+const CATS = CONTENT.categories;
+const screen = document.getElementById('screen');
+const veil = document.getElementById('veil');
+const badge = document.getElementById('badge');
+
+let state = { view: 'cover' };
+
+/* Escape text before it goes into innerHTML. Content is authored locally, but
+   getting this habit wrong once is how demos become vulnerabilities. */
+const esc = s => String(s).replace(/[&<>"']/g,
+  c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const pad = n => String(n + 1).padStart(2, '0');
+const mark = (b, l) => `<b>${esc(b)}</b><span>${esc(l)}</span>`;
+
+document.getElementById('wordmark').innerHTML = mark(B.wordmarkBold, B.wordmarkLight);
+document.getElementById('edition').textContent = B.edition;
+
+/* --- screen templates ---------------------------------------------------- */
+
+function cover() {
+  return `
+    <div class="gc-lede" style="view-transition-name: gc-lede">
+      ${B.ledeStrong.map(l => `<p class="is-strong">${esc(l)}</p>`).join('')}
+      ${B.ledeSoft.map(l => `<p class="is-soft">${esc(l)}</p>`).join('')}
+    </div>
+    <button class="gc-btn gc-btn--cover" data-go="menu"
+            style="view-transition-name: gc-cta">${esc(B.cta)}</button>`;
+}
+
+function menu() {
+  return `
+    <nav class="gc-menu" style="view-transition-name: gc-menu">
+      ${CATS.map((c, i) => `
+        <button class="gc-menu-item" data-go="cards" data-cat="${i}">
+          <span class="gc-icon-tile"><svg><use href="#${esc(c.icon)}"/></svg></span>
+          <span class="gc-menu-label">${esc(c.title)}</span>
+          <span class="gc-menu-num">${pad(i)}</span>
+        </button>`).join('')}
+    </nav>`;
+}
+
+function cards(ci) {
+  const c = CATS[ci];
+  return `
+    <div class="gc-detail" style="view-transition-name: gc-detail">
+      <div class="gc-breadcrumb">
+        <button class="gc-icon-btn" data-go="cover" aria-label="Home">
+          <svg><use href="#gc-icon-home"/></svg>
+        </button>
+        <button class="gc-icon-btn" data-go="menu" aria-label="Back">
+          <svg><use href="#gc-icon-back"/></svg>
+        </button>
+        <span class="gc-icon-tile gc-icon-tile--sm">
+          <svg><use href="#${esc(c.icon)}"/></svg>
+        </span>
+        <h2 class="gc-breadcrumb-title">${esc(c.title)}</h2>
+        <span class="gc-breadcrumb-num">${pad(ci)}</span>
+      </div>
+
+      <div class="gc-rail gc-no-scrollbar">
+        <div class="gc-rail-track">
+          ${c.facts.map((f, i) => `
+            <article class="gc-card${f.live ? ' gc-card--live' : ''}"
+                     data-go="article" data-cat="${ci}" data-fact="${i}">
+              <div class="gc-card-head">
+                <span>${mark(B.cardBold, B.cardLight)}</span>
+                <span class="gc-card-num">${i + 1}</span>
+              </div>
+              <div class="gc-card-body">
+                <p class="gc-card-title">${esc(f.title)}</p>
+                ${f.tag ? `<span class="gc-tag">${esc(f.tag)}</span>` : ''}
+              </div>
+            </article>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+function article(ci, fi) {
+  const c = CATS[ci], f = c.facts[fi];
+  return `
+    <div class="gc-detail" style="view-transition-name: gc-detail">
+      <div class="gc-breadcrumb">
+        <button class="gc-icon-btn" data-go="cover" aria-label="Home">
+          <svg><use href="#gc-icon-home"/></svg>
+        </button>
+        <button class="gc-icon-btn" data-go="cards" data-cat="${ci}" aria-label="Back">
+          <svg><use href="#gc-icon-back"/></svg>
+        </button>
+        <span class="gc-icon-tile gc-icon-tile--sm">
+          <svg><use href="#${esc(c.icon)}"/></svg>
+        </span>
+        <h2 class="gc-breadcrumb-title">${esc(c.title)} | ${esc(B.cardLight)} ${fi + 1}</h2>
+      </div>
+      <p class="gc-article-title">${esc(f.title)}</p>
+      <p class="gc-article-lede">${esc(f.lede)}</p>
+      <p class="gc-article-body">${esc(f.body)}</p>
+    </div>
+
+    <div class="gc-device-slot">
+      <div class="gc-phone">
+        <div class="gc-phone-screen"><!-- embed a demo here --></div>
+      </div>
+    </div>`;
+}
+
+/* --- render -------------------------------------------------------------- */
+
+function html() {
+  switch (state.view) {
+    case 'menu':    return menu();
+    case 'cards':   return cards(state.cat);
+    case 'article': return article(state.cat, state.fact);
+    default:        return cover();
+  }
+}
+
+function render() {
+  screen.innerHTML = html();
+  /* The veil calms the ripple wherever content is dense. */
+  veil.hidden = (state.view === 'cover' || state.view === 'menu');
+  badge.hidden = (state.view !== 'article');
+  gcInitRails(screen);
+}
+
+function go(next) {
+  gcNavigate(() => { state = next; render(); });
+}
+
+/* --- events -------------------------------------------------------------- */
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-go]');
+  if (!t) return;
+  const view = t.dataset.go;
+  go({
+    view,
+    cat:  t.dataset.cat  !== undefined ? +t.dataset.cat  : state.cat,
+    fact: t.dataset.fact !== undefined ? +t.dataset.fact : state.fact,
+  });
+});
+
+/* The wordmark is always a route home. */
+document.getElementById('wordmark').addEventListener('click',
+  () => go({ view: 'cover' }));
+
+gcOnKeys({
+  home: () => go({ view: 'cover' }),
+  back: () => {
+    if (state.view === 'article') go({ view: 'cards', cat: state.cat });
+    else if (state.view === 'cards') go({ view: 'menu' });
+    else if (state.view === 'menu') go({ view: 'cover' });
+  },
+  next: () => {
+    if (state.view === 'cover') return go({ view: 'menu' });
+    if (state.view === 'cards') return go({ view: 'article', cat: state.cat, fact: 0 });
+    if (state.view === 'article') {
+      const n = CATS[state.cat].facts.length;
+      if (state.fact + 1 < n) go({ view: 'article', cat: state.cat, fact: state.fact + 1 });
+    }
+  },
+  prev: () => {
+    if (state.view === 'article' && state.fact > 0)
+      return go({ view: 'article', cat: state.cat, fact: state.fact - 1 });
+    if (state.view === 'article') return go({ view: 'cards', cat: state.cat });
+    if (state.view === 'cards') return go({ view: 'menu' });
+    if (state.view === 'menu') return go({ view: 'cover' });
+  },
+});
+
+render();
+</script>
+</body>
+</html>

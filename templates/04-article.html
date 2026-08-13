@@ -1,0 +1,116 @@
+<!doctype html>
+<!--
+  SCREEN 04 — ARTICLE + DEVICE
+  One fact, in full, with a phone mock beside it holding the live demo.
+
+  Anatomy (desktop):
+    text column   left 3.3cqw, capped at 50cqw (--gc-measure)
+    title         2cqw    weight 600  line-height 1.3   ink-600
+    lede          1.3cqw  weight 600  line-height 1.4   blue-brand
+    body          1.05cqw weight 400  line-height 1.7   ink-500
+    phone         right 6cqw, vertically centred, 22.5 x 47cqw
+
+  Rules of the article:
+    - Three text levels, in this order, always: what happened (title), why it
+      matters in one line (lede), then the evidence (body). The lede is the
+      only blue text in the column — it is the takeaway.
+    - Keep the body under ~120 words. This is a slide behind a presenter,
+      not a blog post.
+    - The breadcrumb gains a back button here. Home stays leftmost, so its
+      position never moves between screens 03 and 04.
+    - .gc-phone is its own container: content inside it sizes in cqw relative
+      to the PHONE, so an embedded chat or app mock scales independently.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Article — cloud-style</title>
+<meta name="theme-color" content="#3f7ae8">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Text:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/cloud-style.css">
+<script src="../js/gc-icons.js"></script>
+</head>
+
+<body>
+<div class="gc-cover">
+
+  <div class="gc-ripple" aria-hidden="true">
+    <i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+
+  <div class="gc-stage">
+
+    <!-- The wordmark can carry a badge on this screen — here, the Cloud mark
+         acting as a toggle for the live demo. -->
+    <div class="gc-wordmark">
+      <h1><b>fin</b><span>facts</span></h1>
+      <button class="gc-wordmark-badge" aria-label="Toggle live demo">
+        <svg><use href="#gc-icon-cloud"/></svg>
+      </button>
+    </div>
+
+    <div class="gc-detail" style="view-transition-name: gc-detail">
+
+      <div class="gc-breadcrumb">
+        <button class="gc-icon-btn" aria-label="Home">
+          <svg><use href="#gc-icon-home"/></svg>
+        </button>
+        <button class="gc-icon-btn" aria-label="Back">
+          <svg><use href="#gc-icon-back"/></svg>
+        </button>
+        <span class="gc-icon-tile gc-icon-tile--sm">
+          <svg><use href="#gc-icon-identity"/></svg>
+        </span>
+        <h2 class="gc-breadcrumb-title">Onboarding, document upload and approval | Finfact 1</h2>
+      </div>
+
+      <p class="gc-article-title">
+        Half of the institutions did not open the account in real time
+      </p>
+
+      <p class="gc-article-lede">
+        The point of digital is skipping the waiting room.
+      </p>
+
+      <p class="gc-article-body">
+        You open a bank account: photograph the document, take the selfie,
+        check the details, hit "finish". Done — now just use it. Except it
+        often isn't. We measured the time between the end of signup and the
+        account going live, and half the institutions we looked at did not
+        finish in real time. Some were ready in minutes; others took hours,
+        and one took more than three days. With customers less and less
+        willing to wait, a slow start is a start that may not continue.
+      </p>
+
+    </div>
+
+    <!-- Device mock. Drop a screenshot, an <iframe>, or a live web component
+         inside .gc-phone-screen. -->
+    <div class="gc-device-slot">
+      <div class="gc-phone">
+        <div class="gc-phone-screen">
+          <!-- demo goes here -->
+        </div>
+      </div>
+    </div>
+
+    <div class="gc-footer">
+      <div class="gc-footer-logo">
+        <span>
+          <span class="gc-g1">G</span><span class="gc-o1">o</span><span class="gc-o2">o</span><span class="gc-g2">g</span><span class="gc-l">l</span><span class="gc-e">e</span>
+        </span>
+        <span class="gc-cloud">Cloud</span>
+      </div>
+      <div class="gc-edition">Edition 2026</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

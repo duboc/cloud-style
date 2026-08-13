@@ -1,0 +1,78 @@
+<!doctype html>
+<!--
+  SCREEN 01 — COVER
+  The opening slide. Wordmark, a four-line claim, one call to action.
+
+  Anatomy (desktop, all positions are % of the 16:9 stage width):
+    wordmark   left 3.3cqw  top 3.2cqw   font 10cqw
+    lede       left 3.5cqw  top 20cqw    font 2.5cqw
+    cta        left 3.5cqw  top 36cqw
+    footer     left 3.5cqw  bottom 3.2cqw
+    ripple     centred at 18% in from the right, 71% down the stage
+
+  Rules of the cover:
+    - Exactly one CTA. It is the only saturated blue element on the screen.
+    - The lede is two bold lines then two regular lines. Bold carries the
+      claim; regular carries the qualifier. Never bold all four.
+    - Nothing overlaps the ripple's inner two rings.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cover — cloud-style</title>
+<meta name="theme-color" content="#3f7ae8">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Text:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/cloud-style.css">
+<script src="../js/gc-icons.js"></script>
+</head>
+
+<body>
+<div class="gc-cover">
+
+  <!-- Background ripple. Always six <i> elements, always first, always
+       pointer-events:none. Sizes and colours come from CSS. -->
+  <div class="gc-ripple" aria-hidden="true">
+    <i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+
+  <div class="gc-stage">
+
+    <!-- Wordmark: bold half + regular half of a single word. -->
+    <div class="gc-wordmark">
+      <h1><b>fin</b><span>facts</span></h1>
+    </div>
+
+    <!-- Four-line lede. view-transition-name lets it cross-fade on nav. -->
+    <div class="gc-lede" style="view-transition-name: gc-lede">
+      <p class="is-strong">Discoveries</p>
+      <p class="is-strong">and opportunities</p>
+      <p class="is-soft">that add value to</p>
+      <p class="is-soft">financial services</p>
+    </div>
+
+    <button class="gc-btn gc-btn--cover" style="view-transition-name: gc-cta">
+      See how we can help
+    </button>
+
+    <!-- Footer. `display: contents` on desktop so the two children position
+         themselves against the stage; a flex row on mobile. -->
+    <div class="gc-footer">
+      <div class="gc-footer-logo">
+        <span>
+          <span class="gc-g1">G</span><span class="gc-o1">o</span><span class="gc-o2">o</span><span class="gc-g2">g</span><span class="gc-l">l</span><span class="gc-e">e</span>
+        </span>
+        <span class="gc-cloud">Cloud</span>
+      </div>
+      <div class="gc-edition">Edition 2026</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
