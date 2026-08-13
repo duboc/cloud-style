@@ -144,7 +144,7 @@ Desktop values are `cqw` — percentages of stage width. Mobile values are effec
 | `--gc-text-wordmark` | `10cqw` | `13cqw` | 700 / 400 | display | The lockup |
 | `--gc-text-lede` | `2.5cqw` | `6.8cqw` | 700 / 400 | text | Cover claim |
 | `--gc-text-title` | `2cqw` | `5.6cqw` | 600 | text | Article headline |
-| `--gc-text-card-head` | `1.7cqw` | `5.2cqw` | 700 / 400 | display | "finfact" in a card |
+| `--gc-text-card-head` | `1.7cqw` | `5.2cqw` | 700 / 400 | display | Card header badge |
 | `--gc-text-heading` | `1.6cqw` | `4.3cqw` | 700 | text | Breadcrumb title |
 | `--gc-text-logo` | `1.65cqw` | `4.4cqw` | 500 | display | Google Cloud lockup |
 | `--gc-text-label` | `1.4cqw` | `4.1cqw` | 600 | text | Menu row label |

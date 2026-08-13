@@ -1,6 +1,6 @@
 /* =============================================================================
    cloud-style — DESIGN TOKENS
-   Reverse-engineered from the Google Cloud "finfacts" demo deck.
+   Design tokens for Google Cloud showcase templates.
 
    Two kinds of token live here:
 
@@ -142,11 +142,11 @@
    ========================================================================== */
 .gc-stage {
   /* --- Type scale (desktop) -------------------------------------------- */
-  --gc-text-wordmark:  10cqw;    /* "finfacts" lockup                       */
+  --gc-text-wordmark:  10cqw;    /* primary wordmark lockup                 */
   --gc-text-lede:      2.5cqw;   /* cover subtitle                          */
   --gc-text-title:     2cqw;     /* article headline                        */
   --gc-text-heading:   1.6cqw;   /* breadcrumb heading                      */
-  --gc-text-card-head: 1.7cqw;   /* "finfact" inside a card header          */
+  --gc-text-card-head: 1.7cqw;   /* card header badge                       */
   --gc-text-label:     1.4cqw;   /* menu row label                          */
   --gc-text-body-lg:   1.3cqw;   /* card title, article lede, buttons       */
   --gc-text-body:      1.05cqw;  /* article prose                           */

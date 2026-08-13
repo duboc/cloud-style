@@ -4,11 +4,13 @@
    This is the only file you edit to make a new deck. index.html renders
    whatever is here; no other file needs to change.
 
+   Source: https://cloudonair.withgoogle.com/
+
    SHAPE
      brand      wordmark split into a bold half and a regular half, plus the
                 cover copy and the footer edition line
      categories the menu. Each has an icon id (see js/gc-icons.js), a title,
-                and a list of facts
+                and a list of facts / webinar sessions
      facts      each becomes a card on screen 03 and an article on screen 04
 
    ICON IDS available out of the box:
@@ -20,55 +22,47 @@
 const CONTENT = {
 
   brand: {
-    /* The wordmark is one word split in two. Bold = product, light = category.
-       Keep it short: it renders at 10% of the screen width. */
-    wordmarkBold: 'fin',
-    wordmarkLight: 'facts',
+    /* The wordmark split in two: bold prefix, light suffix. */
+    wordmarkBold: 'Cloud ',
+    wordmarkLight: 'on Air',
 
     /* Cover lede. First two lines render bold, last two regular.
        Break the lines yourself — this is a poster, not a paragraph. */
-    ledeStrong: ['Discoveries', 'and opportunities'],
-    ledeSoft:   ['that add value to', 'financial services'],
+    ledeStrong: ['Webinars and', 'digital events'],
+    ledeSoft:   ['to build and scale', 'on Google Cloud'],
 
-    cta: 'See how we can help',
-    edition: 'Edition 2026',
+    cta: 'Explore all sessions',
+    edition: 'Cloud on Air 2026',
 
     /* Prefix for the miniature wordmark in each card header. */
-    cardBold: 'fin',
-    cardLight: 'fact',
+    cardBold: 'Cloud ',
+    cardLight: 'on Air',
   },
 
   categories: [
     {
       icon: 'gc-icon-identity',
-      title: 'Onboarding, document upload and approval',
+      title: 'Generative AI and Intelligent Agents',
       facts: [
         {
-          title: 'Half of the institutions did not open the account in real time',
-          lede: 'The point of digital is skipping the waiting room.',
-          body: 'You open a bank account: photograph the document, take the selfie, check the details, hit "finish". Done — now just use it. Except it often isn\'t. We measured the time between the end of signup and the account going live, and half the institutions we looked at did not finish in real time. Some were ready in minutes; others took hours, and one took more than three days. With customers less and less willing to wait, a slow start is a start that may not continue.',
-          tag: '#AI',
-          live: false,
-        },
-        {
-          title: 'Only 4 of 20 offered conversational account opening',
-          lede: 'A form is an interrogation. A conversation is a welcome.',
-          body: 'Most onboarding flows are still a stack of fields. Four of the twenty institutions we tested let a customer open an account by talking — describing what they wanted and answering follow-ups in plain language, with the system filling the form behind the scenes. The rest asked people to translate their intent into someone else\'s data model.',
-          tag: '#AI',
+          title: 'Enterprise generative AI moves from sandbox exploration to production agents',
+          lede: 'The future of enterprise software is agentic.',
+          body: 'Modern organizations are replacing monolithic workflows with autonomous Gemini agents capable of multi-step reasoning, real-time data retrieval, and deterministic tool execution. In this track, Google Cloud engineers demonstrate how Vertex AI Agent Builder connects foundation models directly to enterprise databases, internal APIs, and secure grounding services. Learn how leading teams achieve sub-second latency and zero-shot accuracy while enforcing strict enterprise safety filters and governance policies in live customer-facing deployments.',
+          tag: '#GenAI',
           live: true,
         },
         {
-          title: '9 of 20 no longer require document upload at signup',
-          lede: 'The best document is the one you never have to photograph.',
-          body: 'Nearly half the institutions now pull identity data from registries and prior relationships instead of asking for a photo of an ID. That removes the single most abandoned step in the funnel — the one where a customer has to find good lighting, a flat surface, and their patience.',
-          tag: '#Data',
+          title: 'Multimodal models process video, audio and documents in unified pipelines',
+          lede: 'Context is no longer confined to plain text.',
+          body: 'Gemini 1.5 Pro and Flash introduce massive context windows that ingest hours of audio, full-length video recordings, and hundreds of pages of technical documentation in a single prompt. This session details architectural best practices for building retrieval-augmented generation systems without complex chunking pipelines. We explore real-world benchmarks comparing long-context ingestion against vector search, showing where native context reasoning outperforms traditional embeddings.',
+          tag: '#Multimodal',
           live: false,
         },
         {
-          title: 'Only 3 offered voice guidance during face recognition',
-          lede: 'If you can\'t see the screen, the screen should speak.',
-          body: 'Liveness checks ask people to move their head, blink, or hold still — instructions delivered almost entirely as on-screen text. Three institutions spoke them aloud. For customers with low vision, and for anyone in bright sun, that is the difference between finishing and giving up.',
-          tag: '#Accessibility',
+          title: 'Model customization with parameter-efficient tuning and RLHF',
+          lede: 'Domain expertise requires tailored foundation weights.',
+          body: 'Off-the-shelf models provide strong baselines, but enterprise domain tasks demand specialized vocabulary, deterministic structured outputs, and compliance alignment. We examine supervised fine-tuning, LoRA adapters, and reinforcement learning from human feedback on Vertex AI. Discover how organizations achieve domain mastery with less than a thousand curated training pairs while preserving base model reasoning capabilities and keeping inference costs predictable.',
+          tag: '#VertexAI',
           live: false,
         },
       ],
@@ -76,48 +70,55 @@ const CONTENT = {
 
     {
       icon: 'gc-icon-catalog',
-      title: 'Products, services and personalisation',
+      title: 'Application Modernization and Cloud Native',
       facts: [
         {
-          title: 'Only 4 of 18 returned results for semantic searches',
-          lede: 'People search for what they want, not what you called it.',
-          body: 'We searched for outcomes — "somewhere to put money I don\'t need for a year" — rather than product names. Four of eighteen search boxes understood. The rest matched keywords, returned nothing, and quietly taught the customer that search does not work here.',
-          tag: '#Search',
-          live: false,
-        },
-        {
-          title: 'Only 5 of 20 offer personal financial management',
-          lede: 'A balance is a number. A pattern is an insight.',
-          body: 'Every app shows a balance and a list of transactions. A quarter of them turn that into something useful: spend by category, month-over-month movement, a nudge before a bill lands. The data is already there — the difference is whether anyone did the work of interpreting it.',
-          tag: '#Data',
-          live: false,
-        },
-        {
-          title: 'Only 5 chatbots acted as financial advisers',
-          lede: 'Answering a question is not the same as giving advice.',
-          body: 'Most assistants are routers: they find the FAQ page and hand it over. Five went further and reasoned about the customer\'s actual position — what they hold, what it costs, what a change would mean. That is the line between a help desk and a service.',
-          tag: '#AI',
+          title: 'Automating Kubernetes operations with GKE autopilot and AI orchestration',
+          lede: 'Infrastructure management should disappear behind workloads.',
+          body: 'Managing worker node pools, resource bin-packing, and security hardening at scale drains engineering velocity. GKE Autopilot manages node provisioning, automatic cluster upgrades, and SLA-backed security posture out of the box. In this technical deep dive, discover how teams run complex microservices and GPU-accelerated inference workloads side by side with automated vertical pod autoscaling, zero-downtime cluster maintenance, and optimized resource utilization.',
+          tag: '#Kubernetes',
           live: true,
+        },
+        {
+          title: 'Serverless container execution with Cloud Run and event-driven architectures',
+          lede: 'Pay only for the exact milliseconds your code executes.',
+          body: 'Cloud Run brings container flexibility to serverless scale, automatically ramping from zero to thousands of concurrent instances in seconds. We walk through building resilient event-driven microservices using Eventarc, Cloud Pub/Sub, and Cloud Tasks. Learn how to configure direct VPC egress, WebSockets, background processing, and custom domain routing without managing underlying virtual machines or orchestration control planes.',
+          tag: '#Serverless',
+          live: false,
+        },
+        {
+          title: 'Accelerating developer velocity with continuous delivery and Cloud Build',
+          lede: 'High-performing teams release code safely multiple times a day.',
+          body: 'Modern continuous delivery pipelines must balance rapid deployment cycles with strict compliance and security gates. This session demonstrates automated multi-environment delivery pipelines using Cloud Build and Cloud Deploy. Explore binary authorization, vulnerability scanning during container image builds, canary release strategies, and automated rollbacks driven by real-time Cloud Monitoring metrics.',
+          tag: '#DevOps',
+          live: false,
         },
       ],
     },
 
     {
       icon: 'gc-icon-support',
-      title: 'Service channels and accessibility',
+      title: 'Data Analytics and Real-Time Intelligence',
       facts: [
         {
-          title: 'The gap between reading text and reading context',
-          lede: 'A digital barrier is easier to take down than a physical one.',
-          body: 'Screen readers can announce a label. They cannot explain why a transfer failed, or what to do next. The institutions that scored best did not have better markup — they had interfaces that stated their state in plain language, for everyone, whether or not assistive technology was involved.',
-          tag: '#Accessibility',
+          title: 'Unified data lakehouses combining structured data and object storage',
+          lede: 'Analytics should span all data without copying or silos.',
+          body: 'BigQuery Studio unifies SQL analytics, Python dataframes, and machine learning models in a single serverless workspace. We explore how BigQuery open table formats like Iceberg, Delta Lake, and Hudi allow ad-hoc analytical queries directly over Cloud Storage data lakes with zero data movement. Learn how decoupled compute architecture scales instantly during peak workloads while keeping storage costs optimized through automatic physical compression.',
+          tag: '#BigQuery',
+          live: true,
+        },
+        {
+          title: 'Streaming analytics and anomaly detection with Dataflow and Pub/Sub',
+          lede: 'Insights lose value when insights arrive hours after the event.',
+          body: 'Processing millions of real-time transactions per second requires autoscaling stream pipelines with exactly-once processing guarantees. This webinar explores Apache Beam pipelines on Dataflow paired with Google Cloud Pub/Sub. We showcase real-time fraud detection architectures, dynamic windowing calculations, session aggregation, and automatic dead-letter queue management under unpredictable traffic spikes.',
+          tag: '#Dataflow',
           live: false,
         },
         {
-          title: 'Only 13 of 20 use location or Wi-Fi as an extra signal',
-          lede: 'Security that notices context asks fewer questions.',
-          body: 'Signals a phone already has — where it is, which network it is on, whether this is the usual pattern — let a system relax the checks it does not need. Seven institutions ignored them and made every customer prove themselves the same way every time.',
-          tag: '#Security',
+          title: 'Governing enterprise data with Dataplex catalog and automated lineage',
+          lede: 'Trusted data requires end-to-end lineage and automated discovery.',
+          body: 'As data assets multiply across regions and clouds, understanding data provenance and security access becomes critical for compliance. Dataplex provides automated metadata harvesting, data profiling, and policy propagation across lakes, warehouses, and databases. We explore how to implement automated column-level data masking, sensitive data protection rules, and lineage graphs that trace data transformations from source to dashboard.',
+          tag: '#Governance',
           live: false,
         },
       ],
@@ -125,27 +126,41 @@ const CONTENT = {
 
     {
       icon: 'gc-icon-mobile-check',
-      title: 'Ease and security in the app',
+      title: 'Security, Zero Trust and Cloud Governance',
       facts: [
         {
-          title: 'Only 1 of 20 read a handwritten payment key with the camera',
-          lede: 'The camera turns pixels into payments.',
-          body: 'Payment keys get written on napkins, printed on invoices, and screenshotted. One institution let a customer point a camera at any of those and pay. The other nineteen asked them to retype a 32-character string — a step that fails silently and often.',
-          tag: '#AI',
+          title: 'Zero Trust security architectures with BeyondCorp Enterprise',
+          lede: 'Perimeter defense is replaced by continuous identity validation.',
+          body: 'Modern security treats every network as untrusted and verifies every user, device, and request context dynamically. BeyondCorp Enterprise enforces context-aware access to cloud workloads and SaaS applications without requiring traditional VPN client software. We review threat prevention policies, integrated Chrome enterprise protections, data loss prevention rules, and real-time device health posture evaluations.',
+          tag: '#ZeroTrust',
           live: true,
+        },
+        {
+          title: 'AI-driven threat detection and automated response with Mandiant intelligence',
+          lede: 'Security operations must outpace automated adversaries.',
+          body: 'Security Command Center Premium integrates frontline threat intelligence from Mandiant with Google-scale machine learning to identify active attack paths and misconfigurations. This deep dive demonstrates how SecOps teams investigate security findings, correlate multi-cloud security telemetry, and trigger automated remediation workflows to isolate compromised resources before lateral movement occurs.',
+          tag: '#SecOps',
+          live: false,
         },
       ],
     },
 
     {
       icon: 'gc-icon-open',
-      title: 'Open Finance',
+      title: 'Infrastructure and Cloud Cost Optimization',
       facts: [
         {
-          title: 'Only 5 did not offer transactions from a linked account',
-          lede: 'Open banking is only open if the money can move.',
-          body: 'Fifteen institutions let a customer spend a balance held somewhere else, using consented data and initiated payments. Five stopped at showing the balance. Read access is a feature; write access is a product.',
-          tag: '#OpenFinance',
+          title: 'Architecting resilient multi-region infrastructure on Google Cloud',
+          lede: 'Global availability begins with private fiber infrastructure.',
+          body: 'Google Cloud\'s global private software-defined network connects worldwide regions with high bandwidth, low latency, and built-in DDoS protection. In this session, cloud architects walk through designing active-active multi-region topologies using Cloud Load Balancing, Cloud Spanner, and Global Virtual Private Cloud. Discover how single anycast IP addresses route user traffic to the nearest healthy backend automatically.',
+          tag: '#Infrastructure',
+          live: false,
+        },
+        {
+          title: 'FinOps practices and automated cost intelligence for cloud workloads',
+          lede: 'Cloud financial management turns cost data into engineering decisions.',
+          body: 'Effective cloud cost optimization combines automated resource rightsizing with transparent organizational FinOps practices. We review committed use discounts, custom machine types, spot instances, and BigQuery billing exports. Learn how engineering teams build automated budget alerts, anomaly detection dashboards, and automated idle resource cleanups to maximize ROI across growing cloud footprints.',
+          tag: '#FinOps',
           live: false,
         },
       ],

@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
   SCREEN 03 — CARD RAIL
-  One category, opened. A horizontal rail of "fact" cards.
+  One category, opened. A horizontal rail of session cards.
 
   Anatomy (desktop):
     detail block  left 3.3cqw  right 1cqw  top 13cqw
@@ -14,7 +14,7 @@
   Rules of the rail:
     - Every card is the same height. The tag chip is pushed down by
       `margin-top: auto`, so cards with short and long titles still line up.
-    - The card header repeats the wordmark in miniature ("finfact" + number).
+    - The card header repeats the wordmark in miniature ("onair" + number).
       This is the device that ties a detail screen back to the brand.
     - Add .gc-card--live to a card that opens a real, interactive demo. The
       pulse is a promise: it must actually do something.
@@ -51,7 +51,7 @@
   <div class="gc-stage">
 
     <div class="gc-wordmark">
-      <h1><b>fin</b><span>facts</span></h1>
+      <h1><b>Cloud </b><span>on Air</span></h1>
     </div>
 
     <div class="gc-detail" style="view-transition-name: gc-detail">
@@ -64,7 +64,7 @@
         <span class="gc-icon-tile gc-icon-tile--sm">
           <svg><use href="#gc-icon-identity"/></svg>
         </span>
-        <h2 class="gc-breadcrumb-title">Onboarding, document upload and approval</h2>
+        <h2 class="gc-breadcrumb-title">Generative AI and Intelligent Agents</h2>
         <span class="gc-breadcrumb-num">01</span>
       </div>
 
@@ -72,48 +72,37 @@
       <div class="gc-rail gc-no-scrollbar">
         <div class="gc-rail-track">
 
-          <article class="gc-card">
-            <div class="gc-card-head">
-              <span><b>fin</b><span>fact</span></span>
-              <span class="gc-card-num">1</span>
-            </div>
-            <div class="gc-card-body">
-              <p class="gc-card-title">Half of the institutions did not open the account in real time</p>
-              <span class="gc-tag">#AI</span>
-            </div>
-          </article>
-
           <!-- .gc-card--live: this one opens an interactive demo. -->
           <article class="gc-card gc-card--live">
             <div class="gc-card-head">
-              <span><b>fin</b><span>fact</span></span>
+              <span><b>Cloud </b><span>on Air</span></span>
+              <span class="gc-card-num">1</span>
+            </div>
+            <div class="gc-card-body">
+              <p class="gc-card-title">Enterprise generative AI moves from sandbox exploration to production agents</p>
+              <span class="gc-tag">#GenAI</span>
+            </div>
+          </article>
+
+          <article class="gc-card">
+            <div class="gc-card-head">
+              <span><b>Cloud </b><span>on Air</span></span>
               <span class="gc-card-num">2</span>
             </div>
             <div class="gc-card-body">
-              <p class="gc-card-title">Only 4 of 20 offered conversational account opening</p>
-              <span class="gc-tag">#AI</span>
+              <p class="gc-card-title">Multimodal models process video, audio and documents in unified pipelines</p>
+              <span class="gc-tag">#Multimodal</span>
             </div>
           </article>
 
           <article class="gc-card">
             <div class="gc-card-head">
-              <span><b>fin</b><span>fact</span></span>
+              <span><b>Cloud </b><span>on Air</span></span>
               <span class="gc-card-num">3</span>
             </div>
             <div class="gc-card-body">
-              <p class="gc-card-title">9 of 20 no longer require document upload at signup</p>
-              <span class="gc-tag">#AI</span>
-            </div>
-          </article>
-
-          <article class="gc-card">
-            <div class="gc-card-head">
-              <span><b>fin</b><span>fact</span></span>
-              <span class="gc-card-num">4</span>
-            </div>
-            <div class="gc-card-body">
-              <p class="gc-card-title">Only 3 offered voice guidance during face recognition</p>
-              <span class="gc-tag">#AI</span>
+              <p class="gc-card-title">Model customization with parameter-efficient tuning and RLHF</p>
+              <span class="gc-tag">#VertexAI</span>
             </div>
           </article>
 
@@ -129,7 +118,7 @@
         </span>
         <span class="gc-cloud">Cloud</span>
       </div>
-      <div class="gc-edition">Edition 2026</div>
+      <div class="gc-edition">Cloud on Air 2026</div>
     </div>
 
   </div>

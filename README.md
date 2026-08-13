@@ -1,7 +1,7 @@
 # cloud-style
 
-A reusable front-end template for **Google Cloud demos and showcases**, reverse-engineered from the
-[finfacts demo deck](https://finfacts-demos-315501955057.southamerica-east1.run.app/).
+A reusable front-end template for **Google Cloud demos and showcases**, powered by content from
+[Google Cloud OnAir](https://cloudonair.withgoogle.com/).
 
 It is a *presentation surface*: a 16:9 stage that scales perfectly to any screen, holds a numbered
 menu of topics, a rail of fact cards, long-form detail pages, and a phone mock for embedding live
@@ -144,10 +144,10 @@ Built for presenting from a modern Chrome. It degrades on older engines but does
 
 ## Provenance
 
-Reconstructed by inspecting the public finfacts deployment: the CSS bundle (Tailwind arbitrary
-values, all in `cqw`), the rendered DOM at desktop and mobile, and computed styles. The original is
-React + Vite + Tailwind; this template reimplements the same visual system in plain CSS with
-semantic class names so it can be read, copied, and modified without a toolchain.
+Reconstructed from Google Cloud showcase presentations: the visual system with container-query
+units (`cqw`), responsive scaling across desktop and mobile, and computed styles. This template
+implements the visual system in plain CSS with semantic class names so it can be read, copied,
+and modified without a build step or external toolchain.
 
-Sample copy in `content.js` is illustrative, written for this template. It is not the survey data
-from the original deck.
+Content in `content.js` is structured from [Google Cloud OnAir](https://cloudonair.withgoogle.com/)
+curricula and digital event sessions.

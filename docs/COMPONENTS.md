@@ -109,10 +109,10 @@ With an optional badge (used on the article screen to toggle a live demo):
 
 ```html
 <div class="gc-lede" style="view-transition-name: gc-lede">
-  <p class="is-strong">Discoveries</p>
-  <p class="is-strong">and opportunities</p>
-  <p class="is-soft">that add value to</p>
-  <p class="is-soft">financial services</p>
+  <p class="is-strong">Webinars and</p>
+  <p class="is-strong">digital events</p>
+  <p class="is-soft">to build and scale</p>
+  <p class="is-soft">on Google Cloud</p>
 </div>
 ```
 
@@ -326,7 +326,7 @@ That shared position is what lets screens cross-fade in place.
 - **Home is always leftmost**, then Back if present, then the category tile, then the title. Home
   never moves between screens 03 and 04 — a control that shifts position is a control users stop
   trusting.
-- The card rail shows the ordinal (`01`); the article drops it and appends `| Finfact 1` to the
+- The card rail shows the ordinal (`01`); the article drops it and appends `| [cardLight] 1` to the
   title instead.
 - One `<h2>` per screen.
 
@@ -335,9 +335,9 @@ That shared position is what lets screens cross-fade in place.
 ## Article
 
 ```html
-<p class="gc-article-title">Half of the institutions did not open the account in real time</p>
-<p class="gc-article-lede">The point of digital is skipping the waiting room.</p>
-<p class="gc-article-body">You open a bank account: photograph the document…</p>
+<p class="gc-article-title">Enterprise generative AI moves from sandbox exploration to production agents</p>
+<p class="gc-article-lede">The future of enterprise software is agentic.</p>
+<p class="gc-article-body">Modern organizations are replacing monolithic workflows…</p>
 ```
 
 | Level | Size | Weight | Line height | Colour |

@@ -96,12 +96,12 @@ Sizes are fractions of `--s`: `0.78`, `0.64`, `0.50`, `0.37`, `0.25`, `0.125`. E
    │            (white letterbox)             │
    │  ┌────────── .gc-stage 16:9 ──────────┐  │
    │  │                                    │  │   ●  ← ripple centre
-   │  │  finfacts                     ╭────┼──┼──╮   x: 18% of --s from right
+   │  │  Cloud on Air                 ╭────┼──┼──╮   x: 18% of --s from right
    │  │                              ╭┼────┼──┼─╮│   y: 71% down the stage
-   │  │  Discoveries                 ││ ●  │  │ ││
-   │  │  and opportunities           ╰┼────┼──┼─╯│   rings bleed past the
+   │  │  Webinars                     ││ ●  │  │ ││
+   │  │  and digital events          ╰┼────┼──┼─╯│   rings bleed past the
    │  │  [ CTA ]                      ╰────┼──┼──╯   stage on purpose
-   │  │  Google Cloud   Edition 2026       │  │
+   │  │  Google Cloud   Cloud on Air 2026   │  │
    │  └────────────────────────────────────┘  │
    └──────────────────────────────────────────┘
 ```

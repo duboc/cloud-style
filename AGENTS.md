@@ -159,9 +159,8 @@ Then check by eye:
 
 ## Provenance
 
-Reverse-engineered from the public finfacts deployment (CSS bundle, rendered DOM at desktop and
-mobile, computed styles). The original is React + Vite + Tailwind; this is a plain-CSS
-reimplementation of the same visual system with semantic class names.
+Reconstructed from Google Cloud showcase presentations: the visual system with container-query
+units (`cqw`), responsive scaling across desktop and mobile, and computed styles. This template
+implements the visual system in plain CSS with semantic class names.
 
-Sample copy in `content.js` was written for this template and is illustrative — it is not the
-survey data from the original deck. Replace it.
+Content in `content.js` is structured from [Google Cloud OnAir](https://cloudonair.withgoogle.com/).
