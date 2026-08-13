@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const CHROME_PATH = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const CHROME_PATH = process.env.CHROME_PATH || (fs.existsSync('/usr/bin/google-chrome') ? '/usr/bin/google-chrome' : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome');
 const OUT_DIR = path.resolve(__dirname, '../docs/screenshots');
 
 async function wait(ms) {
@@ -12,12 +12,26 @@ async function wait(ms) {
 async function sendCdp(ws, method, params = {}) {
   return new Promise((resolve, reject) => {
     const id = Math.floor(Math.random() * 1000000);
-    const handler = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.id === id) {
-        ws.removeEventListener('message', handler);
-        if (data.error) reject(data.error);
-        else resolve(data.result);
+    const handler = async (event) => {
+      try {
+        let text;
+        if (typeof event.data === 'string') {
+          text = event.data;
+        } else if (event.data && typeof event.data.text === 'function') {
+          text = await event.data.text();
+        } else if (event.data instanceof ArrayBuffer || ArrayBuffer.isView(event.data)) {
+          text = new TextDecoder().decode(event.data);
+        } else {
+          text = String(event.data);
+        }
+        const data = JSON.parse(text);
+        if (data.id === id) {
+          ws.removeEventListener('message', handler);
+          if (data.error) reject(new Error(JSON.stringify(data.error)));
+          else resolve(data.result);
+        }
+      } catch (err) {
+        console.error('Error handling CDP message:', err);
       }
     };
     ws.addEventListener('message', handler);
@@ -28,25 +42,33 @@ async function sendCdp(ws, method, params = {}) {
 async function capture() {
   console.log('Launching headless Chrome...');
   const chrome = spawn(CHROME_PATH, [
-    '--headless',
+    '--headless=new',
     '--remote-debugging-port=9222',
+    '--remote-debugging-address=0.0.0.0',
     '--disable-gpu',
     '--no-sandbox',
+    '--disable-dev-shm-usage',
     '--disable-extensions',
     '--hide-scrollbars',
   ]);
 
-  await wait(2000);
-
   try {
-    const versionRes = await fetch('http://127.0.0.1:9222/json/version');
-    const versionData = await versionRes.json();
-    console.log('Connected to Chrome DevTools Protocol:', versionData.Browser);
+    let targets = null;
+    for (let i = 0; i < 30; i++) {
+      await wait(200);
+      try {
+        const res = await fetch('http://127.0.0.1:9222/json/list');
+        if (res.ok) {
+          targets = await res.json();
+          if (targets && targets.length > 0) break;
+        }
+      } catch (e) {}
+    }
 
-    const newTabRes = await fetch('http://127.0.0.1:9222/json/new?http://localhost:8000/index.html', { method: 'PUT' });
-    const tabData = await newTabRes.json();
-    const ws = new WebSocket(tabData.webSocketDebuggerUrl);
+    const pageTarget = targets.find(t => t.type === 'page') || targets[0];
+    console.log('Connected to target:', pageTarget.webSocketDebuggerUrl);
 
+    const ws = new WebSocket(pageTarget.webSocketDebuggerUrl);
     await new Promise((resolve, reject) => {
       ws.onopen = resolve;
       ws.onerror = reject;
@@ -80,8 +102,8 @@ async function capture() {
       mobile: false,
     });
 
-    await sendCdp(ws, 'Page.navigate', { url: 'http://localhost:8000/index.html' });
-    await wait(2500); // let fonts settle
+    await sendCdp(ws, 'Page.navigate', { url: 'http://127.0.0.1:8000/index.html' });
+    await wait(2000); // let fonts & content settle
 
     // 1. Cover
     await saveScreenshot('template-cover.png');
@@ -114,7 +136,7 @@ async function capture() {
       mobile: true,
     });
 
-    await sendCdp(ws, 'Page.navigate', { url: 'http://localhost:8000/index.html' });
+    await sendCdp(ws, 'Page.navigate', { url: 'http://127.0.0.1:8000/index.html' });
     await wait(2000);
 
     // 5. Mobile Cover

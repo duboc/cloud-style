@@ -201,11 +201,11 @@ function demoCamera(f) {
           </div>
           <div class="gc-camera-drawer-row">
             <span>Target Object</span>
-            <span class="gc-camera-drawer-val" id="camera-doc-type">Enterprise Document</span>
+            <span class="gc-camera-drawer-val" id="camera-doc-type">Documento Corporativo BR</span>
           </div>
           <div class="gc-camera-drawer-row">
             <span>Inference Latency</span>
-            <span class="gc-camera-drawer-val" id="camera-latency">24ms (TPU v5p)</span>
+            <span class="gc-camera-drawer-val" id="camera-latency">18ms (TPU Ironwood)</span>
           </div>
           <div class="gc-camera-drawer-row">
             <span>Grounding Safety</span>
@@ -222,7 +222,7 @@ function demoVideo(f) {
       <div class="gc-demo-topbar">
         <span class="gc-demo-topbar-title">
           <svg><use href="#gc-icon-video"/></svg>
-          Cloud on Air Stream
+          Cloud Summit Brasil Stream
         </span>
         <span class="gc-demo-chip">1080p · 60fps</span>
       </div>
@@ -254,15 +254,15 @@ function demoVideo(f) {
         </div>
         <div class="gc-video-chapters-title">AI Video Chapters</div>
         <div class="gc-video-chapter-card is-active" data-time="00:00" data-pct="10">
-          <span>01 · Architecture Overview</span>
+          <span>01 · Keynote: A Empresa Agêntica</span>
           <span class="gc-video-chapter-time">00:00</span>
         </div>
         <div class="gc-video-chapter-card" data-time="04:20" data-pct="42">
-          <span>02 · Live Multimodal Demo</span>
+          <span>02 · Live Demo: Gemini 3.1 & Agent Builder</span>
           <span class="gc-video-chapter-time">04:20</span>
         </div>
         <div class="gc-video-chapter-card" data-time="08:45" data-pct="70">
-          <span>03 · Production Scaling</span>
+          <span>03 · Cloud Space SP & Gemma 3 PT</span>
           <span class="gc-video-chapter-time">08:45</span>
         </div>
       </div>
@@ -282,31 +282,31 @@ function demoChat(f) {
       <div class="gc-demo-body" id="chat-body">
         <div class="gc-chat-stream" id="chat-stream">
           <div class="gc-chat-msg is-agent">
-            Hello! I am your Google Cloud technical assistant. How can I optimize your infrastructure today?
+            Olá! Sou o assistente de IA do Google Cloud Summit Brasil. Como posso ajudar com a sua Empresa Agêntica hoje?
           </div>
           <div class="gc-chat-msg is-user">
-            Analyze cluster autoscaling and recommend concurrency settings.
+            Analisar a escalabilidade dos agentes Gemini 3.1 Pro no Vertex AI.
           </div>
           <div class="gc-chat-msg is-agent">
-            Analyzed live GKE Autopilot telemetry.
+            Telemetria do Vertex AI Agent Builder verificada em tempo real.
             <div class="gc-chat-tool-badge">
               <svg><use href="#gc-icon-sparkle"/></svg>
-              VertexAI Tool: MetricsExplorer.query()
+              VertexAI Tool: AgentExecutor.query()
             </div>
-            Cluster health is 100%. P99 latency is 14ms across 48k queries/sec.
+            Agentes operando com 100% de precisão de grounding. Latência P99 de 14ms em São Paulo.
           </div>
         </div>
       </div>
       <div class="gc-chat-pills" id="chat-pills">
-        <button class="gc-prompt-pill" data-prompt="Scale GKE Autopilot cluster">Scale GKE Cluster</button>
-        <button class="gc-prompt-pill" data-prompt="Run BigQuery cost audit">Cost Audit</button>
-        <button class="gc-prompt-pill" data-prompt="Verify Zero Trust access">Zero Trust Gate</button>
+        <button class="gc-prompt-pill" data-prompt="Escalar agentes no Vertex AI">Agentes Vertex AI</button>
+        <button class="gc-prompt-pill" data-prompt="Auditar custos no BigQuery">Auditoria BigQuery</button>
+        <button class="gc-prompt-pill" data-prompt="Verificar postura Zero Trust">Zero Trust Gate</button>
       </div>
       <div class="gc-chat-input-bar">
         <button class="gc-icon-btn" style="width:7cqw;height:7cqw" aria-label="Voice">
           <svg><use href="#gc-icon-mic"/></svg>
         </button>
-        <input type="text" class="gc-chat-input" id="chat-input" placeholder="Ask Gemini..." />
+        <input type="text" class="gc-chat-input" id="chat-input" placeholder="Pergunte ao Gemini..." />
         <button class="gc-chat-btn-send" id="chat-send-btn" aria-label="Send">
           <svg><use href="#gc-icon-send"/></svg>
         </button>
@@ -328,7 +328,7 @@ function demoMetrics(f) {
         <div class="gc-metrics-codebox">
           <span class="gc-sql-kw">SELECT</span> region, <span class="gc-sql-fn">COUNT</span>(*) <span class="gc-sql-kw">AS</span> reqs,<br>
           &nbsp;&nbsp;<span class="gc-sql-fn">AVG</span>(latency_ms) <span class="gc-sql-kw">AS</span> p99<br>
-          <span class="gc-sql-kw">FROM</span> <span class="gc-sql-tbl">\`cloud_onair.telemetry\`</span><br>
+          <span class="gc-sql-kw">FROM</span> <span class="gc-sql-tbl">\`cloud_summit_br.telemetry\`</span><br>
           <span class="gc-sql-kw">GROUP BY</span> region <span class="gc-sql-kw">ORDER BY</span> reqs <span class="gc-sql-kw">DESC</span>;
         </div>
         <button class="gc-metrics-run-btn" id="metrics-run-btn">
@@ -384,11 +384,11 @@ function demoSecurity(f) {
           <div class="gc-security-check-icon"><svg><use href="#gc-icon-check"/></svg></div>
         </div>
         <div class="gc-security-item">
-          <span>IAM Context Policy: Production</span>
+          <span>IAM Context Policy: southamerica-east1</span>
           <div class="gc-security-check-icon"><svg><use href="#gc-icon-check"/></svg></div>
         </div>
         <div class="gc-security-item">
-          <span>Threat Defense / SCC Premium</span>
+          <span>Threat Defense / SCC Premium + Wiz</span>
           <div class="gc-security-check-icon"><svg><use href="#gc-icon-check"/></svg></div>
         </div>
         <button class="gc-metrics-run-btn" style="margin-top:auto" id="security-verify-btn">
