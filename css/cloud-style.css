@@ -129,20 +129,22 @@ svg { display: block; }
 .gc-supercloud,
 .gc-ripple {
   position: absolute;
-  right: -6cqw;
+  right: -4cqw;
   bottom: -6cqw;
-  width: 58cqw;
-  height: 58cqw;
+  width: 54cqw;
+  height: 54cqw;
   z-index: 0;
   pointer-events: none;
   opacity: 0.95;
 }
 
+.gc-supercloud img,
+.gc-ripple img,
 .gc-supercloud svg,
 .gc-ripple svg {
   width: 100%;
   height: 100%;
-  overflow: visible;
+  object-fit: contain;
 }
 
 /* -----------------------------------------------------------------------------
