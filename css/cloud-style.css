@@ -107,32 +107,43 @@ svg { display: block; }
    the ripple stays locked to the slide rather than to the window:
      x = 18% of stage width in from the right edge
      y = 71% of the way down the stage
-   Each circle is sized as a fraction of --s and pulled back by
-   translate(50%, -50%) so that shared point is its true centre.
+/* -----------------------------------------------------------------------------
+   3. BRAND FOUNDATIONS — Super Cloud Graphic & Progress Bar.
+   Official Google Cloud presentation visual identity elements.
    -------------------------------------------------------------------------- */
+.gc-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.4cqw;
+  background: linear-gradient(90deg,
+    var(--gc-google-red) 0%,
+    var(--gc-google-yellow) 25%,
+    var(--gc-google-green) 50%,
+    var(--gc-google-blue) 100%
+  );
+  z-index: 25;
+}
+
+.gc-supercloud,
 .gc-ripple {
   position: absolute;
-  inset: 0;
+  right: -6cqw;
+  bottom: -6cqw;
+  width: 58cqw;
+  height: 58cqw;
   z-index: 0;
   pointer-events: none;
+  opacity: 0.95;
 }
 
-.gc-ripple > i {
-  position: absolute;
-  right: calc(var(--s) * 0.18);
-  top: calc(var(--top) + var(--h) * 0.71);
-  transform: translate(50%, -50%);
-  border-radius: 50%;
-  display: block;
+.gc-supercloud svg,
+.gc-ripple svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
-
-/* Size ramp. Each ring is ~0.78× the previous one. */
-.gc-ripple > i:nth-child(1) { width: calc(var(--s) * 0.780); height: calc(var(--s) * 0.780); background: var(--gc-ripple-01); }
-.gc-ripple > i:nth-child(2) { width: calc(var(--s) * 0.640); height: calc(var(--s) * 0.640); background: var(--gc-ripple-02); }
-.gc-ripple > i:nth-child(3) { width: calc(var(--s) * 0.500); height: calc(var(--s) * 0.500); background: var(--gc-ripple-03); }
-.gc-ripple > i:nth-child(4) { width: calc(var(--s) * 0.370); height: calc(var(--s) * 0.370); background: var(--gc-ripple-04); }
-.gc-ripple > i:nth-child(5) { width: calc(var(--s) * 0.250); height: calc(var(--s) * 0.250); background: var(--gc-ripple-05); }
-.gc-ripple > i:nth-child(6) { width: calc(var(--s) * 0.125); height: calc(var(--s) * 0.125); background: var(--gc-ripple-06); }
 
 /* -----------------------------------------------------------------------------
    4. WORDMARK
@@ -313,7 +324,7 @@ svg { display: block; }
   font-family: var(--gc-font-text);
   font-size: var(--gc-text-label);
   font-weight: 700;
-  color: var(--gc-blue-numeral);
+  color: var(--gc-blue-action);
 }
 
 /* -----------------------------------------------------------------------------
@@ -1272,10 +1283,25 @@ svg { display: block; }
    ========================================================================== */
 @media (max-width: 767px) {
 
+  .gc-progress-bar {
+    height: 1.2vw;
+  }
+
+  .gc-supercloud,
+  .gc-ripple {
+    position: absolute;
+    right: -12vw;
+    top: -5vw;
+    bottom: auto;
+    width: 90vw;
+    height: 90vw;
+    opacity: 0.22;
+  }
+
   .gc-cover {
     height: auto;
     min-height: 100%;
-    --top: -18vw;              /* pull the ripple up behind the header */
+    --top: -18vw;
   }
 
   .gc-stage {
