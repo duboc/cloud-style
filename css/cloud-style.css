@@ -148,18 +148,24 @@ svg { display: block; }
 }
 
 /* -----------------------------------------------------------------------------
-   4. WORDMARK
-   Two weights of one word. The bold half is the product name, the light
-   half is the category. Tight tracking, zero leading — it is a logo, not text.
+   4. WORDMARK & APPLICATION HEADER BAR
    -------------------------------------------------------------------------- */
 .gc-wordmark {
   position: absolute;
   left: var(--gc-gutter);
   top: 3.2cqw;
+  width: 44cqw;
   display: flex;
   align-items: center;
-  gap: 1.4cqw;
+  justify-content: space-between;
   margin: 0;
+  z-index: 10;
+}
+
+.gc-wordmark-brand {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
 }
 
 .gc-wordmark h1,
@@ -172,39 +178,182 @@ svg { display: block; }
   color: var(--gc-ink-900);
   cursor: pointer;
   user-select: none;
+  white-space: nowrap;
 }
 
 .gc-wordmark b   { font-weight: 700; }
 .gc-wordmark span { font-weight: 400; }
 
-/* Small badge that can sit beside the wordmark (e.g. the Cloud toggle). */
-.gc-wordmark-badge {
+.gc-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4cqw;
+  padding: 0.25cqw 0.7cqw;
+  border-radius: var(--gc-radius-pill);
+  background: rgba(52, 168, 83, 0.1);
+  border: 0.1cqw solid rgba(52, 168, 83, 0.25);
+  color: #1e8e3e;
+  font-family: var(--gc-font-display);
+  font-size: var(--gc-text-caption);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.gc-status-dot {
+  width: 0.5cqw;
+  height: 0.5cqw;
+  border-radius: 50%;
+  background: #34a853;
+  box-shadow: 0 0 0.4cqw #34a853;
+}
+
+.gc-app-nav {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 2.9cqw;
-  height: 2.9cqw;
-  border-radius: var(--gc-radius-tile);
-  background: var(--gc-blue-tint-100);
-  color: var(--gc-blue-glyph);
+  gap: 0.3cqw;
+  background: rgba(241, 243, 244, 0.85);
+  padding: 0.2cqw;
+  border-radius: var(--gc-radius-pill);
+  border: 0.1cqw solid var(--gc-border-soft);
+  white-space: nowrap;
 }
-.gc-wordmark-badge svg { width: 1.9cqw; height: 1.9cqw; }
+
+.gc-nav-link {
+  padding: 0.3cqw 0.9cqw;
+  border-radius: var(--gc-radius-pill);
+  font-family: var(--gc-font-display);
+  font-size: 0.85cqw;
+  font-weight: 600;
+  color: var(--gc-ink-700);
+  background: transparent;
+  transition: all var(--gc-dur-hover);
+}
+
+.gc-nav-link:hover {
+  color: var(--gc-blue-action);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.gc-nav-link.active {
+  background: #ffffff;
+  color: var(--gc-blue-action);
+  box-shadow: 0 0.1cqw 0.4cqw rgba(0, 0, 0, 0.08);
+}
 
 /* -----------------------------------------------------------------------------
-   5. COVER LEDE — the four-line statement under the wordmark.
-   Bold lines carry the claim, regular lines carry the qualifier.
+   5. HERO DASHBOARD CARD & METRICS BAR (COVER SCREEN)
    -------------------------------------------------------------------------- */
-.gc-lede {
+.gc-hero-card {
   position: absolute;
   left: var(--gc-gutter-text);
-  top: 20cqw;
-  font-family: var(--gc-font-text);
-  font-size: var(--gc-text-lede);
-  line-height: 1.3;
+  top: 12.5cqw;
+  width: 44cqw;
+  padding: 2cqw;
+  border-radius: 1.2cqw;
+  background: #ffffff;
+  border: 0.1cqw solid rgba(66, 133, 244, 0.2);
+  box-shadow: 0 0.4cqw 1.6cqw rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9cqw;
 }
-.gc-lede p { margin: 0; }
-.gc-lede .is-strong { font-weight: 700; color: var(--gc-ink-800); }
-.gc-lede .is-soft   { font-weight: 400; color: var(--gc-ink-700); }
+
+.gc-hero-tag {
+  align-self: flex-start;
+  padding: 0.3cqw 0.9cqw;
+  border-radius: var(--gc-radius-pill);
+  background: var(--gc-blue-tint-100);
+  color: var(--gc-blue-brand);
+  font-family: var(--gc-font-display);
+  font-size: var(--gc-text-caption);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.gc-hero-copy h2.is-strong {
+  margin: 0;
+  font-family: var(--gc-font-text);
+  font-size: 2cqw;
+  font-weight: 700;
+  line-height: 1.22;
+  color: var(--gc-ink-900);
+}
+
+.gc-hero-copy p.is-soft {
+  margin: 0.4cqw 0 0;
+  font-family: var(--gc-font-text);
+  font-size: 1.15cqw;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--gc-ink-600);
+}
+
+.gc-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+  margin-top: 0.4cqw;
+}
+
+.gc-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9cqw 1.8cqw;
+  border-radius: var(--gc-radius-pill);
+  background: var(--gc-blue-tint-050);
+  border: 0.1cqw solid rgba(66, 133, 244, 0.25);
+  color: var(--gc-blue-action);
+  font-family: var(--gc-font-display);
+  font-size: var(--gc-text-body-lg);
+  font-weight: 600;
+  transition: all var(--gc-dur-hover);
+}
+
+.gc-btn-secondary:hover {
+  background: var(--gc-blue-tint-100);
+  border-color: var(--gc-blue-action);
+}
+
+/* Metrics Dashboard Bar */
+.gc-metrics-bar {
+  position: absolute;
+  left: var(--gc-gutter-text);
+  top: 36.5cqw;
+  width: 44cqw;
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+}
+
+.gc-metric-tile {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.8cqw 1cqw;
+  border-radius: 0.9cqw;
+  background: rgba(255, 255, 255, 0.95);
+  border: 0.1cqw solid rgba(66, 133, 244, 0.16);
+  box-shadow: 0 0.2cqw 0.6cqw rgba(0, 0, 0, 0.03);
+}
+
+.gc-metric-val {
+  font-family: var(--gc-font-display);
+  font-size: 1.6cqw;
+  font-weight: 700;
+  color: var(--gc-blue-action);
+  line-height: 1;
+}
+
+.gc-metric-lbl {
+  margin-top: 0.3cqw;
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-caption);
+  font-weight: 500;
+  color: var(--gc-ink-600);
+  line-height: 1.2;
+}
 
 /* -----------------------------------------------------------------------------
    6. BUTTONS
@@ -295,15 +444,38 @@ svg { display: block; }
 .gc-icon-tile--sm { width: 2.9cqw; height: 2.9cqw; border-radius: 0.7cqw; }
 
 /* -----------------------------------------------------------------------------
-   8. MENU — the interactive component category list on index screen.
+   8. MENU — the interactive component category catalog on index screen.
    -------------------------------------------------------------------------- */
+.gc-menu-header {
+  position: absolute;
+  left: var(--gc-gutter);
+  top: 12.5cqw;
+  width: 44cqw;
+}
+
+.gc-menu-title {
+  margin: 0;
+  font-family: var(--gc-font-text);
+  font-size: 1.4cqw;
+  font-weight: 700;
+  color: var(--gc-ink-900);
+}
+
+.gc-menu-subtitle {
+  margin: 0.3cqw 0 0;
+  font-family: var(--gc-font-text);
+  font-size: 0.95cqw;
+  font-weight: 400;
+  color: var(--gc-ink-600);
+}
+
 .gc-menu {
   position: absolute;
   left: var(--gc-gutter);
-  top: 17cqw;
+  top: 18cqw;
   display: flex;
   flex-direction: column;
-  gap: 1.1cqw;
+  gap: 0.9cqw;
   width: 44cqw;
 }
 
@@ -335,6 +507,17 @@ svg { display: block; }
   font-weight: 600;
   line-height: 1.25;
   color: var(--gc-ink-800);
+}
+
+.gc-menu-badge {
+  margin-left: 0.8cqw;
+  padding: 0.25cqw 0.7cqw;
+  border-radius: var(--gc-radius-pill);
+  background: rgba(26, 115, 232, 0.08);
+  font-family: var(--gc-font-display);
+  font-size: 0.85cqw;
+  font-weight: 600;
+  color: var(--gc-blue-brand);
 }
 
 .gc-menu-num {

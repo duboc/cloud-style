@@ -110,7 +110,7 @@ async function capture() {
     await saveScreenshot('reference-home.png');
 
     // 2. Menu
-    await evaluate("document.querySelector('.gc-btn--cover').click()");
+    await evaluate("document.querySelector('[data-go=\"menu\"]').click()");
     await wait(1000);
     await saveScreenshot('template-menu.png');
     await saveScreenshot('reference-menu.png');
@@ -144,7 +144,7 @@ async function capture() {
     await saveScreenshot('reference-mobile-home.png');
 
     // 6. Mobile Menu
-    await evaluate("document.querySelector('.gc-btn--cover').click()");
+    await evaluate("document.querySelector('[data-go=\"menu\"]').click()");
     await wait(1000);
     await saveScreenshot('template-mobile-menu.png');
     await saveScreenshot('reference-mobile-menu.png');

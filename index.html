@@ -48,10 +48,14 @@
   <div class="gc-stage">
 
     <div class="gc-wordmark">
-      <h1 id="wordmark"></h1>
-      <button class="gc-wordmark-badge" id="badge" aria-label="Live demo" hidden>
-        <svg><use href="#gc-icon-cloud"/></svg>
-      </button>
+      <div class="gc-wordmark-brand">
+        <h1 id="wordmark"></h1>
+        <span class="gc-status-chip"><span class="gc-status-dot"></span>DEMO CONSOLE</span>
+        <nav class="gc-app-nav">
+          <button class="gc-nav-link active" data-go="cover">Visão Geral</button>
+          <button class="gc-nav-link" data-go="menu">Catálogo de Demos</button>
+        </nav>
+      </div>
     </div>
 
     <!-- Screens render into here. -->
@@ -86,7 +90,6 @@ const B = CONTENT.brand;
 const CATS = CONTENT.categories;
 const screen = document.getElementById('screen');
 const veil = document.getElementById('veil');
-const badge = document.getElementById('badge');
 
 let state = { view: 'cover' };
 
@@ -105,21 +108,47 @@ document.getElementById('edition').textContent = B.edition;
 
 function cover() {
   return `
-    <div class="gc-lede" style="view-transition-name: gc-lede">
-      ${B.ledeStrong.map(l => `<p class="is-strong">${esc(l)}</p>`).join('')}
-      ${B.ledeSoft.map(l => `<p class="is-soft">${esc(l)}</p>`).join('')}
+    <div class="gc-hero-card" style="view-transition-name: gc-lede">
+      <div class="gc-hero-tag">#GoogleCloudSummit2026</div>
+      <div class="gc-hero-copy">
+        ${B.ledeStrong.map(l => `<h2 class="is-strong">${esc(l)}</h2>`).join('')}
+        ${B.ledeSoft.map(l => `<p class="is-soft">${esc(l)}</p>`).join('')}
+      </div>
+      <div class="gc-hero-actions">
+        <button class="gc-btn" data-go="menu"
+                style="view-transition-name: gc-cta">${esc(B.cta)} &rarr;</button>
+        <button class="gc-btn-secondary" data-go="menu">Ver Trilhas (5)</button>
+      </div>
     </div>
-    <button class="gc-btn gc-btn--cover" data-go="menu"
-            style="view-transition-name: gc-cta">${esc(B.cta)}</button>`;
+
+    <div class="gc-metrics-bar">
+      <div class="gc-metric-tile">
+        <span class="gc-metric-val">05</span>
+        <span class="gc-metric-lbl">Trilhas Tecnológicas</span>
+      </div>
+      <div class="gc-metric-tile">
+        <span class="gc-metric-val">15+</span>
+        <span class="gc-metric-lbl">Demos Interativas</span>
+      </div>
+      <div class="gc-metric-tile">
+        <span class="gc-metric-val">3.1</span>
+        <span class="gc-metric-lbl">Gemini Engine</span>
+      </div>
+    </div>`;
 }
 
 function menu() {
   return `
+    <div class="gc-menu-header" style="view-transition-name: gc-lede">
+      <h2 class="gc-menu-title">Catálogo de Demos & Trilhas Tecnológicas</h2>
+      <p class="gc-menu-subtitle">Selecione uma trilha para interagir com as demonstrações e arquiteturas ao vivo.</p>
+    </div>
     <nav class="gc-menu" style="view-transition-name: gc-menu">
       ${CATS.map((c, i) => `
         <button class="gc-menu-item" data-go="cards" data-cat="${i}">
           <span class="gc-icon-tile"><svg><use href="#${esc(c.icon)}"/></svg></span>
           <span class="gc-menu-label">${esc(c.title)}</span>
+          <span class="gc-menu-badge">${c.facts.length} Demos</span>
           <span class="gc-menu-num">${pad(i)}</span>
         </button>`).join('')}
     </nav>`;
@@ -540,18 +569,21 @@ document.getElementById('wordmark').addEventListener('click',
   () => go({ view: 'cover' }));
 
 /* Badge cycles through demo modes on article screen. */
-badge.addEventListener('click', () => {
-  if (state.view !== 'article') return;
-  const demoTypes = ['chat', 'camera', 'video', 'metrics', 'security', 'buttons'];
-  const curDemo = CATS[state.cat].facts[state.fact].demo || 'chat';
-  const nextIdx = (demoTypes.indexOf(curDemo) + 1) % demoTypes.length;
-  CATS[state.cat].facts[state.fact].demo = demoTypes[nextIdx];
-  const phoneScreen = document.querySelector('.gc-phone-screen');
-  if (phoneScreen) {
-    phoneScreen.innerHTML = demoHtml(demoTypes[nextIdx], CATS[state.cat].facts[state.fact]);
-    gcInitDemos(phoneScreen);
-  }
-});
+const badge = document.getElementById('badge');
+if (badge) {
+  badge.addEventListener('click', () => {
+    if (state.view !== 'article') return;
+    const demoTypes = ['chat', 'camera', 'video', 'metrics', 'security', 'buttons'];
+    const curDemo = CATS[state.cat].facts[state.fact].demo || 'chat';
+    const nextIdx = (demoTypes.indexOf(curDemo) + 1) % demoTypes.length;
+    CATS[state.cat].facts[state.fact].demo = demoTypes[nextIdx];
+    const phoneScreen = document.querySelector('.gc-phone-screen');
+    if (phoneScreen) {
+      phoneScreen.innerHTML = demoHtml(demoTypes[nextIdx], CATS[state.cat].facts[state.fact]);
+      gcInitDemos(phoneScreen);
+    }
+  });
+}
 
 gcOnKeys({
   home: () => go({ view: 'cover' }),
