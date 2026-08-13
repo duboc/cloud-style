@@ -216,17 +216,23 @@ svg { display: block; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.8cqw;
   border-radius: var(--gc-radius-pill);
   background: var(--gc-blue-action);
   color: #fff;
   font-family: var(--gc-font-display);
   font-size: var(--gc-text-body-lg);
   font-weight: 500;
-  padding: 0.9cqw 2.1cqw;
-  box-shadow: var(--gc-shadow-action);
-  transition: background-color var(--gc-dur-hover);
+  padding: 0.9cqw 2.4cqw;
+  box-shadow: 0 0.2cqw 0.6cqw rgba(26, 115, 232, 0.25);
+  transition: background-color var(--gc-dur-hover), transform var(--gc-dur-hover), box-shadow var(--gc-dur-hover);
 }
-.gc-btn:hover { background: var(--gc-blue-action-hover); }
+.gc-btn:hover {
+  background: var(--gc-blue-action-hover);
+  transform: translateY(-0.15cqw);
+  box-shadow: 0 0.4cqw 1cqw rgba(26, 115, 232, 0.35);
+}
+.gc-btn:active { transform: translateY(0); }
 
 .gc-btn--cover {
   position: absolute;
@@ -245,10 +251,13 @@ svg { display: block; }
   border-radius: 50%;
   background: var(--gc-blue-action);
   color: #fff;
-  box-shadow: var(--gc-shadow-action);
-  transition: background-color var(--gc-dur-hover);
+  box-shadow: 0 0.2cqw 0.6cqw rgba(26, 115, 232, 0.28);
+  transition: background-color var(--gc-dur-hover), transform var(--gc-dur-hover);
 }
-.gc-icon-btn:hover { background: var(--gc-blue-action-hover); }
+.gc-icon-btn:hover {
+  background: var(--gc-blue-action-hover);
+  transform: scale(1.06);
+}
 .gc-icon-btn svg { width: 1.4cqw; height: 1.4cqw; }
 
 /* Neutral variant — secondary controls on white. */
@@ -286,30 +295,37 @@ svg { display: block; }
 .gc-icon-tile--sm { width: 2.9cqw; height: 2.9cqw; border-radius: 0.7cqw; }
 
 /* -----------------------------------------------------------------------------
-   8. MENU — the numbered category list on the index screen.
+   8. MENU — the interactive component category list on index screen.
    -------------------------------------------------------------------------- */
 .gc-menu {
   position: absolute;
   left: var(--gc-gutter);
-  top: 18cqw;
+  top: 17cqw;
   display: flex;
   flex-direction: column;
-  gap: var(--gc-gap-row);
-  width: 42cqw;
+  gap: 1.1cqw;
+  width: 44cqw;
 }
 
 .gc-menu-item {
   display: flex;
   align-items: center;
-  height: 4.4cqw;
-  padding-left: 0.55cqw;
+  height: 4.6cqw;
+  padding-left: 0.6cqw;
   padding-right: 1.4cqw;
   border-radius: var(--gc-radius-row);
-  background: var(--gc-blue-tint-070);
+  background: #ffffff;
+  border: 0.1cqw solid rgba(66, 133, 244, 0.16);
+  box-shadow: 0 0.2cqw 0.8cqw rgba(0, 0, 0, 0.03);
   text-align: left;
-  transition: background-color var(--gc-dur-hover);
+  transition: background-color var(--gc-dur-hover), border-color var(--gc-dur-hover), transform var(--gc-dur-hover), box-shadow var(--gc-dur-hover);
 }
-.gc-menu-item:hover { background: var(--gc-blue-tint-090); }
+.gc-menu-item:hover {
+  background: var(--gc-blue-tint-050);
+  border-color: var(--gc-blue-brand);
+  transform: translateX(0.4cqw);
+  box-shadow: 0 0.4cqw 1.2cqw rgba(26, 115, 232, 0.14);
+}
 
 .gc-menu-label {
   flex: 1;
@@ -318,13 +334,16 @@ svg { display: block; }
   font-size: var(--gc-text-label);
   font-weight: 600;
   line-height: 1.25;
-  color: var(--gc-blue-brand);
+  color: var(--gc-ink-800);
 }
 
 .gc-menu-num {
   margin-left: 1cqw;
-  font-family: var(--gc-font-text);
-  font-size: var(--gc-text-label);
+  padding: 0.25cqw 0.8cqw;
+  border-radius: var(--gc-radius-pill);
+  background: var(--gc-blue-tint-100);
+  font-family: var(--gc-font-display);
+  font-size: var(--gc-text-body-sm);
   font-weight: 700;
   color: var(--gc-blue-action);
 }
@@ -399,9 +418,16 @@ svg { display: block; }
   height: 100%;
   overflow: hidden;
   border-radius: var(--gc-radius-card);
-  background: var(--gc-blue-tint-080);
-  box-shadow: var(--gc-shadow-card);
+  background: #ffffff;
+  border: 0.1cqw solid var(--gc-border-soft);
+  box-shadow: 0 0.3cqw 1cqw rgba(0, 0, 0, 0.05);
   text-align: left;
+  transition: transform var(--gc-dur-hover), box-shadow var(--gc-dur-hover), border-color var(--gc-dur-hover);
+}
+.gc-card:hover {
+  transform: translateY(-0.3cqw);
+  box-shadow: 0 0.6cqw 1.6cqw rgba(26, 115, 232, 0.16);
+  border-color: var(--gc-blue-outline);
 }
 
 .gc-card-head {
