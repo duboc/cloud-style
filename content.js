@@ -56,7 +56,7 @@ const CONTENT = {
         {
           title: 'Multimodal models process video, audio and documents in unified pipelines',
           lede: 'Context is no longer confined to plain text.',
-          body: 'Gemini 1.5 Pro and Flash introduce massive context windows that ingest hours of audio, full-length video recordings, and hundreds of pages of technical documentation in a single prompt. This session details architectural best practices for building retrieval-augmented generation systems without complex chunking pipelines. We explore real-world benchmarks comparing long-context ingestion against vector search, showing where native context reasoning outperforms traditional embeddings.',
+          body: 'Gemini 3.1 Pro and 3.6 Flash introduce massive context windows that ingest hours of audio, full-length video recordings, and hundreds of pages of technical documentation in a single prompt. This session details architectural best practices for building retrieval-augmented generation systems without complex chunking pipelines. We explore real-world benchmarks comparing long-context ingestion against vector search, showing where native context reasoning outperforms traditional embeddings.',
           tag: '#Multimodal',
           live: true,
           demo: 'video',
