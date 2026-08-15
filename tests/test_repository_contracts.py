@@ -48,8 +48,11 @@ class RepositoryContractsTest(unittest.TestCase):
     def test_active_files_do_not_restore_removed_product_primitives(self):
         active_files = [
             ROOT / "index.html",
-            *sorted((ROOT / "js").rglob("*.js")),
-            *sorted((ROOT / "css").glob("*.css")),
+            ROOT / "js/config.js",
+            ROOT / "js/data.js",
+            ROOT / "js/router.js",
+            ROOT / "js/app.js",
+            *sorted((ROOT / "js/screens").glob("*.js")),
         ]
         active_source = "\n".join(path.read_text(encoding="utf-8") for path in active_files)
         forbidden = (

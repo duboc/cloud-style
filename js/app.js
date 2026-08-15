@@ -1,105 +1,47 @@
-import { APP_CONFIG } from './config.js';
-import { createRouter } from './router.js';
-import { renderCover } from './screens/cover.js';
-import { renderCatalog } from './screens/catalog.js';
-import { renderCards } from './screens/cards.js';
-import { renderDetail } from './screens/detail.js';
-import { mountDemoPack, unmountDemoPack } from '../starter/demo-packs/registry.js';
+(function startCloudStyleApp(global) {
+  const root = document.getElementById("app");
 
-const esc = value => String(value).replace(/[&<>"']/g,
-  character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
-const pad = value => String(value + 1).padStart(2, '0');
-const mark = (bold, light) => `<b>${esc(bold)}</b><span>${esc(light)}</span>`;
-
-export function startApp({ content, demoHtml }) {
-  const screen = document.getElementById('screen');
-  const veil = document.getElementById('veil');
-
-  document.getElementById('wordmark').innerHTML = mark(
-    content.brand.wordmarkBold,
-    content.brand.wordmarkLight,
-  );
-  document.getElementById('edition').textContent = content.brand.edition;
-  document.getElementById('status-label').textContent = APP_CONFIG.status;
-  document.querySelectorAll('.gc-nav-link').forEach(button => {
-    button.textContent = APP_CONFIG.navigation[button.dataset.go];
-  });
-
-  function setActiveNavigation(view) {
-    document.querySelectorAll('.gc-nav-link, .gc-sidebar-link').forEach(button => {
-      const active = button.dataset.go === view ||
-        (button.dataset.go === 'menu' && ['cards', 'article'].includes(view));
-      button.classList.toggle('active', active);
-      if (active) button.setAttribute('aria-current', 'page');
-      else button.removeAttribute('aria-current');
-    });
+  function navigationMarkup(currentSection, className) {
+    return global.APP_CONFIG.navigation.map((item) => `
+      <a class="${className}${item.id === currentSection ? " is-current" : ""}" href="${item.href}"${item.id === currentSection ? ' aria-current="page"' : ""}>
+        <span>${item.label}</span>
+      </a>`).join("");
   }
 
-  function render(state) {
-    screen.querySelectorAll('.gc-demo-pack-host').forEach(unmountDemoPack);
-    const context = { config: APP_CONFIG, content, state, esc, mark, pad, demoHtml };
-    const renderer = {
-      cover: renderCover,
-      menu: renderCatalog,
-      cards: renderCards,
-      article: renderDetail,
-    }[state.view] || renderCover;
-    screen.innerHTML = renderer(context);
-    veil.hidden = state.view === 'cover';
-    setActiveNavigation(state.view);
-    gcInitRails(screen);
-    gcInitDemos(screen);
-    screen.querySelectorAll('.gc-demo-pack-host').forEach(host => {
-      const fact = content.categories[state.cat]?.facts[state.fact];
-      mountDemoPack(host, host.dataset.demoPackId, fact || {});
-    });
+  function shellMarkup(route, content) {
+    return `
+      <div class="gc-app">
+        <div class="gc-google-signature" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <header class="gc-app-header">
+          <a class="gc-product" href="#/overview" aria-label="${global.APP_CONFIG.productName} home">
+            <span class="gc-product-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+            <span>${global.APP_CONFIG.productName}</span>
+          </a>
+          <div class="gc-context" aria-label="Current project and environment">
+            <span>${global.APP_CONFIG.projectLabel}</span><span aria-hidden="true">·</span><strong>${global.APP_CONFIG.environmentLabel}</strong>
+          </div>
+        </header>
+        <nav class="gc-mobile-nav" aria-label="Primary navigation">${navigationMarkup(route.section, "gc-mobile-nav-link")}</nav>
+        <div class="gc-app-body">
+          <aside class="gc-sidebar">
+            <p class="gc-sidebar-label">Application</p>
+            <nav aria-label="Primary navigation">${navigationMarkup(route.section, "gc-nav-link")}</nav>
+            <div class="gc-sidebar-meta"><span class="gc-status-dot" aria-hidden="true"></span><span>Services available</span></div>
+          </aside>
+          <main class="gc-main" id="main-content" tabindex="-1">${content}</main>
+        </div>
+      </div>`;
   }
 
-  const router = createRouter({
-    initialState: { view: APP_CONFIG.defaultView },
-    onChange: state => gcNavigate(() => render(state)),
-  });
+  function renderApp() {
+    const route = global.CloudStyleRouter.parseRoute(global.location.hash);
+    const renderScreen = global.CloudStyleScreens[route.screen] || global.CloudStyleScreens.overview;
+    root.innerHTML = shellMarkup(route, renderScreen({ route, data: global.SAMPLE_DATA, config: global.APP_CONFIG }));
+    document.title = `${root.querySelector("h1")?.textContent || global.APP_CONFIG.productName} · ${global.APP_CONFIG.productName}`;
+  }
 
-  document.addEventListener('click', event => {
-    const target = event.target.closest('[data-go]');
-    if (!target) return;
-    const current = router.getState();
-    router.go({
-      view: target.dataset.go,
-      cat: target.dataset.cat !== undefined ? +target.dataset.cat : current.cat,
-      fact: target.dataset.fact !== undefined ? +target.dataset.fact : current.fact,
-    });
-  });
-
-  document.getElementById('wordmark').addEventListener('click', () => router.go({ view: 'cover' }));
-
-  gcOnKeys({
-    home: () => router.go({ view: 'cover' }),
-    back: () => {
-      const state = router.getState();
-      if (state.view === 'article') router.go({ view: 'cards', cat: state.cat });
-      else if (state.view === 'cards') router.go({ view: 'menu' });
-      else if (state.view === 'menu') router.go({ view: 'cover' });
-    },
-    next: () => {
-      const state = router.getState();
-      if (state.view === 'cover') return router.go({ view: 'menu' });
-      if (state.view === 'cards') return router.go({ view: 'article', cat: state.cat, fact: 0 });
-      if (state.view === 'article' && state.fact + 1 < content.categories[state.cat].facts.length) {
-        router.go({ view: 'article', cat: state.cat, fact: state.fact + 1 });
-      }
-    },
-    prev: () => {
-      const state = router.getState();
-      if (state.view === 'article' && state.fact > 0) {
-        return router.go({ view: 'article', cat: state.cat, fact: state.fact - 1 });
-      }
-      if (state.view === 'article') return router.go({ view: 'cards', cat: state.cat });
-      if (state.view === 'cards') return router.go({ view: 'menu' });
-      if (state.view === 'menu') return router.go({ view: 'cover' });
-    },
-  });
-
-  render(router.getState());
-  return router;
-}
+  global.addEventListener("hashchange", renderApp);
+  renderApp();
+  if (!global.location.hash) global.history.replaceState(null, "", "#/overview");
+  global.CloudStyleApp = Object.freeze({ renderApp });
+})(window);
