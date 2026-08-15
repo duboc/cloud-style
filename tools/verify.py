@@ -131,6 +131,20 @@ def main() -> int:
         watch(m, "mobile")
         m.goto(args.url, wait_until="networkidle", timeout=60_000)
         m.wait_for_timeout(1200)
+        mobile_geometry = m.evaluate("""() => {
+            const actions = document.querySelector('.gc-hero-actions').getBoundingClientRect();
+            const metrics = document.querySelector('.gc-metrics-bar').getBoundingClientRect();
+            return {
+                overflow: document.documentElement.scrollWidth - innerWidth,
+                actionBottom: actions.bottom,
+                metricsTop: metrics.top,
+                metricsBottom: metrics.bottom,
+            };
+        }""")
+        if mobile_geometry["overflow"] > 1:
+            problems.append(f"[mobile] horizontal overflow is {mobile_geometry['overflow']}px")
+        if mobile_geometry["metricsTop"] < mobile_geometry["actionBottom"]:
+            problems.append("[mobile] metrics overlap the cover actions")
         m.screenshot(path=str(out / "template-mobile-cover.png"), full_page=True)
         print("  template-mobile-cover.png")
 
@@ -140,6 +154,18 @@ def main() -> int:
         m.wait_for_timeout(800)
         m.screenshot(path=str(out / "template-mobile-menu.png"), full_page=True)
         print("  template-mobile-menu.png")
+
+        reduced = browser.new_page(viewport=DESKTOP, reduced_motion="reduce")
+        watch(reduced, "reduced-motion")
+        reduced.goto(args.url, wait_until="networkidle", timeout=60_000)
+        reduced.locator(".gc-primary-action").click()
+        reduced.locator(".gc-menu-item").first.click()
+        live_card = reduced.locator(".gc-card--live").first
+        if live_card.count() and live_card.evaluate(
+            "element => getComputedStyle(element).animationName"
+        ) != "none":
+            problems.append("[reduced-motion] live-card pulse is still active")
+        reduced.close()
 
         browser.close()
 

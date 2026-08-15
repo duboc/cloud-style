@@ -54,8 +54,15 @@
     padding: 6cqw 6cqw 8cqw;
   }
 
+  #screen {
+    display: contents;
+  }
+
   /* Unwind desktop absolute positioning into normal flow. */
   .gc-wordmark,
+  .gc-hero-card,
+  .gc-metrics-bar,
+  .gc-menu-header,
   .gc-lede,
   .gc-btn--cover,
   .gc-menu,
@@ -68,11 +75,93 @@
     transform: none;
   }
 
-  .gc-wordmark   { gap: 4cqw; }
+  .gc-wordmark {
+    width: 100%;
+    gap: 4cqw;
+  }
+  .gc-wordmark-brand {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    width: 100%;
+    gap: 2.5cqw;
+  }
+  .gc-wordmark h1,
+  .gc-wordmark .gc-wordmark-text {
+    font-size: 7.2cqw;
+  }
+  .gc-status-chip {
+    align-self: center;
+    padding: 1cqw 2cqw;
+    font-size: 2.7cqw;
+  }
+  .gc-app-nav {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    justify-content: center;
+    padding: 0.8cqw;
+  }
+  .gc-nav-link {
+    flex: 1;
+    padding: 1.4cqw 2cqw;
+    font-size: 3.1cqw;
+  }
+
+  .gc-hero-card {
+    width: 100%;
+    margin-top: 10cqw;
+    gap: 3cqw;
+  }
+  .gc-hero-tag {
+    padding: 1.2cqw 3cqw;
+  }
+  .gc-hero-copy h2.is-strong {
+    font-size: 9cqw;
+    line-height: 1.06;
+  }
+  .gc-hero-copy p.is-soft {
+    margin-top: 2cqw;
+    font-size: 4.4cqw;
+  }
+  .gc-hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5cqw;
+  }
+  .gc-btn,
+  .gc-btn-secondary {
+    width: 100%;
+    padding: 3.5cqw 4cqw;
+    font-size: 4.2cqw;
+  }
+  .gc-metrics-bar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    margin-top: 6cqw;
+    gap: 2cqw;
+  }
+  .gc-metric-tile {
+    min-width: 0;
+    padding: 3cqw 2.5cqw;
+  }
+  .gc-metric-val { font-size: 5.4cqw; }
+  .gc-metric-lbl { font-size: 2.8cqw; }
+
+  .gc-menu-header {
+    width: 100%;
+    margin-top: 10cqw;
+  }
+  .gc-menu-title { font-size: 6cqw; }
+  .gc-menu-subtitle { margin-top: 2cqw; font-size: 3.7cqw; }
   .gc-lede       { margin-top: 12cqw; }
   .gc-btn--cover { margin-top: 12cqw; align-self: flex-start; padding: 3cqw 7cqw; }
-  .gc-menu       { margin-top: 9cqw; width: 100%; }
-  .gc-detail     { margin-top: 7cqw; }
+  .gc-menu       { margin-top: 6cqw; width: 100%; }
+  .gc-detail,
+  .gc-detail.gc-console-surface {
+    width: 100%;
+    margin-top: 7cqw;
+    padding: 4cqw;
+  }
 
   .gc-menu-item {
     height: 15cqw;
@@ -140,6 +229,11 @@
     margin-top: auto;
     padding-top: 12cqw;
   }
+  .gc-footer-logo,
+  .gc-edition {
+    font-size: 3.5cqw;
+  }
+  .gc-edition { margin-left: auto; }
 }
 
 /* On desktop the footer wrapper must not create a box — its two children are
