@@ -20,7 +20,7 @@
      gc-icon-mic  gc-icon-terminal  gc-icon-shield  gc-icon-database  gc-icon-chart
    ========================================================================== */
 
-const CONTENT = {
+window.CONTENT = {
 
   brand: {
     /* The wordmark split in two: bold prefix, light suffix (~10 chars total). */

@@ -50,10 +50,10 @@
     <div class="gc-wordmark">
       <div class="gc-wordmark-brand">
         <h1 id="wordmark"></h1>
-        <span class="gc-status-chip"><span class="gc-status-dot"></span>DEMO CONSOLE</span>
+        <span class="gc-status-chip"><span class="gc-status-dot"></span><span id="status-label"></span></span>
         <nav class="gc-app-nav">
-          <button class="gc-nav-link active" data-go="cover">Visão Geral</button>
-          <button class="gc-nav-link" data-go="menu">Catálogo de Demos</button>
+          <button class="gc-nav-link active" data-go="cover"></button>
+          <button class="gc-nav-link" data-go="menu"></button>
         </nav>
       </div>
     </div>
@@ -74,7 +74,8 @@
   </div>
 </div>
 
-<script>
+<script type="module">
+import { startApp } from './js/app.js';
 /* ---------------------------------------------------------------------------
    Router. Three states:
      {view:'cover'}
@@ -85,111 +86,6 @@
    regions cross-fade. The wordmark, ripple and footer live outside #screen
    and therefore never animate.
    ------------------------------------------------------------------------ */
-
-const B = CONTENT.brand;
-const CATS = CONTENT.categories;
-const screen = document.getElementById('screen');
-const veil = document.getElementById('veil');
-
-let state = { view: 'cover' };
-
-/* Escape text before it goes into innerHTML. Content is authored locally, but
-   getting this habit wrong once is how demos become vulnerabilities. */
-const esc = s => String(s).replace(/[&<>"']/g,
-  c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-
-const pad = n => String(n + 1).padStart(2, '0');
-const mark = (b, l) => `<b>${esc(b)}</b><span>${esc(l)}</span>`;
-
-document.getElementById('wordmark').innerHTML = mark(B.wordmarkBold, B.wordmarkLight);
-document.getElementById('edition').textContent = B.edition;
-
-/* --- screen templates ---------------------------------------------------- */
-
-function cover() {
-  return `
-    <div class="gc-hero-card" style="view-transition-name: gc-lede">
-      <div class="gc-hero-tag">#GoogleCloudSummit2026</div>
-      <div class="gc-hero-copy">
-        ${B.ledeStrong.map(l => `<h2 class="is-strong">${esc(l)}</h2>`).join('')}
-        ${B.ledeSoft.map(l => `<p class="is-soft">${esc(l)}</p>`).join('')}
-      </div>
-      <div class="gc-hero-actions">
-        <button class="gc-btn" data-go="menu"
-                style="view-transition-name: gc-cta">${esc(B.cta)} &rarr;</button>
-        <button class="gc-btn-secondary" data-go="menu">Ver Trilhas (5)</button>
-      </div>
-    </div>
-
-    <div class="gc-metrics-bar">
-      <div class="gc-metric-tile">
-        <span class="gc-metric-val">05</span>
-        <span class="gc-metric-lbl">Trilhas Tecnológicas</span>
-      </div>
-      <div class="gc-metric-tile">
-        <span class="gc-metric-val">15+</span>
-        <span class="gc-metric-lbl">Demos Interativas</span>
-      </div>
-      <div class="gc-metric-tile">
-        <span class="gc-metric-val">3.1</span>
-        <span class="gc-metric-lbl">Gemini Engine</span>
-      </div>
-    </div>`;
-}
-
-function menu() {
-  return `
-    <div class="gc-menu-header" style="view-transition-name: gc-lede">
-      <h2 class="gc-menu-title">Catálogo de Demos & Trilhas Tecnológicas</h2>
-      <p class="gc-menu-subtitle">Selecione uma trilha para interagir com as demonstrações e arquiteturas ao vivo.</p>
-    </div>
-    <nav class="gc-menu" style="view-transition-name: gc-menu">
-      ${CATS.map((c, i) => `
-        <button class="gc-menu-item" data-go="cards" data-cat="${i}">
-          <span class="gc-icon-tile"><svg><use href="#${esc(c.icon)}"/></svg></span>
-          <span class="gc-menu-label">${esc(c.title)}</span>
-          <span class="gc-menu-badge">${c.facts.length} Demos</span>
-          <span class="gc-menu-num">${pad(i)}</span>
-        </button>`).join('')}
-    </nav>`;
-}
-
-function cards(ci) {
-  const c = CATS[ci];
-  return `
-    <div class="gc-detail" style="view-transition-name: gc-detail">
-      <div class="gc-breadcrumb">
-        <button class="gc-icon-btn" data-go="cover" aria-label="Home">
-          <svg><use href="#gc-icon-home"/></svg>
-        </button>
-        <button class="gc-icon-btn" data-go="menu" aria-label="Back">
-          <svg><use href="#gc-icon-back"/></svg>
-        </button>
-        <span class="gc-icon-tile gc-icon-tile--sm">
-          <svg><use href="#${esc(c.icon)}"/></svg>
-        </span>
-        <h2 class="gc-breadcrumb-title">${esc(c.title)}</h2>
-        <span class="gc-breadcrumb-num">${pad(ci)}</span>
-      </div>
-
-      <div class="gc-rail gc-no-scrollbar">
-        <div class="gc-rail-track">
-          ${c.facts.map((f, i) => `
-            <button type="button" class="gc-card${f.live ? ' gc-card--live' : ''}"
-                    data-go="article" data-cat="${ci}" data-fact="${i}">
-              <div class="gc-card-head">
-                <span>${mark(B.cardBold, B.cardLight)}</span>
-                <span class="gc-card-num">${i + 1}</span>
-              </div>
-              <div class="gc-card-body">
-                <p class="gc-card-title">${esc(f.title)}</p>
-                ${f.tag ? `<span class="gc-tag">${esc(f.tag)}</span>` : ''}
-              </div>
-            </button>`).join('')}
-        </div>
-      </div>
-    </div>`;
-}
 
 /* --- demo component templates ------------------------------------------- */
 
@@ -496,113 +392,7 @@ function demoHtml(type, f) {
   }
 }
 
-function article(ci, fi) {
-  const c = CATS[ci], f = c.facts[fi];
-  const demoType = f.demo || 'chat';
-  return `
-    <div class="gc-detail" style="view-transition-name: gc-detail">
-      <div class="gc-breadcrumb">
-        <button class="gc-icon-btn" data-go="cover" aria-label="Home">
-          <svg><use href="#gc-icon-home"/></svg>
-        </button>
-        <button class="gc-icon-btn" data-go="cards" data-cat="${ci}" aria-label="Back">
-          <svg><use href="#gc-icon-back"/></svg>
-        </button>
-        <span class="gc-icon-tile gc-icon-tile--sm">
-          <svg><use href="#${esc(c.icon)}"/></svg>
-        </span>
-        <h2 class="gc-breadcrumb-title">${esc(c.title)} | ${esc(B.cardBold)}${esc(B.cardLight)} ${fi + 1}</h2>
-      </div>
-      <p class="gc-article-title">${esc(f.title)}</p>
-      <p class="gc-article-lede">${esc(f.lede)}</p>
-      <p class="gc-article-body">${esc(f.body)}</p>
-    </div>
-
-    <div class="gc-device-slot">
-      <div class="gc-phone">
-        <div class="gc-phone-screen">
-          ${demoHtml(demoType, f)}
-        </div>
-      </div>
-    </div>`;
-}
-
-/* --- render -------------------------------------------------------------- */
-
-function html() {
-  switch (state.view) {
-    case 'menu':    return menu();
-    case 'cards':   return cards(state.cat);
-    case 'article': return article(state.cat, state.fact);
-    default:        return cover();
-  }
-}
-
-function setActiveNavigation(view) {
-  document.querySelectorAll('.gc-nav-link').forEach(button => {
-    const active = button.dataset.go === view ||
-      (button.dataset.go === 'menu' && ['cards', 'article'].includes(view));
-    button.classList.toggle('active', active);
-    if (active) button.setAttribute('aria-current', 'page');
-    else button.removeAttribute('aria-current');
-  });
-}
-
-function render() {
-  screen.innerHTML = html();
-  /* The veil calms the ripple wherever content is dense. */
-  veil.hidden = (state.view === 'cover' || state.view === 'menu');
-  setActiveNavigation(state.view);
-  gcInitRails(screen);
-  gcInitDemos(screen);
-}
-
-function go(next) {
-  gcNavigate(() => { state = next; render(); });
-}
-
-/* --- events -------------------------------------------------------------- */
-
-document.addEventListener('click', e => {
-  const t = e.target.closest('[data-go]');
-  if (!t) return;
-  const view = t.dataset.go;
-  go({
-    view,
-    cat:  t.dataset.cat  !== undefined ? +t.dataset.cat  : state.cat,
-    fact: t.dataset.fact !== undefined ? +t.dataset.fact : state.fact,
-  });
-});
-
-/* The wordmark is always a route home. */
-document.getElementById('wordmark').addEventListener('click',
-  () => go({ view: 'cover' }));
-
-gcOnKeys({
-  home: () => go({ view: 'cover' }),
-  back: () => {
-    if (state.view === 'article') go({ view: 'cards', cat: state.cat });
-    else if (state.view === 'cards') go({ view: 'menu' });
-    else if (state.view === 'menu') go({ view: 'cover' });
-  },
-  next: () => {
-    if (state.view === 'cover') return go({ view: 'menu' });
-    if (state.view === 'cards') return go({ view: 'article', cat: state.cat, fact: 0 });
-    if (state.view === 'article') {
-      const n = CATS[state.cat].facts.length;
-      if (state.fact + 1 < n) go({ view: 'article', cat: state.cat, fact: state.fact + 1 });
-    }
-  },
-  prev: () => {
-    if (state.view === 'article' && state.fact > 0)
-      return go({ view: 'article', cat: state.cat, fact: state.fact - 1 });
-    if (state.view === 'article') return go({ view: 'cards', cat: state.cat });
-    if (state.view === 'cards') return go({ view: 'menu' });
-    if (state.view === 'menu') return go({ view: 'cover' });
-  },
-});
-
-render();
+startApp({ content: window.CONTENT, demoHtml });
 </script>
 </body>
 </html>

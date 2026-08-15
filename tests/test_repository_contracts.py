@@ -15,14 +15,45 @@ class RepositoryContractsTest(unittest.TestCase):
         self.assertNotIn("badge.hidden", html)
 
     def test_cards_use_buttons(self):
-        html = (ROOT / "index.html").read_text(encoding="utf-8")
-        self.assertRegex(html, r'<button[^>]*class="gc-card')
-        self.assertNotIn('<article class="gc-card', html)
+        cards = (ROOT / "js/screens/cards.js").read_text(encoding="utf-8")
+        self.assertRegex(cards, r'<button[^>]*class="gc-card')
+        self.assertNotIn('<article class="gc-card', cards)
 
     def test_navigation_exposes_current_page(self):
+        app = (ROOT / "js/app.js").read_text(encoding="utf-8")
+        self.assertIn("function setActiveNavigation(view)", app)
+        self.assertIn("aria-current", app)
+
+    def test_screen_modules_exist(self):
+        required = [
+            "js/app.js",
+            "js/config.js",
+            "js/router.js",
+            "js/screens/cover.js",
+            "js/screens/catalog.js",
+            "js/screens/cards.js",
+            "js/screens/detail.js",
+        ]
+        for relative in required:
+            self.assertTrue((ROOT / relative).is_file(), relative)
+
+    def test_index_does_not_define_screen_templates(self):
         html = (ROOT / "index.html").read_text(encoding="utf-8")
-        self.assertIn("function setActiveNavigation(view)", html)
-        self.assertIn("aria-current", html)
+        for name in (
+            "function cover(",
+            "function menu(",
+            "function cards(",
+            "function article(",
+        ):
+            self.assertNotIn(name, html)
+
+    def test_shell_labels_come_from_config(self):
+        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        for label in ("DEMO CONSOLE", "Visão Geral", "Catálogo de Demos"):
+            self.assertNotIn(label, html)
+        app = (ROOT / "js/app.js").read_text(encoding="utf-8")
+        self.assertIn("APP_CONFIG.navigation", app)
+        self.assertIn("APP_CONFIG.status", app)
 
 
 if __name__ == "__main__":
