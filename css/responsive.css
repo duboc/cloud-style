@@ -1,0 +1,149 @@
+/* cloud-style responsive behavior: reduced motion and the mobile composition. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(gc-lede),  ::view-transition-new(gc-lede),
+  ::view-transition-old(gc-cta),   ::view-transition-new(gc-cta),
+  ::view-transition-old(gc-menu),  ::view-transition-new(gc-menu),
+  ::view-transition-old(gc-detail),::view-transition-new(gc-detail) {
+    animation-duration: 0.01s;
+    animation-timing-function: linear;
+  }
+  .gc-card--live { animation: none; }
+}
+
+/* =============================================================================
+   15. MOBILE — below 768px the slide becomes a scrolling column.
+
+   The single most important line here is `container-type: normal`. It takes
+   the stage out of container-query mode, so every `cqw` in the design falls
+   back to resolving against the small viewport: 1cqw becomes 1vw. Combined
+   with the token overrides in tokens.css, the whole system re-scales for a
+   phone without a single duplicated component rule.
+
+   Absolute positioning is unwound to `static` so elements simply stack.
+   ========================================================================== */
+@media (max-width: 767px) {
+
+  .gc-progress-bar {
+    height: 1.2vw;
+  }
+
+  .gc-supercloud,
+  .gc-ripple {
+    position: absolute;
+    right: -12vw;
+    top: -5vw;
+    bottom: auto;
+    width: 90vw;
+    height: 90vw;
+    opacity: 0.22;
+  }
+
+  .gc-cover {
+    height: auto;
+    min-height: 100%;
+    --top: -18vw;
+  }
+
+  .gc-stage {
+    container-type: normal;    /* <- cqw now means vw */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100svh;
+    aspect-ratio: auto;
+    padding: 6cqw 6cqw 8cqw;
+  }
+
+  /* Unwind desktop absolute positioning into normal flow. */
+  .gc-wordmark,
+  .gc-lede,
+  .gc-btn--cover,
+  .gc-menu,
+  .gc-detail,
+  .gc-device-slot,
+  .gc-footer-logo,
+  .gc-edition {
+    position: static;
+    inset: auto;
+    transform: none;
+  }
+
+  .gc-wordmark   { gap: 4cqw; }
+  .gc-lede       { margin-top: 12cqw; }
+  .gc-btn--cover { margin-top: 12cqw; align-self: flex-start; padding: 3cqw 7cqw; }
+  .gc-menu       { margin-top: 9cqw; width: 100%; }
+  .gc-detail     { margin-top: 7cqw; }
+
+  .gc-menu-item {
+    height: 15cqw;
+    padding-left: 2cqw;
+    padding-right: 4.5cqw;
+  }
+  .gc-menu-label { margin-left: 3.5cqw; }
+
+  .gc-icon-tile      { width: 11cqw; height: 11cqw; }
+  .gc-icon-tile--sm  { width: 10cqw; height: 10cqw; border-radius: 2.4cqw; }
+  .gc-icon-tile svg  { width: 6cqw; height: 6cqw; }
+
+  .gc-icon-btn       { width: 9.5cqw; height: 9.5cqw; }
+  .gc-icon-btn svg   { width: 5cqw; height: 5cqw; }
+  .gc-breadcrumb .gc-icon-btn { margin-right: 2.5cqw; }
+  .gc-breadcrumb-title { margin-left: 3cqw; }
+
+  /* Card rail: bleed to the screen edges and snap. */
+  .gc-rail {
+    margin: 6cqw -6cqw 0;
+    padding-inline: 6cqw;
+    scroll-padding-inline: 6cqw;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    cursor: auto;
+    touch-action: auto;
+  }
+  .gc-rail-track {
+    height: 86cqw;
+    gap: 4cqw;
+    padding-top: 1.5cqw;
+    padding-bottom: 3cqw;
+  }
+  .gc-card {
+    width: 60cqw;
+    scroll-snap-align: start;
+  }
+  .gc-card-head { padding: 3cqw 4cqw; }
+  .gc-card-body { padding: 4cqw; }
+
+  .gc-article-title { margin-top: 7cqw; }
+  .gc-article-lede  { margin-top: 4cqw; }
+  .gc-article-body  { margin-top: 3cqw; }
+
+  /* Device mock becomes a full-width block below the prose. */
+  .gc-device-slot {
+    margin-top: 10cqw;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 5cqw;
+  }
+  .gc-phone {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 22.5 / 47;
+    border-width: 1.5cqw;
+  }
+
+  /* Footer sits at the bottom of the scroll, logo and edition side by side. */
+  .gc-footer {
+    display: flex;
+    align-items: baseline;
+    gap: 5cqw;
+    margin-top: auto;
+    padding-top: 12cqw;
+  }
+}
+
+/* On desktop the footer wrapper must not create a box — its two children are
+   positioned absolutely against the stage. `display: contents` removes it. */
+@media (min-width: 768px) {
+  .gc-footer { display: contents; }
+}

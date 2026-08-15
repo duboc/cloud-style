@@ -50,658 +50,6 @@ svg { display: block; }
 .gc-no-scrollbar::-webkit-scrollbar { display: none; }
 
 /* -----------------------------------------------------------------------------
-   2. THE STAGE
-   -------------------------------------------------------------------------
-
-   .gc-cover  Full-viewport white canvas. Owns the three geometry variables
-              that position the background ripple. It is NOT the container —
-              it just centres the stage and lets the ripple bleed past it.
-
-   .gc-stage  The 16:9 slide. This is the container query root: every size
-              inside it is a % of ITS width, so the design scales as one
-              unit and never reflows on desktop.
-
-   Geometry:
-     --s    stage width  = min(100vw, 177.78vh)   (177.78 = 16/9 × 100)
-     --h    stage height = --s × 9/16
-     --top  distance from viewport top to the stage's top edge
-   -------------------------------------------------------------------------- */
-.gc-cover {
-  --s: min(100vw, 177.78vh);
-  --h: calc(var(--s) * 9 / 16);
-  --top: calc((100vh - var(--h)) / 2);
-
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: var(--gc-surface);
-}
-
-.gc-stage {
-  container-type: inline-size;   /* <- makes 1cqw == 1% of stage width */
-  position: relative;
-  z-index: 10;
-  width: min(100vw, 177.78vh);
-  aspect-ratio: 16 / 9;
-  font-family: var(--gc-font-display);
-}
-
-/* A white veil that mutes the ripple on content-dense screens.
-   Sits between the ripple (z 0) and the stage (z 10). */
-.gc-veil {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  pointer-events: none;
-  background: rgba(255, 255, 255, 0.7);
-}
-
-/* -----------------------------------------------------------------------------
-   3. RIPPLE — six concentric circles, bottom-right, bleeding off-canvas.
-
-   All six share one centre point, expressed against the STAGE geometry so
-   the ripple stays locked to the slide rather than to the window:
-     x = 18% of stage width in from the right edge
-     y = 71% of the way down the stage
-/* -----------------------------------------------------------------------------
-   3. BRAND FOUNDATIONS — Super Cloud Graphic & Progress Bar.
-   Official Google Cloud presentation visual identity elements.
-   -------------------------------------------------------------------------- */
-.gc-progress-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 0.4cqw;
-  background: linear-gradient(90deg,
-    var(--gc-google-red) 0%,
-    var(--gc-google-yellow) 25%,
-    var(--gc-google-green) 50%,
-    var(--gc-google-blue) 100%
-  );
-  z-index: 25;
-}
-
-.gc-supercloud,
-.gc-ripple {
-  position: absolute;
-  right: -4cqw;
-  bottom: -6cqw;
-  width: 54cqw;
-  height: 54cqw;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.95;
-}
-
-.gc-supercloud img,
-.gc-ripple img,
-.gc-supercloud svg,
-.gc-ripple svg {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* -----------------------------------------------------------------------------
-   4. WORDMARK & APPLICATION HEADER BAR
-   -------------------------------------------------------------------------- */
-.gc-wordmark {
-  position: absolute;
-  left: var(--gc-gutter);
-  top: 3.2cqw;
-  width: 44cqw;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0;
-  z-index: 10;
-}
-
-.gc-wordmark-brand {
-  display: flex;
-  align-items: center;
-  gap: 1cqw;
-}
-
-.gc-wordmark h1,
-.gc-wordmark .gc-wordmark-text {
-  margin: 0;
-  font-family: var(--gc-font-display);
-  font-size: var(--gc-text-wordmark);
-  line-height: 1;
-  letter-spacing: -0.025em;
-  color: var(--gc-ink-900);
-  cursor: pointer;
-  user-select: none;
-  white-space: nowrap;
-}
-
-.gc-wordmark b   { font-weight: 700; }
-.gc-wordmark span { font-weight: 400; }
-
-.gc-status-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4cqw;
-  padding: 0.25cqw 0.7cqw;
-  border-radius: var(--gc-radius-pill);
-  background: rgba(52, 168, 83, 0.1);
-  border: 0.1cqw solid rgba(52, 168, 83, 0.25);
-  color: #1e8e3e;
-  font-family: var(--gc-font-display);
-  font-size: var(--gc-text-caption);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-
-.gc-status-dot {
-  width: 0.5cqw;
-  height: 0.5cqw;
-  border-radius: 50%;
-  background: #34a853;
-  box-shadow: 0 0 0.4cqw #34a853;
-}
-
-.gc-app-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.3cqw;
-  background: rgba(241, 243, 244, 0.85);
-  padding: 0.2cqw;
-  border-radius: var(--gc-radius-pill);
-  border: 0.1cqw solid var(--gc-border-soft);
-  white-space: nowrap;
-}
-
-.gc-nav-link {
-  padding: 0.3cqw 0.9cqw;
-  border-radius: var(--gc-radius-pill);
-  font-family: var(--gc-font-display);
-  font-size: 0.85cqw;
-  font-weight: 600;
-  color: var(--gc-ink-700);
-  background: transparent;
-  transition: all var(--gc-dur-hover);
-}
-
-.gc-nav-link:hover {
-  color: var(--gc-blue-action);
-  background: rgba(255, 255, 255, 0.6);
-}
-
-.gc-nav-link.active {
-  background: #ffffff;
-  color: var(--gc-blue-action);
-  box-shadow: 0 0.1cqw 0.4cqw rgba(0, 0, 0, 0.08);
-}
-
-/* -----------------------------------------------------------------------------
-   5. HERO DASHBOARD CARD & METRICS BAR (COVER SCREEN)
-   -------------------------------------------------------------------------- */
-.gc-hero-card {
-  position: absolute;
-  left: var(--gc-gutter-text);
-  top: 12.5cqw;
-  width: 44cqw;
-  padding: 2cqw;
-  border-radius: 1.2cqw;
-  background: #ffffff;
-  border: 0.1cqw solid rgba(66, 133, 244, 0.2);
-  box-shadow: 0 0.4cqw 1.6cqw rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 0.9cqw;
-}
-
-.gc-hero-tag {
-  align-self: flex-start;
-  padding: 0.3cqw 0.9cqw;
-  border-radius: var(--gc-radius-pill);
-  background: var(--gc-blue-tint-100);
-  color: var(--gc-blue-brand);
-  font-family: var(--gc-font-display);
-  font-size: var(--gc-text-caption);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.gc-hero-copy h2.is-strong {
-  margin: 0;
-  font-family: var(--gc-font-text);
-  font-size: 2cqw;
-  font-weight: 700;
-  line-height: 1.22;
-  color: var(--gc-ink-900);
-}
-
-.gc-hero-copy p.is-soft {
-  margin: 0.4cqw 0 0;
-  font-family: var(--gc-font-text);
-  font-size: 1.15cqw;
-  font-weight: 400;
-  line-height: 1.35;
-  color: var(--gc-ink-600);
-}
-
-.gc-hero-actions {
-  display: flex;
-  align-items: center;
-  gap: 1cqw;
-  margin-top: 0.4cqw;
-}
-
-.gc-btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.9cqw 1.8cqw;
-  border-radius: var(--gc-radius-pill);
-  background: var(--gc-blue-tint-050);
-  border: 0.1cqw solid rgba(66, 133, 244, 0.25);
-  color: var(--gc-blue-action);
-  font-family: var(--gc-font-display);
-  font-size: var(--gc-text-body-lg);
-  font-weight: 600;
-  transition: all var(--gc-dur-hover);
-}
-
-.gc-btn-secondary:hover {
-  background: var(--gc-blue-tint-100);
-  border-color: var(--gc-blue-action);
-}
-
-/* Metrics Dashboard Bar */
-.gc-metrics-bar {
-  position: absolute;
-  left: var(--gc-gutter-text);
-  top: 36.5cqw;
-  width: 44cqw;
-  display: flex;
-  align-items: center;
-  gap: 1cqw;
-}
-
-.gc-metric-tile {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 0.8cqw 1cqw;
-  border-radius: 0.9cqw;
-  background: rgba(255, 255, 255, 0.95);
-  border: 0.1cqw solid rgba(66, 133, 244, 0.16);
-  box-shadow: 0 0.2cqw 0.6cqw rgba(0, 0, 0, 0.03);
-}
-
-.gc-metric-val {
-  font-family: var(--gc-font-display);
-  font-size: 1.6cqw;
-  font-weight: 700;
-  color: var(--gc-blue-action);
-  line-height: 1;
-}
-
-.gc-metric-lbl {
-  margin-top: 0.3cqw;
-  font-family: var(--gc-font-text);
-  font-size: var(--gc-text-caption);
-  font-weight: 500;
-  color: var(--gc-ink-600);
-  line-height: 1.2;
-}
-
-/* -----------------------------------------------------------------------------
-   6. BUTTONS
-   -------------------------------------------------------------------------- */
-
-/* Primary pill. On the cover it is absolutely placed; elsewhere drop
-   .gc-btn--cover and position it yourself. */
-.gc-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8cqw;
-  border-radius: var(--gc-radius-pill);
-  background: var(--gc-blue-action);
-  color: #fff;
-  font-family: var(--gc-font-display);
-  font-size: var(--gc-text-body-lg);
-  font-weight: 500;
-  padding: 0.9cqw 2.4cqw;
-  box-shadow: 0 0.2cqw 0.6cqw rgba(26, 115, 232, 0.25);
-  transition: background-color var(--gc-dur-hover), transform var(--gc-dur-hover), box-shadow var(--gc-dur-hover);
-}
-.gc-btn:hover {
-  background: var(--gc-blue-action-hover);
-  transform: translateY(-0.15cqw);
-  box-shadow: 0 0.4cqw 1cqw rgba(26, 115, 232, 0.35);
-}
-.gc-btn:active { transform: translateY(0); }
-
-.gc-btn--cover {
-  position: absolute;
-  left: var(--gc-gutter-text);
-  top: 36cqw;
-}
-
-/* Circular icon button — the blue navigation affordances (home, back). */
-.gc-icon-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 2.7cqw;
-  height: 2.7cqw;
-  border-radius: 50%;
-  background: var(--gc-blue-action);
-  color: #fff;
-  box-shadow: 0 0.2cqw 0.6cqw rgba(26, 115, 232, 0.28);
-  transition: background-color var(--gc-dur-hover), transform var(--gc-dur-hover);
-}
-.gc-icon-btn:hover {
-  background: var(--gc-blue-action-hover);
-  transform: scale(1.06);
-}
-.gc-icon-btn svg { width: 1.4cqw; height: 1.4cqw; }
-
-/* Neutral variant — secondary controls on white. */
-.gc-icon-btn--neutral {
-  background: var(--gc-surface-sunken);
-  color: var(--gc-ink-550);
-  box-shadow: none;
-}
-.gc-icon-btn--neutral:hover { background: var(--gc-surface-hover); }
-.gc-icon-btn--neutral:disabled {
-  color: var(--gc-ink-400);
-  background: var(--gc-surface-sunken);
-  cursor: not-allowed;
-}
-
-/* -----------------------------------------------------------------------------
-   7. ICON TILE — rounded-square holder for a category glyph.
-   Used in menu rows and in breadcrumbs so the same category reads as the
-   same object across screens.
-   -------------------------------------------------------------------------- */
-.gc-icon-tile {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 3.3cqw;
-  height: 3.3cqw;
-  border-radius: var(--gc-radius-tile);
-  background: var(--gc-blue-tint-100);
-  color: var(--gc-blue-glyph);
-}
-.gc-icon-tile svg { width: 1.8cqw; height: 1.8cqw; }
-
-/* Slightly smaller variant used inside the breadcrumb bar. */
-.gc-icon-tile--sm { width: 2.9cqw; height: 2.9cqw; border-radius: 0.7cqw; }
-
-/* -----------------------------------------------------------------------------
-   8. MENU — the interactive component category catalog on index screen.
-   -------------------------------------------------------------------------- */
-.gc-menu-header {
-  position: absolute;
-  left: var(--gc-gutter);
-  top: 12.5cqw;
-  width: 44cqw;
-}
-
-.gc-menu-title {
-  margin: 0;
-  font-family: var(--gc-font-text);
-  font-size: 1.4cqw;
-  font-weight: 700;
-  color: var(--gc-ink-900);
-}
-
-.gc-menu-subtitle {
-  margin: 0.3cqw 0 0;
-  font-family: var(--gc-font-text);
-  font-size: 0.95cqw;
-  font-weight: 400;
-  color: var(--gc-ink-600);
-}
-
-.gc-menu {
-  position: absolute;
-  left: var(--gc-gutter);
-  top: 18cqw;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9cqw;
-  width: 44cqw;
-}
-
-.gc-menu-item {
-  display: flex;
-  align-items: center;
-  height: 4.6cqw;
-  padding-left: 0.6cqw;
-  padding-right: 1.4cqw;
-  border-radius: var(--gc-radius-row);
-  background: #ffffff;
-  border: 0.1cqw solid rgba(66, 133, 244, 0.16);
-  box-shadow: 0 0.2cqw 0.8cqw rgba(0, 0, 0, 0.03);
-  text-align: left;
-  transition: background-color var(--gc-dur-hover), border-color var(--gc-dur-hover), transform var(--gc-dur-hover), box-shadow var(--gc-dur-hover);
-}
-.gc-menu-item:hover {
-  background: var(--gc-blue-tint-050);
-  border-color: var(--gc-blue-brand);
-  transform: translateX(0.4cqw);
-  box-shadow: 0 0.4cqw 1.2cqw rgba(26, 115, 232, 0.14);
-}
-
-.gc-menu-label {
-  flex: 1;
-  margin-left: 1.2cqw;
-  font-family: var(--gc-font-text);
-  font-size: var(--gc-text-label);
-  font-weight: 600;
-  line-height: 1.25;
-  color: var(--gc-ink-800);
-}
-
-.gc-menu-badge {
-  margin-left: 0.8cqw;
-  padding: 0.25cqw 0.7cqw;
-  border-radius: var(--gc-radius-pill);
-  background: rgba(26, 115, 232, 0.08);
-  font-family: var(--gc-font-display);
-  font-size: 0.85cqw;
-  font-weight: 600;
-  color: var(--gc-blue-brand);
-}
-
-.gc-menu-num {
-  margin-left: 1cqw;
-  padding: 0.25cqw 0.8cqw;
-  border-radius: var(--gc-radius-pill);
-  background: var(--gc-blue-tint-100);
-  font-family: var(--gc-font-display);
-  font-size: var(--gc-text-body-sm);
-  font-weight: 700;
-  color: var(--gc-blue-action);
-}
-
-/* -----------------------------------------------------------------------------
-   9. DETAIL BLOCK — breadcrumb + whatever the screen is about.
-   Shares one anchor position so screens cross-fade in place.
-   -------------------------------------------------------------------------- */
-.gc-detail {
-  position: absolute;
-  left: var(--gc-gutter);
-  right: 1cqw;
-  top: 13cqw;
-  display: flex;
-  flex-direction: column;
-}
-
-.gc-breadcrumb {
-  display: flex;
-  align-items: center;
-}
-.gc-breadcrumb .gc-icon-btn { margin-right: 0.9cqw; }
-
-.gc-breadcrumb-title {
-  flex: 1;
-  margin: 0 0 0 1cqw;
-  font-family: var(--gc-font-text);
-  font-size: var(--gc-text-heading);
-  font-weight: 700;
-  line-height: 1.25;
-  color: var(--gc-blue-brand);
-}
-
-.gc-breadcrumb-num {
-  margin-left: 1cqw;
-  font-family: var(--gc-font-text);
-  font-size: var(--gc-text-heading);
-  font-weight: 700;
-  color: var(--gc-blue-numeral);
-}
-
-/* -----------------------------------------------------------------------------
-   10. FACT CARDS — a horizontal rail of drag-scrollable cards.
-   Desktop: overflow visible, dragged by JS. Mobile: native snap scrolling.
-   -------------------------------------------------------------------------- */
-.gc-rail {
-  position: relative;
-  z-index: 10;
-  margin-top: 2.7cqw;
-  overflow: visible;
-  cursor: grab;
-  touch-action: pan-x;
-  user-select: none;
-}
-.gc-rail:active { cursor: grabbing; }
-
-.gc-rail-track {
-  display: flex;
-  width: max-content;
-  height: 26cqw;
-  gap: var(--gc-gap-card);
-  padding-top: 0.4cqw;
-  padding-bottom: 1.6cqw;
-  will-change: transform;
-}
-
-.gc-card {
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  width: 18cqw;
-  height: 100%;
-  overflow: hidden;
-  border-radius: var(--gc-radius-card);
-  background: #ffffff;
-  border: 0.1cqw solid var(--gc-border-soft);
-  box-shadow: 0 0.3cqw 1cqw rgba(0, 0, 0, 0.05);
-  text-align: left;
-  transition: transform var(--gc-dur-hover), box-shadow var(--gc-dur-hover), border-color var(--gc-dur-hover);
-}
-.gc-card:hover {
-  transform: translateY(-0.3cqw);
-  box-shadow: 0 0.6cqw 1.6cqw rgba(26, 115, 232, 0.16);
-  border-color: var(--gc-blue-outline);
-}
-
-.gc-card-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1cqw 1.3cqw;
-  background: var(--gc-blue-header);
-  color: #fff;
-  font-size: var(--gc-text-card-head);
-  line-height: 1;
-}
-.gc-card-head b    { font-weight: 700; }
-.gc-card-head span { font-weight: 400; }
-.gc-card-head .gc-card-num { font-weight: 600; }
-
-.gc-card-body {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  padding: 1.3cqw;
-}
-
-.gc-card-title {
-  margin: 0;
-  font-family: var(--gc-font-text);
-  font-size: var(--gc-text-body-lg);
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--gc-ink-600);
-}
-
-/* Tag chip pinned to the bottom of the card regardless of title length. */
-.gc-tag {
-  margin-top: auto;
-  align-self: flex-start;
-  border-radius: var(--gc-radius-pill);
-  background: var(--gc-blue-header);
-  color: #fff;
-  font-size: var(--gc-text-caption);
-  font-weight: 600;
-  line-height: 1;
-  padding: 0.35cqw 0.8cqw;
-}
-
-/* Pulsing ring — marks a card that opens a live, interactive demo. */
-.gc-card--live { animation: gc-pulse 1.1s ease-in-out infinite; }
-
-@keyframes gc-pulse {
-  0%, 100% { box-shadow: 0 0 0 0.12cqw rgba(53, 118, 232, 0.60),
-                         0 0.4cqw 1.0cqw rgba(53, 118, 232, 0.30); }
-  50%      { box-shadow: 0 0 0 0.20cqw rgba(53, 118, 232, 0.90),
-                         0 0.5cqw 1.4cqw rgba(53, 118, 232, 0.50); }
-}
-
-/* -----------------------------------------------------------------------------
-   11. ARTICLE — the long-form read on a single fact.
-   Constrained to --gc-measure so the line length stays readable while the
-   right half of the stage holds the device mock.
-   -------------------------------------------------------------------------- */
-.gc-article-title {
-  margin: 3cqw 0 0;
-  max-width: var(--gc-measure);
-  font-family: var(--gc-font-text);
-  font-size: var(--gc-text-title);
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--gc-ink-600);
-}
-
-.gc-article-lede {
-  margin: 1.6cqw 0 0;
-  max-width: var(--gc-measure);
-  font-family: var(--gc-font-text);
-  font-size: var(--gc-text-body-lg);
-  font-weight: 600;
-  line-height: 1.4;
-  color: var(--gc-blue-brand);
-}
-
-.gc-article-body {
-  margin: 1.2cqw 0 0;
-  max-width: var(--gc-measure);
-  font-family: var(--gc-font-text);
-  font-size: var(--gc-text-body);
-  font-weight: 400;
-  line-height: 1.7;
-  color: var(--gc-ink-500);
-}
-
-/* -----------------------------------------------------------------------------
    12. DEVICE MOCK — the phone that holds a live demo or screenshot.
    A second container so the demo inside it can also size in cqw, relative
    to the phone rather than the slide.
@@ -785,7 +133,7 @@ svg { display: block; }
 .gc-demo-status-dot {
   width: 2cqw;
   height: 2cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   background: var(--gc-google-green);
   display: inline-block;
   box-shadow: 0 0 0.8cqw var(--gc-google-green);
@@ -795,7 +143,7 @@ svg { display: block; }
   font-size: 2.6cqw;
   font-weight: 600;
   padding: 0.8cqw 2.2cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   background: var(--gc-blue-tint-100);
   color: var(--gc-blue-action);
 }
@@ -868,7 +216,7 @@ svg { display: block; }
   font-size: 2.4cqw;
   font-weight: 600;
   padding: 0.6cqw 2cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   backdrop-filter: blur(0.5cqw);
   display: flex;
   align-items: center;
@@ -885,7 +233,7 @@ svg { display: block; }
 .gc-camera-shutter {
   width: 14cqw;
   height: 14cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   background: var(--gc-blue-action);
   border: 0.8cqw solid #ffffff;
   box-shadow: 0 0 0 0.6cqw var(--gc-blue-brand), 0 1cqw 3cqw rgba(26,115,232,0.35);
@@ -960,7 +308,7 @@ svg { display: block; }
   font-size: 2.2cqw;
   font-weight: 700;
   padding: 0.5cqw 1.8cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   letter-spacing: 0.05em;
   display: flex;
   align-items: center;
@@ -969,7 +317,7 @@ svg { display: block; }
 .gc-video-badge-dot {
   width: 1.4cqw;
   height: 1.4cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   background: #fff;
   animation: gcWavePulse 1.2s infinite;
 }
@@ -980,7 +328,7 @@ svg { display: block; }
 .gc-video-play-btn {
   width: 12cqw;
   height: 12cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   background: rgba(255,255,255,0.92);
   color: var(--gc-blue-action);
   border: none;
@@ -1010,7 +358,7 @@ svg { display: block; }
   width: 100%;
   height: 0.9cqw;
   background: rgba(255,255,255,0.3);
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   cursor: pointer;
   overflow: hidden;
 }
@@ -1018,7 +366,7 @@ svg { display: block; }
   height: 100%;
   width: 38%;
   background: var(--gc-blue-header);
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   transition: width 0.2s;
 }
 .gc-video-time-row {
@@ -1056,7 +404,7 @@ svg { display: block; }
   font-family: var(--gc-font-display);
   font-size: 2.4cqw;
   padding: 0.4cqw 1.6cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   background: var(--gc-blue-tint-100);
   color: var(--gc-blue-action);
   font-weight: 600;
@@ -1118,7 +466,7 @@ svg { display: block; }
   font-size: 2.5cqw;
   font-weight: 500;
   padding: 1.2cqw 2.8cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   background: var(--gc-blue-tint-50);
   color: var(--gc-blue-action);
   border: 0.2cqw solid var(--gc-blue-brand);
@@ -1141,7 +489,7 @@ svg { display: block; }
 .gc-chat-input {
   flex: 1;
   border: 0.25cqw solid #e0e0e0;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   padding: 2cqw 3.5cqw;
   font-size: 2.8cqw;
   font-family: var(--gc-font-text);
@@ -1155,7 +503,7 @@ svg { display: block; }
 .gc-chat-btn-send {
   width: 8.5cqw;
   height: 8.5cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   background: var(--gc-blue-action);
   color: #fff;
   border: none;
@@ -1221,7 +569,7 @@ svg { display: block; }
   gap: 1.8cqw;
   width: 100%;
   padding: 2.4cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   background: var(--gc-blue-action);
   color: #fff;
   font-family: var(--gc-font-display);
@@ -1252,7 +600,7 @@ svg { display: block; }
 .gc-security-shield-icon {
   width: 12cqw;
   height: 12cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   background: var(--gc-blue-action);
   color: #fff;
   display: flex;
@@ -1279,7 +627,7 @@ svg { display: block; }
 .gc-security-check-icon {
   width: 4.5cqw;
   height: 4.5cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   background: var(--gc-google-green);
   color: #fff;
   display: flex;
@@ -1316,7 +664,7 @@ svg { display: block; }
   font-size: 2.8cqw;
   font-weight: 600;
   padding: 2cqw 4cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   border: none;
   cursor: pointer;
   transition: background 0.15s;
@@ -1327,14 +675,14 @@ svg { display: block; }
   display: flex;
   background: #f1f3f4;
   padding: 0.6cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   width: 100%;
 }
 .gc-segmented-btn {
   flex: 1;
   text-align: center;
   padding: 1.6cqw 0;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   font-size: 2.6cqw;
   font-weight: 600;
   color: var(--gc-ink-600);
@@ -1362,7 +710,7 @@ svg { display: block; }
   position: relative;
   width: 9cqw;
   height: 5cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   background: #dadce0;
   cursor: pointer;
   transition: background 0.2s;
@@ -1376,7 +724,7 @@ svg { display: block; }
   left: 0.6cqw;
   width: 4cqw;
   height: 4cqw;
-  border-radius: 999px;
+  border-radius: var(--gc-radius-pill);
   background: #ffffff;
   box-shadow: 0 0.4cqw 1cqw rgba(0,0,0,0.2);
   transition: transform 0.2s;
@@ -1411,37 +759,6 @@ svg { display: block; }
 }
 
 /* -----------------------------------------------------------------------------
-   13. FOOTER — Google Cloud lockup + edition line.
-   The logotype is per-letter spans; the colours are brand-exact.
-   -------------------------------------------------------------------------- */
-.gc-footer-logo {
-  position: absolute;
-  left: var(--gc-gutter-text);
-  bottom: 3.2cqw;
-  display: flex;
-  align-items: baseline;
-  font-size: var(--gc-text-logo);
-  font-weight: 500;
-}
-.gc-footer-logo .gc-cloud { margin-left: 0.7cqw; color: var(--gc-ink-500); }
-
-.gc-g1 { color: var(--gc-google-blue); }
-.gc-o1 { color: var(--gc-google-red); }
-.gc-o2 { color: var(--gc-google-yellow); }
-.gc-g2 { color: var(--gc-google-blue); }
-.gc-l  { color: var(--gc-google-green); }
-.gc-e  { color: var(--gc-google-red); }
-
-.gc-edition {
-  position: absolute;
-  left: 18.7cqw;
-  bottom: 3.35cqw;
-  font-size: var(--gc-text-meta);
-  font-weight: 400;
-  color: var(--gc-ink-500);
-}
-
-/* -----------------------------------------------------------------------------
    14. VIEW TRANSITIONS
    Named regions cross-fade independently so the wordmark and ripple stay
    rock-steady while only the changing content animates.
@@ -1468,153 +785,4 @@ svg { display: block; }
 ::view-transition-new(gc-menu),
 ::view-transition-new(gc-detail) {
   animation: gc-vt-enter var(--gc-dur-enter) var(--gc-ease-enter) both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(gc-lede),  ::view-transition-new(gc-lede),
-  ::view-transition-old(gc-cta),   ::view-transition-new(gc-cta),
-  ::view-transition-old(gc-menu),  ::view-transition-new(gc-menu),
-  ::view-transition-old(gc-detail),::view-transition-new(gc-detail) {
-    animation-duration: 0.01s;
-    animation-timing-function: linear;
-  }
-  .gc-card--live { animation: none; }
-}
-
-/* =============================================================================
-   15. MOBILE — below 768px the slide becomes a scrolling column.
-
-   The single most important line here is `container-type: normal`. It takes
-   the stage out of container-query mode, so every `cqw` in the design falls
-   back to resolving against the small viewport: 1cqw becomes 1vw. Combined
-   with the token overrides in tokens.css, the whole system re-scales for a
-   phone without a single duplicated component rule.
-
-   Absolute positioning is unwound to `static` so elements simply stack.
-   ========================================================================== */
-@media (max-width: 767px) {
-
-  .gc-progress-bar {
-    height: 1.2vw;
-  }
-
-  .gc-supercloud,
-  .gc-ripple {
-    position: absolute;
-    right: -12vw;
-    top: -5vw;
-    bottom: auto;
-    width: 90vw;
-    height: 90vw;
-    opacity: 0.22;
-  }
-
-  .gc-cover {
-    height: auto;
-    min-height: 100%;
-    --top: -18vw;
-  }
-
-  .gc-stage {
-    container-type: normal;    /* <- cqw now means vw */
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-height: 100svh;
-    aspect-ratio: auto;
-    padding: 6cqw 6cqw 8cqw;
-  }
-
-  /* Unwind desktop absolute positioning into normal flow. */
-  .gc-wordmark,
-  .gc-lede,
-  .gc-btn--cover,
-  .gc-menu,
-  .gc-detail,
-  .gc-device-slot,
-  .gc-footer-logo,
-  .gc-edition {
-    position: static;
-    inset: auto;
-    transform: none;
-  }
-
-  .gc-wordmark   { gap: 4cqw; }
-  .gc-lede       { margin-top: 12cqw; }
-  .gc-btn--cover { margin-top: 12cqw; align-self: flex-start; padding: 3cqw 7cqw; }
-  .gc-menu       { margin-top: 9cqw; width: 100%; }
-  .gc-detail     { margin-top: 7cqw; }
-
-  .gc-menu-item {
-    height: 15cqw;
-    padding-left: 2cqw;
-    padding-right: 4.5cqw;
-  }
-  .gc-menu-label { margin-left: 3.5cqw; }
-
-  .gc-icon-tile      { width: 11cqw; height: 11cqw; }
-  .gc-icon-tile--sm  { width: 10cqw; height: 10cqw; border-radius: 2.4cqw; }
-  .gc-icon-tile svg  { width: 6cqw; height: 6cqw; }
-
-  .gc-icon-btn       { width: 9.5cqw; height: 9.5cqw; }
-  .gc-icon-btn svg   { width: 5cqw; height: 5cqw; }
-  .gc-breadcrumb .gc-icon-btn { margin-right: 2.5cqw; }
-  .gc-breadcrumb-title { margin-left: 3cqw; }
-
-  /* Card rail: bleed to the screen edges and snap. */
-  .gc-rail {
-    margin: 6cqw -6cqw 0;
-    padding-inline: 6cqw;
-    scroll-padding-inline: 6cqw;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    cursor: auto;
-    touch-action: auto;
-  }
-  .gc-rail-track {
-    height: 86cqw;
-    gap: 4cqw;
-    padding-top: 1.5cqw;
-    padding-bottom: 3cqw;
-  }
-  .gc-card {
-    width: 60cqw;
-    scroll-snap-align: start;
-  }
-  .gc-card-head { padding: 3cqw 4cqw; }
-  .gc-card-body { padding: 4cqw; }
-
-  .gc-article-title { margin-top: 7cqw; }
-  .gc-article-lede  { margin-top: 4cqw; }
-  .gc-article-body  { margin-top: 3cqw; }
-
-  /* Device mock becomes a full-width block below the prose. */
-  .gc-device-slot {
-    margin-top: 10cqw;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    gap: 5cqw;
-  }
-  .gc-phone {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 22.5 / 47;
-    border-width: 1.5cqw;
-  }
-
-  /* Footer sits at the bottom of the scroll, logo and edition side by side. */
-  .gc-footer {
-    display: flex;
-    align-items: baseline;
-    gap: 5cqw;
-    margin-top: auto;
-    padding-top: 12cqw;
-  }
-}
-
-/* On desktop the footer wrapper must not create a box — its two children are
-   positioned absolutely against the stage. `display: contents` removes it. */
-@media (min-width: 768px) {
-  .gc-footer { display: contents; }
 }

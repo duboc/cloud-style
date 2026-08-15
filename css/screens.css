@@ -1,0 +1,461 @@
+/* cloud-style screens: cover, catalog, cards, and detail compositions. */
+   5. HERO DASHBOARD CARD & METRICS BAR (COVER SCREEN)
+   -------------------------------------------------------------------------- */
+.gc-hero-card {
+  position: absolute;
+  left: var(--gc-gutter-text);
+  top: 12.5cqw;
+  width: 44cqw;
+  padding: 2cqw;
+  border-radius: 1.2cqw;
+  background: #ffffff;
+  border: 0.1cqw solid rgba(66, 133, 244, 0.2);
+  box-shadow: 0 0.4cqw 1.6cqw rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9cqw;
+}
+
+.gc-hero-tag {
+  align-self: flex-start;
+  padding: 0.3cqw 0.9cqw;
+  border-radius: var(--gc-radius-pill);
+  background: var(--gc-blue-tint-100);
+  color: var(--gc-blue-brand);
+  font-family: var(--gc-font-display);
+  font-size: var(--gc-text-caption);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.gc-hero-copy h2.is-strong {
+  margin: 0;
+  font-family: var(--gc-font-text);
+  font-size: 2cqw;
+  font-weight: 700;
+  line-height: 1.22;
+  color: var(--gc-ink-900);
+}
+
+.gc-hero-copy p.is-soft {
+  margin: 0.4cqw 0 0;
+  font-family: var(--gc-font-text);
+  font-size: 1.15cqw;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--gc-ink-600);
+}
+
+.gc-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+  margin-top: 0.4cqw;
+}
+
+.gc-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9cqw 1.8cqw;
+  border-radius: var(--gc-radius-pill);
+  background: var(--gc-blue-tint-050);
+  border: 0.1cqw solid rgba(66, 133, 244, 0.25);
+  color: var(--gc-blue-action);
+  font-family: var(--gc-font-display);
+  font-size: var(--gc-text-body-lg);
+  font-weight: 600;
+  transition: all var(--gc-dur-hover);
+}
+
+.gc-btn-secondary:hover {
+  background: var(--gc-blue-tint-100);
+  border-color: var(--gc-blue-action);
+}
+
+/* Metrics Dashboard Bar */
+.gc-metrics-bar {
+  position: absolute;
+  left: var(--gc-gutter-text);
+  top: 36.5cqw;
+  width: 44cqw;
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+}
+
+.gc-metric-tile {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.8cqw 1cqw;
+  border-radius: 0.9cqw;
+  background: rgba(255, 255, 255, 0.95);
+  border: 0.1cqw solid rgba(66, 133, 244, 0.16);
+  box-shadow: 0 0.2cqw 0.6cqw rgba(0, 0, 0, 0.03);
+}
+
+.gc-metric-val {
+  font-family: var(--gc-font-display);
+  font-size: 1.6cqw;
+  font-weight: 700;
+  color: var(--gc-blue-action);
+  line-height: 1;
+}
+
+.gc-metric-lbl {
+  margin-top: 0.3cqw;
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-caption);
+  font-weight: 500;
+  color: var(--gc-ink-600);
+  line-height: 1.2;
+}
+
+/* -----------------------------------------------------------------------------
+   6. BUTTONS
+   -------------------------------------------------------------------------- */
+
+/* Primary pill. On the cover it is absolutely placed; elsewhere drop
+   .gc-btn--cover and position it yourself. */
+.gc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8cqw;
+  border-radius: var(--gc-radius-pill);
+  background: var(--gc-blue-action);
+  color: #fff;
+  font-family: var(--gc-font-display);
+  font-size: var(--gc-text-body-lg);
+  font-weight: 500;
+  padding: 0.9cqw 2.4cqw;
+  box-shadow: 0 0.2cqw 0.6cqw rgba(26, 115, 232, 0.25);
+  transition: background-color var(--gc-dur-hover), transform var(--gc-dur-hover), box-shadow var(--gc-dur-hover);
+}
+.gc-btn:hover {
+  background: var(--gc-blue-action-hover);
+  transform: translateY(-0.15cqw);
+  box-shadow: 0 0.4cqw 1cqw rgba(26, 115, 232, 0.35);
+}
+.gc-btn:active { transform: translateY(0); }
+
+.gc-btn--cover {
+  position: absolute;
+  left: var(--gc-gutter-text);
+  top: 36cqw;
+}
+
+/* Circular icon button — the blue navigation affordances (home, back). */
+.gc-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.7cqw;
+  height: 2.7cqw;
+  border-radius: 50%;
+  background: var(--gc-blue-action);
+  color: #fff;
+  box-shadow: 0 0.2cqw 0.6cqw rgba(26, 115, 232, 0.28);
+  transition: background-color var(--gc-dur-hover), transform var(--gc-dur-hover);
+}
+.gc-icon-btn:hover {
+  background: var(--gc-blue-action-hover);
+  transform: scale(1.06);
+}
+.gc-icon-btn svg { width: 1.4cqw; height: 1.4cqw; }
+
+/* Neutral variant — secondary controls on white. */
+.gc-icon-btn--neutral {
+  background: var(--gc-surface-sunken);
+  color: var(--gc-ink-550);
+  box-shadow: none;
+}
+.gc-icon-btn--neutral:hover { background: var(--gc-surface-hover); }
+.gc-icon-btn--neutral:disabled {
+  color: var(--gc-ink-400);
+  background: var(--gc-surface-sunken);
+  cursor: not-allowed;
+}
+
+/* -----------------------------------------------------------------------------
+   7. ICON TILE — rounded-square holder for a category glyph.
+   Used in menu rows and in breadcrumbs so the same category reads as the
+   same object across screens.
+   -------------------------------------------------------------------------- */
+.gc-icon-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 3.3cqw;
+  height: 3.3cqw;
+  border-radius: var(--gc-radius-tile);
+  background: var(--gc-blue-tint-100);
+  color: var(--gc-blue-glyph);
+}
+.gc-icon-tile svg { width: 1.8cqw; height: 1.8cqw; }
+
+/* Slightly smaller variant used inside the breadcrumb bar. */
+.gc-icon-tile--sm { width: 2.9cqw; height: 2.9cqw; border-radius: 0.7cqw; }
+
+/* -----------------------------------------------------------------------------
+   8. MENU — the interactive component category catalog on index screen.
+   -------------------------------------------------------------------------- */
+.gc-menu-header {
+  position: absolute;
+  left: var(--gc-gutter);
+  top: 12.5cqw;
+  width: 44cqw;
+}
+
+.gc-menu-title {
+  margin: 0;
+  font-family: var(--gc-font-text);
+  font-size: 1.4cqw;
+  font-weight: 700;
+  color: var(--gc-ink-900);
+}
+
+.gc-menu-subtitle {
+  margin: 0.3cqw 0 0;
+  font-family: var(--gc-font-text);
+  font-size: 0.95cqw;
+  font-weight: 400;
+  color: var(--gc-ink-600);
+}
+
+.gc-menu {
+  position: absolute;
+  left: var(--gc-gutter);
+  top: 18cqw;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9cqw;
+  width: 44cqw;
+}
+
+.gc-menu-item {
+  display: flex;
+  align-items: center;
+  height: 4.6cqw;
+  padding-left: 0.6cqw;
+  padding-right: 1.4cqw;
+  border-radius: var(--gc-radius-row);
+  background: #ffffff;
+  border: 0.1cqw solid rgba(66, 133, 244, 0.16);
+  box-shadow: 0 0.2cqw 0.8cqw rgba(0, 0, 0, 0.03);
+  text-align: left;
+  transition: background-color var(--gc-dur-hover), border-color var(--gc-dur-hover), transform var(--gc-dur-hover), box-shadow var(--gc-dur-hover);
+}
+.gc-menu-item:hover {
+  background: var(--gc-blue-tint-050);
+  border-color: var(--gc-blue-brand);
+  transform: translateX(0.4cqw);
+  box-shadow: 0 0.4cqw 1.2cqw rgba(26, 115, 232, 0.14);
+}
+
+.gc-menu-label {
+  flex: 1;
+  margin-left: 1.2cqw;
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-label);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--gc-ink-800);
+}
+
+.gc-menu-badge {
+  margin-left: 0.8cqw;
+  padding: 0.25cqw 0.7cqw;
+  border-radius: var(--gc-radius-pill);
+  background: rgba(26, 115, 232, 0.08);
+  font-family: var(--gc-font-display);
+  font-size: 0.85cqw;
+  font-weight: 600;
+  color: var(--gc-blue-brand);
+}
+
+.gc-menu-num {
+  margin-left: 1cqw;
+  padding: 0.25cqw 0.8cqw;
+  border-radius: var(--gc-radius-pill);
+  background: var(--gc-blue-tint-100);
+  font-family: var(--gc-font-display);
+  font-size: var(--gc-text-body-sm);
+  font-weight: 700;
+  color: var(--gc-blue-action);
+}
+
+/* -----------------------------------------------------------------------------
+   9. DETAIL BLOCK — breadcrumb + whatever the screen is about.
+   Shares one anchor position so screens cross-fade in place.
+   -------------------------------------------------------------------------- */
+.gc-detail {
+  position: absolute;
+  left: var(--gc-gutter);
+  right: 1cqw;
+  top: 13cqw;
+  display: flex;
+  flex-direction: column;
+}
+
+.gc-breadcrumb {
+  display: flex;
+  align-items: center;
+}
+.gc-breadcrumb .gc-icon-btn { margin-right: 0.9cqw; }
+
+.gc-breadcrumb-title {
+  flex: 1;
+  margin: 0 0 0 1cqw;
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-heading);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--gc-blue-brand);
+}
+
+.gc-breadcrumb-num {
+  margin-left: 1cqw;
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-heading);
+  font-weight: 700;
+  color: var(--gc-blue-numeral);
+}
+
+/* -----------------------------------------------------------------------------
+   10. FACT CARDS — a horizontal rail of drag-scrollable cards.
+   Desktop: overflow visible, dragged by JS. Mobile: native snap scrolling.
+   -------------------------------------------------------------------------- */
+.gc-rail {
+  position: relative;
+  z-index: 10;
+  margin-top: 2.7cqw;
+  overflow: visible;
+  cursor: grab;
+  touch-action: pan-x;
+  user-select: none;
+}
+.gc-rail:active { cursor: grabbing; }
+
+.gc-rail-track {
+  display: flex;
+  width: max-content;
+  height: 26cqw;
+  gap: var(--gc-gap-card);
+  padding-top: 0.4cqw;
+  padding-bottom: 1.6cqw;
+  will-change: transform;
+}
+
+.gc-card {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 18cqw;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--gc-radius-card);
+  background: #ffffff;
+  border: 0.1cqw solid var(--gc-border-soft);
+  box-shadow: 0 0.3cqw 1cqw rgba(0, 0, 0, 0.05);
+  text-align: left;
+  transition: transform var(--gc-dur-hover), box-shadow var(--gc-dur-hover), border-color var(--gc-dur-hover);
+}
+.gc-card:hover {
+  transform: translateY(-0.3cqw);
+  box-shadow: 0 0.6cqw 1.6cqw rgba(26, 115, 232, 0.16);
+  border-color: var(--gc-blue-outline);
+}
+
+.gc-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1cqw 1.3cqw;
+  background: var(--gc-blue-header);
+  color: #fff;
+  font-size: var(--gc-text-card-head);
+  line-height: 1;
+}
+.gc-card-head b    { font-weight: 700; }
+.gc-card-head span { font-weight: 400; }
+.gc-card-head .gc-card-num { font-weight: 600; }
+
+.gc-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.3cqw;
+}
+
+.gc-card-title {
+  margin: 0;
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-body-lg);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--gc-ink-600);
+}
+
+/* Tag chip pinned to the bottom of the card regardless of title length. */
+.gc-tag {
+  margin-top: auto;
+  align-self: flex-start;
+  border-radius: var(--gc-radius-pill);
+  background: var(--gc-blue-header);
+  color: #fff;
+  font-size: var(--gc-text-caption);
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.35cqw 0.8cqw;
+}
+
+/* Pulsing ring — marks a card that opens a live, interactive demo. */
+.gc-card--live { animation: gc-pulse 1.1s ease-in-out infinite; }
+
+@keyframes gc-pulse {
+  0%, 100% { box-shadow: 0 0 0 0.12cqw rgba(53, 118, 232, 0.60),
+                         0 0.4cqw 1.0cqw rgba(53, 118, 232, 0.30); }
+  50%      { box-shadow: 0 0 0 0.20cqw rgba(53, 118, 232, 0.90),
+                         0 0.5cqw 1.4cqw rgba(53, 118, 232, 0.50); }
+}
+
+/* -----------------------------------------------------------------------------
+   11. ARTICLE — the long-form read on a single fact.
+   Constrained to --gc-measure so the line length stays readable while the
+   right half of the stage holds the device mock.
+   -------------------------------------------------------------------------- */
+.gc-article-title {
+  margin: 3cqw 0 0;
+  max-width: var(--gc-measure);
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-title);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--gc-ink-600);
+}
+
+.gc-article-lede {
+  margin: 1.6cqw 0 0;
+  max-width: var(--gc-measure);
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-body-lg);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--gc-blue-brand);
+}
+
+.gc-article-body {
+  margin: 1.2cqw 0 0;
+  max-width: var(--gc-measure);
+  font-family: var(--gc-font-text);
+  font-size: var(--gc-text-body);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--gc-ink-500);
+}
+
+/* -----------------------------------------------------------------------------

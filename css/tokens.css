@@ -74,6 +74,15 @@
   --gc-border:         #e5e7eb; /* default hairline                         */
   --gc-border-soft:    hsla(140, 1%, 46%, 0.16); /* card hairline           */
 
+  /* Semantic roles used by app-like screens. Keep components independent
+     from palette names so a rebrand remains a token-only change. */
+  --gc-color-action:      var(--gc-blue-action);
+  --gc-color-selection:   var(--gc-blue-tint-090);
+  --gc-color-information: var(--gc-blue-brand);
+  --gc-color-live:        var(--gc-success);
+  --gc-color-border:      var(--gc-border);
+  --gc-color-canvas:      var(--gc-surface-alt);
+
   /* ---------------------------------------------------------------------
      GOOGLE LOGOTYPE — exact brand values. Do not substitute.
      Letter order in "Google": G-o-o-g-l-e

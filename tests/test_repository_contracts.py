@@ -55,6 +55,15 @@ class RepositoryContractsTest(unittest.TestCase):
         self.assertIn("APP_CONFIG.navigation", app)
         self.assertIn("APP_CONFIG.status", app)
 
+    def test_visual_css_is_split(self):
+        for relative in ("css/shell.css", "css/screens.css", "css/responsive.css"):
+            self.assertTrue((ROOT / relative).is_file(), relative)
+
+    def test_google_sans_roles_are_mandatory(self):
+        tokens = (ROOT / "css/tokens.css").read_text(encoding="utf-8")
+        self.assertIn('--gc-font-display: "Google Sans"', tokens)
+        self.assertIn('--gc-font-text:    "Google Sans Text"', tokens)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,228 @@
+/* cloud-style shell: stage, identity, application chrome, and footer. */
+   2. THE STAGE
+   -------------------------------------------------------------------------
+
+   .gc-cover  Full-viewport white canvas. Owns the three geometry variables
+              that position the background ripple. It is NOT the container —
+              it just centres the stage and lets the ripple bleed past it.
+
+   .gc-stage  The 16:9 slide. This is the container query root: every size
+              inside it is a % of ITS width, so the design scales as one
+              unit and never reflows on desktop.
+
+   Geometry:
+     --s    stage width  = min(100vw, 177.78vh)   (177.78 = 16/9 × 100)
+     --h    stage height = --s × 9/16
+     --top  distance from viewport top to the stage's top edge
+   -------------------------------------------------------------------------- */
+.gc-cover {
+  --s: min(100vw, 177.78vh);
+  --h: calc(var(--s) * 9 / 16);
+  --top: calc((100vh - var(--h)) / 2);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--gc-surface);
+}
+
+.gc-stage {
+  container-type: inline-size;   /* <- makes 1cqw == 1% of stage width */
+  position: relative;
+  z-index: 10;
+  width: min(100vw, 177.78vh);
+  aspect-ratio: 16 / 9;
+  font-family: var(--gc-font-display);
+}
+
+/* A white veil that mutes the ripple on content-dense screens.
+   Sits between the ripple (z 0) and the stage (z 10). */
+.gc-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* -----------------------------------------------------------------------------
+   3. RIPPLE — six concentric circles, bottom-right, bleeding off-canvas.
+
+   All six share one centre point, expressed against the STAGE geometry so
+   the ripple stays locked to the slide rather than to the window:
+     x = 18% of stage width in from the right edge
+     y = 71% of the way down the stage
+/* -----------------------------------------------------------------------------
+   3. BRAND FOUNDATIONS — Super Cloud Graphic & Progress Bar.
+   Official Google Cloud presentation visual identity elements.
+   -------------------------------------------------------------------------- */
+.gc-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.4cqw;
+  background: linear-gradient(90deg,
+    var(--gc-google-red) 0%,
+    var(--gc-google-yellow) 25%,
+    var(--gc-google-green) 50%,
+    var(--gc-google-blue) 100%
+  );
+  z-index: 25;
+}
+
+.gc-supercloud,
+.gc-ripple {
+  position: absolute;
+  right: -4cqw;
+  bottom: -6cqw;
+  width: 54cqw;
+  height: 54cqw;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+.gc-supercloud img,
+.gc-ripple img,
+.gc-supercloud svg,
+.gc-ripple svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* -----------------------------------------------------------------------------
+   4. WORDMARK & APPLICATION HEADER BAR
+   -------------------------------------------------------------------------- */
+.gc-wordmark {
+  position: absolute;
+  left: var(--gc-gutter);
+  top: 3.2cqw;
+  width: 44cqw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.gc-wordmark-brand {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+}
+
+.gc-wordmark h1,
+.gc-wordmark .gc-wordmark-text {
+  margin: 0;
+  font-family: var(--gc-font-display);
+  font-size: var(--gc-text-wordmark);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--gc-ink-900);
+  cursor: pointer;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.gc-wordmark b   { font-weight: 700; }
+.gc-wordmark span { font-weight: 400; }
+
+.gc-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4cqw;
+  padding: 0.25cqw 0.7cqw;
+  border-radius: var(--gc-radius-pill);
+  background: rgba(52, 168, 83, 0.1);
+  border: 0.1cqw solid rgba(52, 168, 83, 0.25);
+  color: #1e8e3e;
+  font-family: var(--gc-font-display);
+  font-size: var(--gc-text-caption);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.gc-status-dot {
+  width: 0.5cqw;
+  height: 0.5cqw;
+  border-radius: 50%;
+  background: #34a853;
+  box-shadow: 0 0 0.4cqw #34a853;
+}
+
+.gc-app-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.3cqw;
+  background: rgba(241, 243, 244, 0.85);
+  padding: 0.2cqw;
+  border-radius: var(--gc-radius-pill);
+  border: 0.1cqw solid var(--gc-border-soft);
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.gc-nav-link {
+  padding: 0.3cqw 0.9cqw;
+  border-radius: var(--gc-radius-pill);
+  font-family: var(--gc-font-display);
+  font-size: 0.85cqw;
+  font-weight: 600;
+  color: var(--gc-ink-700);
+  background: transparent;
+  transition: all var(--gc-dur-hover);
+}
+
+.gc-nav-link:hover {
+  color: var(--gc-blue-action);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.gc-nav-link.active {
+  background: #ffffff;
+  color: var(--gc-blue-action);
+  box-shadow: 0 0.1cqw 0.4cqw rgba(0, 0, 0, 0.08);
+}
+
+/* -----------------------------------------------------------------------------
+   13. FOOTER — Google Cloud lockup + edition line.
+   The logotype is per-letter spans; the colours are brand-exact.
+   -------------------------------------------------------------------------- */
+.gc-footer-logo {
+  position: absolute;
+  left: var(--gc-gutter-text);
+  bottom: 3.2cqw;
+  display: flex;
+  align-items: baseline;
+  font-size: var(--gc-text-logo);
+  font-weight: 500;
+}
+.gc-footer-logo .gc-cloud { margin-left: 0.7cqw; color: var(--gc-ink-500); }
+
+.gc-g1 { color: var(--gc-google-blue); }
+.gc-o1 { color: var(--gc-google-red); }
+.gc-o2 { color: var(--gc-google-yellow); }
+.gc-g2 { color: var(--gc-google-blue); }
+.gc-l  { color: var(--gc-google-green); }
+.gc-e  { color: var(--gc-google-red); }
+
+.gc-edition {
+  position: absolute;
+  left: 18.7cqw;
+  bottom: 3.35cqw;
+  font-size: var(--gc-text-meta);
+  font-weight: 400;
+  color: var(--gc-ink-500);
+}
+
+/* -----------------------------------------------------------------------------
