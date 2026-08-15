@@ -112,9 +112,13 @@ python -m playwright install chromium
 python -m http.server 8000
 # In another terminal:
 python tools/verify.py
+# Refresh the maintained screen and component catalog:
+python tools/verify.py --update-screenshots
 ```
 
 Writes fresh screenshots to `docs/screenshots/` and fails on console errors.
+The manifest in `tools/screenshot_manifest.py` covers desktop, mobile, 4K,
+navigation states, component states, and keyboard focus.
 
 ---
 

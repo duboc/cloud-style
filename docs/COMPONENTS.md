@@ -6,6 +6,10 @@ right. Class prefix is `gc-` throughout.
 Defined in [`css/cloud-style.css`](../css/cloud-style.css). Sizes come from
 [`css/tokens.css`](../css/tokens.css).
 
+The maintained component gallery is [`templates/06-screen-catalog.html`](../templates/06-screen-catalog.html).
+Run `python tools/verify.py --update-screenshots` to refresh its canonical
+rest, focus, status, and Console-surface captures.
+
 ---
 
 ## Page shell

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cloud Style component catalog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/cloud-style.css">
+  <link rel="stylesheet" href="../css/shell.css">
+  <link rel="stylesheet" href="../css/screens.css">
+  <style>
+    body { overflow: auto; background: var(--gc-color-canvas); }
+    .gc-stage { min-height: 56.25cqw; padding: 4cqw; }
+    .catalog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2cqw; }
+    .catalog-section { padding: 2cqw; }
+    .catalog-section h2 { margin: 0 0 1.5cqw; font: 500 1.5cqw/1.2 var(--gc-font-display); }
+    .catalog-row { display: flex; align-items: center; gap: 1cqw; flex-wrap: wrap; }
+    .catalog-field { padding: 0.8cqw 1cqw; border: 0.1cqw solid var(--gc-color-border); border-radius: 0.6cqw; font: 1cqw var(--gc-font-text); }
+    .catalog-alert { padding: 1cqw; border-radius: 0.7cqw; font: 1cqw var(--gc-font-text); }
+    .catalog-alert--success { color: var(--gc-success); background: var(--gc-success-bg); }
+    .catalog-alert--warning { color: var(--gc-warning); background: var(--gc-warning-bg); }
+    .catalog-alert--error { color: var(--gc-error); background: var(--gc-error-bg); }
+  </style>
+</head>
+<body>
+  <main class="gc-stage">
+    <div class="catalog-grid">
+      <section id="buttons" class="catalog-section gc-console-surface">
+        <h2>Actions</h2>
+        <div class="catalog-row">
+          <button id="primary" class="gc-btn gc-primary-action">Run demo</button>
+          <button class="gc-btn-secondary">Preview</button>
+          <button class="gc-icon-btn" aria-label="Back">&larr;</button>
+        </div>
+      </section>
+      <section id="status" class="catalog-section gc-console-surface">
+        <h2>Status and feedback</h2>
+        <div class="catalog-row">
+          <span class="gc-status-chip"><span class="gc-status-dot"></span>Live</span>
+          <span class="catalog-alert catalog-alert--success">Success</span>
+          <span class="catalog-alert catalog-alert--warning">Warning</span>
+          <span class="catalog-alert catalog-alert--error">Error</span>
+        </div>
+      </section>
+      <section id="surface" class="catalog-section gc-console-surface">
+        <h2>Console surface</h2>
+        <div class="catalog-row">
+          <span class="gc-icon-tile">AI</span>
+          <input class="catalog-field" value="projects/demo-lab" aria-label="Project">
+          <span class="gc-tag">Selected</span>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

@@ -20,6 +20,9 @@ Requires:
 import argparse
 import pathlib
 import sys
+from urllib.parse import urlsplit
+
+from screenshot_manifest import SCREENSHOT_CASES
 
 try:
     from playwright.sync_api import sync_playwright
@@ -38,6 +41,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", default="http://localhost:8000/index.html")
     ap.add_argument("--out", default="docs/screenshots")
+    ap.add_argument("--update-screenshots", action="store_true",
+                    help="write every canonical manifest capture to docs/screenshots")
     args = ap.parse_args()
 
     out = pathlib.Path(args.out)
@@ -166,6 +171,45 @@ def main() -> int:
         ) != "none":
             problems.append("[reduced-motion] live-card pulse is still active")
         reduced.close()
+
+        if args.update_screenshots:
+            parsed = urlsplit(args.url)
+            origin = f"{parsed.scheme}://{parsed.netloc}"
+            for case in SCREENSHOT_CASES:
+                width, height = case["viewport"]
+                capture = browser.new_page(
+                    viewport={"width": width, "height": height},
+                    is_mobile=case.get("mobile", False),
+                    has_touch=case.get("mobile", False),
+                )
+                watch(capture, case["name"])
+                capture.goto(origin + case["path"], wait_until="networkidle", timeout=60_000)
+                capture.wait_for_timeout(500)
+                setup = case.get("setup")
+                if setup in {"catalog", "cards", "detail"}:
+                    capture.locator(".gc-primary-action").click()
+                if setup in {"cards", "detail"}:
+                    capture.locator(".gc-menu-item").first.click()
+                if setup == "detail":
+                    card = capture.locator(".gc-card").first
+                    card.focus()
+                    capture.keyboard.press("Enter")
+                if setup == "focus-primary":
+                    capture.locator("#primary").focus()
+                capture.wait_for_timeout(300)
+                target = capture.locator(case["selector"])
+                if target.count() != 1:
+                    problems.append(
+                        f"[{case['name']}] selector {case['selector']} matched {target.count()} elements"
+                    )
+                else:
+                    filename = out / f"{case['name']}.png"
+                    target.screenshot(path=str(filename))
+                    if not filename.exists() or filename.stat().st_size == 0:
+                        problems.append(f"[{case['name']}] capture is empty")
+                    else:
+                        print(f"  {filename.name}")
+                capture.close()
 
         browser.close()
 

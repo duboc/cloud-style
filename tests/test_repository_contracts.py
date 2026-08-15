@@ -74,6 +74,16 @@ class RepositoryContractsTest(unittest.TestCase):
         self.assertIn("gc-console-surface", cards)
         self.assertIn("gc-console-surface", detail)
 
+    def test_screenshot_manifest_has_required_viewports(self):
+        from tools.screenshot_manifest import SCREENSHOT_CASES
+
+        names = {case["name"] for case in SCREENSHOT_CASES}
+        self.assertIn("hybrid-cover-desktop", names)
+        self.assertIn("hybrid-cover-mobile", names)
+        self.assertIn("hybrid-cover-4k", names)
+        self.assertIn("component-buttons-rest", names)
+        self.assertIn("component-buttons-focus", names)
+
 
 if __name__ == "__main__":
     unittest.main()
