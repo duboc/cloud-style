@@ -115,3 +115,22 @@
 .gc-dialog { width: min(90vw, 30rem); padding: var(--gc-space-6); border: 0; border-radius: var(--gc-radius-lg); box-shadow: var(--gc-shadow-dialog); }
 .gc-dialog::backdrop { background: rgba(32, 33, 36, 0.42); backdrop-filter: blur(2px); }
 .gc-dialog p { color: var(--gc-ink-muted); }
+
+.gc-component-body { padding: var(--gc-space-10); background: var(--gc-surface-canvas); }
+.gc-component-page { width: min(100%, 72rem); margin: 0 auto; }
+.gc-component-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--gc-space-8); margin-bottom: var(--gc-space-8); }
+.gc-component-header p:last-child { margin-bottom: 0; color: var(--gc-ink-muted); }
+.gc-component-section { display: grid; grid-template-columns: minmax(15rem, 0.7fr) minmax(0, 1.6fr); gap: var(--gc-space-8); padding: var(--gc-space-8); border: 1px solid var(--gc-border-subtle); border-bottom: 0; background: var(--gc-surface); }
+.gc-component-section:first-of-type { border-radius: var(--gc-radius-lg) var(--gc-radius-lg) 0 0; }
+.gc-component-section:last-child { border-bottom: 1px solid var(--gc-border-subtle); border-radius: 0 0 var(--gc-radius-lg) var(--gc-radius-lg); }
+.gc-component-section h2 { margin-bottom: 0; }
+.gc-component-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gc-space-3); }
+.gc-component-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gc-space-5); }
+.gc-state-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--gc-space-3); }
+.gc-state-card { display: flex; min-height: 11rem; flex-direction: column; align-items: center; justify-content: center; padding: var(--gc-space-4); border: 1px solid var(--gc-border-subtle); border-radius: var(--gc-radius-md); text-align: center; }
+.gc-state-card h3 { margin: var(--gc-space-3) 0 var(--gc-space-1); }
+.gc-state-card p { margin: 0; color: var(--gc-ink-muted); font-size: var(--gc-text-xs); }
+.gc-state-card .gc-state-symbol { width: 2rem; height: 2rem; margin: 0; font-size: var(--gc-text-base); }
+.gc-state-card--success .gc-state-symbol { color: var(--gc-success); background: var(--gc-success-bg); }
+.gc-state-card--warning .gc-state-symbol { color: var(--gc-warning); background: var(--gc-warning-bg); }
+.gc-state-card--error .gc-state-symbol { color: var(--gc-error); background: var(--gc-error-bg); }

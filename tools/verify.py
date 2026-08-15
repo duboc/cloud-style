@@ -4,6 +4,9 @@
 import argparse
 import pathlib
 import sys
+from urllib.parse import urlsplit
+
+from screenshot_manifest import SCREENSHOT_CASES
 
 try:
     from playwright.sync_api import sync_playwright
@@ -17,6 +20,17 @@ except ImportError:
 
 DESKTOP = {"width": 1280, "height": 720}
 MOBILE = {"width": 390, "height": 844}
+EXPECTED_SCREENSHOTS = {
+    "app-overview-desktop",
+    "app-overview-4k",
+    "app-overview-mobile",
+    "app-resources-desktop",
+    "app-resources-mobile",
+    "app-resource-detail-desktop",
+    "app-activity-states",
+    "app-settings-validation",
+    "components-app-surfaces",
+}
 
 
 def add_watchers(page, label: str, problems: list[str]) -> None:
@@ -161,6 +175,64 @@ def check_layout_and_accessibility(browser, url: str, problems: list[str]) -> No
     reduced.close()
 
 
+def check_screenshot_contract(problems: list[str]) -> None:
+    names = {case["name"] for case in SCREENSHOT_CASES}
+    if names != EXPECTED_SCREENSHOTS:
+        problems.append(f"[screenshots] manifest names differ: {sorted(names ^ EXPECTED_SCREENSHOTS)}")
+    for case in SCREENSHOT_CASES:
+        if not case["path"].startswith("/"):
+            problems.append(f"[screenshots] {case['name']} path must start with /")
+        if len(case["viewport"]) != 2 or min(case["viewport"]) <= 0:
+            problems.append(f"[screenshots] {case['name']} has an invalid viewport")
+        if not case.get("selector"):
+            problems.append(f"[screenshots] {case['name']} has no selector")
+
+
+def capture_screenshots(browser, url: str, out: pathlib.Path, problems: list[str]) -> None:
+    parsed = urlsplit(url)
+    origin = f"{parsed.scheme}://{parsed.netloc}"
+    for case in SCREENSHOT_CASES:
+        width, height = case["viewport"]
+        mobile = case.get("mobile", False)
+        page = browser.new_page(
+            viewport={"width": width, "height": height},
+            is_mobile=mobile,
+            has_touch=mobile,
+            reduced_motion="reduce",
+        )
+        add_watchers(page, case["name"], problems)
+        page.goto(origin + case["path"], wait_until="networkidle", timeout=60_000)
+        page.wait_for_timeout(250)
+
+        if case.get("setup") == "settings-invalid":
+            page.locator('[name="displayName"]').fill("")
+            page.locator('[data-settings-form] [type="submit"]').click()
+
+        target = page.locator(case["selector"])
+        if target.count() != 1:
+            problems.append(
+                f"[{case['name']}] selector {case['selector']!r} matched {target.count()} elements"
+            )
+        else:
+            filename = out / f"{case['name']}.png"
+            if case.get("full_page"):
+                page.screenshot(path=str(filename), full_page=True)
+            else:
+                target.screenshot(path=str(filename))
+            if not filename.exists() or filename.stat().st_size == 0:
+                problems.append(f"[{case['name']}] capture is empty")
+            else:
+                print(f"  {filename.name}")
+        page.close()
+
+
+def check_screenshot_files(out: pathlib.Path, problems: list[str]) -> None:
+    for name in EXPECTED_SCREENSHOTS:
+        filename = out / f"{name}.png"
+        if not filename.exists() or filename.stat().st_size == 0:
+            problems.append(f"[screenshots] missing {filename.name}; run with --update-screenshots")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", default="http://127.0.0.1:8000/index.html")
@@ -171,7 +243,17 @@ def main() -> int:
     args = parser.parse_args()
 
     pathlib.Path(args.out).mkdir(parents=True, exist_ok=True)
+    out = pathlib.Path(args.out)
     problems: list[str] = []
+    check_screenshot_contract(problems)
+
+    if args.check_screenshot_contract:
+        if problems:
+            for problem in problems:
+                print(problem, file=sys.stderr)
+            return 1
+        print("OK - canonical screenshot contract passed")
+        return 0
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
@@ -179,7 +261,12 @@ def main() -> int:
         check_resource_workflow(browser, args.url, problems)
         check_activity_and_settings(browser, args.url, problems)
         check_layout_and_accessibility(browser, args.url, problems)
+        if args.update_screenshots:
+            capture_screenshots(browser, args.url, out, problems)
         browser.close()
+
+    if not args.runtime_only and not args.update_screenshots:
+        check_screenshot_files(out, problems)
 
     if problems:
         print("\nFAILED:", file=sys.stderr)

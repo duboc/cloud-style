@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Application surfaces · Cloud Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Google+Sans+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/cloud-style.css">
+  <link rel="stylesheet" href="css/shell.css">
+  <link rel="stylesheet" href="css/screens.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="gc-component-body">
+  <div class="gc-google-signature" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <main class="gc-component-page">
+    <header class="gc-component-header">
+      <div><p class="gc-eyebrow">Cloud Style foundation</p><h1>Application surfaces</h1><p>Canonical states for visual review and agent verification.</p></div>
+      <a class="gc-button gc-button--primary" href="index.html#/overview">Open sample app</a>
+    </header>
+
+    <section class="gc-component-section" aria-labelledby="actions-heading">
+      <div><p class="gc-eyebrow">Actions and status</p><h2 id="actions-heading">Controls use one clear hierarchy</h2></div>
+      <div class="gc-component-row">
+        <button class="gc-button gc-button--primary">Save changes</button>
+        <button class="gc-button gc-button--secondary">Cancel</button>
+        <a class="gc-text-link" href="#actions-heading">View details</a>
+        <span class="gc-status gc-status--success">Healthy</span>
+        <span class="gc-status gc-status--warning">Attention</span>
+        <span class="gc-status gc-status--error">Error</span>
+      </div>
+    </section>
+
+    <section class="gc-component-section" aria-labelledby="fields-heading">
+      <div><p class="gc-eyebrow">Forms</p><h2 id="fields-heading">Labels, help, and validation stay together</h2></div>
+      <div class="gc-component-form-grid">
+        <label class="gc-field"><span>Display name</span><input value="Google Cloud App" aria-describedby="component-field-help"><small id="component-field-help">Shown in application chrome.</small></label>
+        <label class="gc-field"><span>Project</span><input value="sample-project" aria-invalid="true" aria-describedby="component-field-error"><small class="gc-field-error" id="component-field-error">Choose a connected project.</small></label>
+      </div>
+    </section>
+
+    <section class="gc-component-section" id="activity-states" aria-labelledby="states-heading">
+      <div><p class="gc-eyebrow">Application feedback</p><h2 id="states-heading">States remain calm and actionable</h2></div>
+      <div class="gc-state-grid">
+        <article class="gc-state-card"><span class="gc-spinner" aria-hidden="true"></span><h3>Loading</h3><p>Retrieving activity.</p></article>
+        <article class="gc-state-card"><span class="gc-state-symbol" aria-hidden="true">○</span><h3>Empty</h3><p>No activity yet.</p></article>
+        <article class="gc-state-card gc-state-card--success"><span class="gc-state-symbol" aria-hidden="true">✓</span><h3>Success</h3><p>Changes completed.</p></article>
+        <article class="gc-state-card gc-state-card--warning"><span class="gc-state-symbol" aria-hidden="true">!</span><h3>Warning</h3><p>Review one operation.</p></article>
+        <article class="gc-state-card gc-state-card--error"><span class="gc-state-symbol" aria-hidden="true">!</span><h3>Error</h3><p>Try the request again.</p></article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

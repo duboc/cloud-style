@@ -64,6 +64,10 @@
   .gc-form-actions { flex-direction: column-reverse; }
   .gc-form-actions .gc-button { width: 100%; }
   .gc-dialog .gc-form-actions { flex-direction: column-reverse; }
+  .gc-component-body { padding: var(--gc-space-6) var(--gc-space-4); }
+  .gc-component-header, .gc-component-section { grid-template-columns: 1fr; flex-direction: column; gap: var(--gc-space-5); }
+  .gc-component-section { padding: var(--gc-space-5); }
+  .gc-component-form-grid, .gc-state-grid { grid-template-columns: 1fr; }
 }
 
 @media (min-width: 1800px) {

@@ -1,18 +1,13 @@
-"""Canonical visual evidence for Cloud Style screens and components."""
+"""Canonical visual evidence for the neutral Google Cloud application."""
 
 SCREENSHOT_CASES = [
-    {"name": "hybrid-cover-desktop", "path": "/index.html", "viewport": (1280, 720), "selector": ".gc-stage"},
-    {"name": "hybrid-cover-mobile", "path": "/index.html", "viewport": (390, 844), "selector": ".gc-stage", "mobile": True},
-    {"name": "hybrid-cover-4k", "path": "/index.html", "viewport": (3840, 2160), "selector": ".gc-stage"},
-    {"name": "hybrid-catalog-desktop", "path": "/index.html", "viewport": (1280, 720), "selector": ".gc-stage", "setup": "catalog"},
-    {"name": "hybrid-cards-desktop", "path": "/index.html", "viewport": (1280, 720), "selector": ".gc-stage", "setup": "cards"},
-    {"name": "hybrid-detail-desktop", "path": "/index.html", "viewport": (1280, 720), "selector": ".gc-stage", "setup": "detail"},
-    {"name": "component-buttons-rest", "path": "/templates/06-screen-catalog.html", "viewport": (1280, 720), "selector": "#buttons"},
-    {"name": "component-buttons-focus", "path": "/templates/06-screen-catalog.html", "viewport": (1280, 720), "selector": "#buttons", "setup": "focus-primary"},
-    {"name": "component-status", "path": "/templates/06-screen-catalog.html", "viewport": (1280, 720), "selector": "#status"},
-    {"name": "component-console-surface", "path": "/templates/06-screen-catalog.html", "viewport": (1280, 720), "selector": "#surface"},
-    {"name": "demo-image-studio-desktop", "path": "/index.html", "viewport": (1280, 720), "selector": ".gc-tool-surface", "setup": "image-studio"},
-    {"name": "demo-image-studio-mobile", "path": "/index.html", "viewport": (390, 844), "selector": ".gc-tool-surface", "setup": "image-studio", "mobile": True},
-    {"name": "component-image-studio-compare", "path": "/index.html", "viewport": (1280, 720), "selector": ".gc-tool-surface", "setup": "image-studio-compare"},
-    {"name": "component-image-studio-approved", "path": "/index.html", "viewport": (1280, 720), "selector": ".gc-tool-surface", "setup": "image-studio-approved"},
+    {"name": "app-overview-desktop", "path": "/index.html#/overview", "viewport": (1280, 720), "selector": ".gc-app", "full_page": True},
+    {"name": "app-overview-4k", "path": "/index.html#/overview", "viewport": (3840, 2160), "selector": ".gc-app", "full_page": True},
+    {"name": "app-overview-mobile", "path": "/index.html#/overview", "viewport": (390, 844), "selector": ".gc-app", "full_page": True, "mobile": True},
+    {"name": "app-resources-desktop", "path": "/index.html#/resources", "viewport": (1280, 720), "selector": ".gc-app", "full_page": True},
+    {"name": "app-resources-mobile", "path": "/index.html#/resources", "viewport": (390, 844), "selector": ".gc-app", "full_page": True, "mobile": True},
+    {"name": "app-resource-detail-desktop", "path": "/index.html#/resources/edge-gateway", "viewport": (1280, 720), "selector": ".gc-app", "full_page": True},
+    {"name": "app-activity-states", "path": "/components.html", "viewport": (1280, 900), "selector": "#activity-states"},
+    {"name": "app-settings-validation", "path": "/index.html#/settings", "viewport": (1280, 720), "selector": ".gc-app", "full_page": True, "setup": "settings-invalid"},
+    {"name": "components-app-surfaces", "path": "/components.html", "viewport": (1280, 900), "selector": ".gc-component-page", "full_page": True},
 ]

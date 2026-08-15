@@ -113,6 +113,22 @@ class RepositoryContractsTest(unittest.TestCase):
             self.assertNotIn(primitive, styles)
         self.assertNotIn("aspect-ratio: 16 / 9", styles)
 
+    def test_screenshot_manifest_covers_application_and_components(self):
+        from tools.screenshot_manifest import SCREENSHOT_CASES
+
+        names = {case["name"] for case in SCREENSHOT_CASES}
+        self.assertEqual(names, {
+            "app-overview-desktop",
+            "app-overview-4k",
+            "app-overview-mobile",
+            "app-resources-desktop",
+            "app-resources-mobile",
+            "app-resource-detail-desktop",
+            "app-activity-states",
+            "app-settings-validation",
+            "components-app-surfaces",
+        })
+
 
 if __name__ == "__main__":
     unittest.main()
