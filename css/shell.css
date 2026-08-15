@@ -1,5 +1,6 @@
-/* cloud-style shell: stage, identity, application chrome, and footer. */
-   2. THE STAGE
+/* cloud-style shell: stage, identity, application chrome, and footer.
+
+   THE STAGE
    -------------------------------------------------------------------------
 
    .gc-cover  Full-viewport white canvas. Owns the three geometry variables
@@ -223,6 +224,26 @@
   font-size: var(--gc-text-meta);
   font-weight: 400;
   color: var(--gc-ink-500);
+}
+
+/* The header is persistent product chrome, not the cover headline. */
+.gc-wordmark {
+  top: 2.2cqw;
+  width: 93.4cqw;
+}
+
+.gc-wordmark h1,
+.gc-wordmark .gc-wordmark-text {
+  font-size: 2.8cqw;
+  letter-spacing: -0.035em;
+}
+
+.gc-wordmark-brand {
+  width: 100%;
+}
+
+.gc-app-nav {
+  margin-left: auto;
 }
 
 /* -----------------------------------------------------------------------------

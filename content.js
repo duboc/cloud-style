@@ -32,7 +32,7 @@ window.CONTENT = {
     ledeStrong: ['A Empresa Agêntica', 'em escala'],
     ledeSoft:   ['Workflows inteligentes e IA', 'no Google Cloud'],
 
-    cta: 'Explorar sessoes e demos',
+    cta: 'Explorar sessões e demos',
     edition: 'Google Cloud Summit Brasil 2026',
 
     /* Prefix for the miniature wordmark in each card header. */

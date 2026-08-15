@@ -1,5 +1,6 @@
-/* cloud-style screens: cover, catalog, cards, and detail compositions. */
-   5. HERO DASHBOARD CARD & METRICS BAR (COVER SCREEN)
+/* cloud-style screens: cover, catalog, cards, and detail compositions.
+
+   HERO DASHBOARD CARD & METRICS BAR (COVER SCREEN)
    -------------------------------------------------------------------------- */
 .gc-hero-card {
   position: absolute;
@@ -110,6 +111,68 @@
   font-weight: 500;
   color: var(--gc-ink-600);
   line-height: 1.2;
+}
+
+/* Hybrid direction: expressive marketing entrance, restrained Cloud Console
+   workspace. The current Super Cloud artwork remains the visual anchor. */
+.gc-hero-card {
+  top: 10.2cqw;
+  width: 42cqw;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  gap: 1.15cqw;
+}
+
+.gc-hero-copy h2.is-strong {
+  font-size: 3.15cqw;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+
+.gc-hero-copy p.is-soft {
+  font-size: 1.35cqw;
+  line-height: 1.42;
+}
+
+.gc-metrics-bar {
+  top: 38.5cqw;
+  width: 42cqw;
+}
+
+.gc-metric-tile {
+  background: var(--gc-surface);
+  border-color: var(--gc-color-border);
+  box-shadow: var(--gc-shadow-card);
+}
+
+.gc-console-surface {
+  border: 0.1cqw solid var(--gc-color-border);
+  border-radius: var(--gc-radius-card);
+  background: color-mix(in srgb, var(--gc-surface) 96%, var(--gc-color-canvas));
+  box-shadow: var(--gc-shadow-card);
+}
+
+.gc-menu.gc-console-surface {
+  padding: 1cqw;
+}
+
+.gc-detail.gc-console-surface {
+  width: 52cqw;
+  padding: 1.3cqw;
+}
+
+.gc-icon-btn {
+  background: var(--gc-surface-sunken);
+  color: var(--gc-blue-action);
+  box-shadow: none;
+}
+
+.gc-breadcrumb .gc-icon-btn:last-of-type {
+  background: var(--gc-color-action);
+  color: var(--gc-surface);
+  box-shadow: var(--gc-shadow-action);
 }
 
 /* -----------------------------------------------------------------------------

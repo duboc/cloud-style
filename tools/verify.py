@@ -62,17 +62,33 @@ def main() -> int:
         page.screenshot(path=str(out / "template-cover.png"))
         print("  template-cover.png")
 
+        if page.locator(".gc-supercloud").count() != 1:
+            problems.append("[desktop] cover must contain the Super Cloud artwork")
+        if page.locator(".gc-primary-action").count() != 1:
+            problems.append("[desktop] cover must expose exactly one primary action")
+        if page.locator(".gc-metric-tile").count() < 3:
+            problems.append("[desktop] cover metrics are missing")
+        fonts = page.locator(".gc-hero-copy").evaluate(
+            "element => getComputedStyle(element).fontFamily"
+        )
+        if "Google Sans" not in fonts:
+            problems.append(f"[desktop] prose is not using Google Sans: {fonts}")
+
         page.locator(".gc-hero-actions .gc-btn").click()
         page.wait_for_timeout(800)
         if page.locator('.gc-nav-link[aria-current="page"]').text_content() != "Catálogo de Demos":
             problems.append("[desktop] catalog navigation does not expose aria-current")
         page.screenshot(path=str(out / "template-menu.png"))
         print("  template-menu.png")
+        if page.locator(".gc-console-surface").count() == 0:
+            problems.append("[desktop] catalog is missing its Console surface")
 
         page.locator(".gc-menu-item").first.click()
         page.wait_for_timeout(800)
         page.screenshot(path=str(out / "template-cards.png"))
         print("  template-cards.png")
+        if page.locator(".gc-console-surface").count() == 0:
+            problems.append("[desktop] cards are missing their Console surface")
 
         first_card = page.locator(".gc-card").first
         first_card.focus()
@@ -80,6 +96,8 @@ def main() -> int:
         page.wait_for_timeout(800)
         page.screenshot(path=str(out / "template-article.png"))
         print("  template-article.png")
+        if page.locator(".gc-console-surface").count() == 0:
+            problems.append("[desktop] detail is missing its Console surface")
 
         # The article screen must actually have rendered — if the rail's drag
         # handler swallows the click, this is where you find out.

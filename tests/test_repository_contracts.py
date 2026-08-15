@@ -64,6 +64,16 @@ class RepositoryContractsTest(unittest.TestCase):
         self.assertIn('--gc-font-display: "Google Sans"', tokens)
         self.assertIn('--gc-font-text:    "Google Sans Text"', tokens)
 
+    def test_hybrid_direction_has_visual_landmarks(self):
+        cover = (ROOT / "js/screens/cover.js").read_text(encoding="utf-8")
+        catalog = (ROOT / "js/screens/catalog.js").read_text(encoding="utf-8")
+        cards = (ROOT / "js/screens/cards.js").read_text(encoding="utf-8")
+        detail = (ROOT / "js/screens/detail.js").read_text(encoding="utf-8")
+        self.assertEqual(cover.count("gc-primary-action"), 1)
+        self.assertIn("gc-console-surface", catalog)
+        self.assertIn("gc-console-surface", cards)
+        self.assertIn("gc-console-surface", detail)
+
 
 if __name__ == "__main__":
     unittest.main()

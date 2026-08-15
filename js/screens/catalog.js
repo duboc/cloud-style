@@ -4,7 +4,7 @@ export function renderCatalog({ config, content, esc, pad }) {
       <h2 class="gc-menu-title">${esc(config.catalogTitle)}</h2>
       <p class="gc-menu-subtitle">${esc(config.catalogSubtitle)}</p>
     </div>
-    <nav class="gc-menu" style="view-transition-name: gc-menu">
+    <nav class="gc-menu gc-console-surface" style="view-transition-name: gc-menu">
       ${content.categories.map((category, index) => `
         <button class="gc-menu-item" data-go="cards" data-cat="${index}">
           <span class="gc-icon-tile"><svg><use href="#${esc(category.icon)}"/></svg></span>

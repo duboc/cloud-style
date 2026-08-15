@@ -1,7 +1,7 @@
 export function renderCards({ content, state, esc, mark, pad }) {
   const category = content.categories[state.cat];
   return `
-    <div class="gc-detail" style="view-transition-name: gc-detail">
+    <div class="gc-detail gc-console-surface" style="view-transition-name: gc-detail">
       <div class="gc-breadcrumb">
         <button class="gc-icon-btn" data-go="cover" aria-label="Home">
           <svg><use href="#gc-icon-home"/></svg>

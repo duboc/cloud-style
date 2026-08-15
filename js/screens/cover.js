@@ -8,7 +8,7 @@ export function renderCover({ config, content, esc }) {
         ${brand.ledeSoft.map(line => `<p class="is-soft">${esc(line)}</p>`).join('')}
       </div>
       <div class="gc-hero-actions">
-        <button class="gc-btn" data-go="menu"
+        <button class="gc-btn gc-primary-action" data-go="menu"
                 style="view-transition-name: gc-cta">${esc(brand.cta)} &rarr;</button>
         <button class="gc-btn-secondary" data-go="menu">Ver Trilhas (${content.categories.length})</button>
       </div>
