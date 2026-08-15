@@ -16,8 +16,8 @@ class RepositoryContractsTest(unittest.TestCase):
 
     def test_cards_use_buttons(self):
         cards = (ROOT / "js/screens/cards.js").read_text(encoding="utf-8")
-        self.assertRegex(cards, r'<button[^>]*class="gc-card')
-        self.assertNotIn('<article class="gc-card', cards)
+        self.assertRegex(cards, r'<button[^>]*class="gc-workflow-row')
+        self.assertNotIn('<article class="gc-workflow-row', cards)
 
     def test_navigation_exposes_current_page(self):
         app = (ROOT / "js/app.js").read_text(encoding="utf-8")
@@ -71,7 +71,7 @@ class RepositoryContractsTest(unittest.TestCase):
         detail = (ROOT / "js/screens/detail.js").read_text(encoding="utf-8")
         self.assertEqual(cover.count("gc-primary-action"), 1)
         self.assertIn("gc-workspace-list", catalog)
-        self.assertIn("gc-console-surface", cards)
+        self.assertIn("gc-workflow-page", cards)
         self.assertIn("gc-console-surface", detail)
 
     def test_workspace_uses_neutral_template_language(self):
@@ -94,6 +94,13 @@ class RepositoryContractsTest(unittest.TestCase):
         source = (ROOT / "js/cloud-style.js").read_text(encoding="utf-8")
         self.assertIn("transition.ready.catch", source)
         self.assertIn("transition.finished.catch", source)
+
+    def test_solution_details_use_application_workflow_rows(self):
+        source = (ROOT / "js/screens/cards.js").read_text(encoding="utf-8")
+        self.assertIn("gc-workflow-list", source)
+        self.assertIn("gc-workflow-row", source)
+        for rejected in ("gc-icon-tile", "gc-card-head", "gc-tag", "gc-rail"):
+            self.assertNotIn(rejected, source)
 
     def test_screenshot_manifest_has_required_viewports(self):
         from tools.screenshot_manifest import SCREENSHOT_CASES

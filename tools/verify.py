@@ -94,10 +94,10 @@ def main() -> int:
         page.wait_for_timeout(800)
         page.screenshot(path=str(out / "template-cards.png"))
         print("  template-cards.png")
-        if page.locator(".gc-console-surface").count() == 0:
-            problems.append("[desktop] cards are missing their Console surface")
+        if page.locator(".gc-workflow-page").count() != 1:
+            problems.append("[desktop] solution must expose one workflow page")
 
-        first_card = page.locator(".gc-card").first
+        first_card = page.locator(".gc-workflow-row").first
         first_card.focus()
         page.keyboard.press("Enter")
         page.wait_for_timeout(800)
@@ -167,11 +167,6 @@ def main() -> int:
         reduced.goto(args.url, wait_until="networkidle", timeout=60_000)
         reduced.locator(".gc-primary-action").click()
         reduced.locator(".gc-menu-item").first.click()
-        live_card = reduced.locator(".gc-card--live").first
-        if live_card.count() and live_card.evaluate(
-            "element => getComputedStyle(element).animationName"
-        ) != "none":
-            problems.append("[reduced-motion] live-card pulse is still active")
         reduced.close()
 
         if args.demo == "image-studio":
@@ -180,7 +175,7 @@ def main() -> int:
             demo.goto(args.url, wait_until="networkidle", timeout=60_000)
             demo.locator(".gc-primary-action").click()
             demo.locator(".gc-menu-item").first.click()
-            image_card = demo.locator(".gc-card").nth(2)
+            image_card = demo.locator(".gc-workflow-row").nth(2)
             image_card.focus()
             demo.keyboard.press("Enter")
             for action in ("crop", "retouch", "compare"):
@@ -211,7 +206,7 @@ def main() -> int:
                 if setup in {"cards", "detail"}:
                     capture.locator(".gc-menu-item").first.click()
                 if setup == "detail":
-                    card = capture.locator(".gc-card").first
+                    card = capture.locator(".gc-workflow-row").first
                     card.focus()
                     capture.keyboard.press("Enter")
                 if setup == "focus-primary":
@@ -219,7 +214,7 @@ def main() -> int:
                 if setup and setup.startswith("image-studio"):
                     capture.locator(".gc-primary-action").click()
                     capture.locator(".gc-menu-item").first.click()
-                    image_card = capture.locator(".gc-card").nth(2)
+                    image_card = capture.locator(".gc-workflow-row").nth(2)
                     image_card.focus()
                     capture.keyboard.press("Enter")
                     if setup == "image-studio-compare":

@@ -165,6 +165,22 @@
     margin-top: 7cqw;
     padding: 4cqw;
   }
+  .gc-workflow-page { width: 100%; padding: 0; }
+  .gc-workflow-header { padding-bottom: 5cqw; }
+  .gc-workflow-eyebrow { font-size: 3cqw; }
+  .gc-workflow-header h2 { margin-top: 2cqw; font-size: 7cqw; }
+  .gc-workflow-header p { margin-top: 2cqw; font-size: 3.8cqw; line-height: 1.45; }
+  .gc-workflow-row {
+    grid-template-columns: 1fr auto;
+    min-height: 0;
+    gap: 3cqw;
+    padding: 5cqw 1cqw;
+  }
+  .gc-workflow-copy { gap: 1.5cqw; }
+  .gc-workflow-copy strong { font-size: 4.5cqw; }
+  .gc-workflow-copy > span { font-size: 3.4cqw; }
+  .gc-workflow-meta { grid-column: 1; font-size: 3cqw; }
+  .gc-workflow-open { grid-column: 2; grid-row: 1 / span 2; font-size: 3.7cqw; }
 
   .gc-menu-item {
     height: 15cqw;
