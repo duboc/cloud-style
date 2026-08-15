@@ -37,6 +37,7 @@
     const route = global.CloudStyleRouter.parseRoute(global.location.hash);
     const renderScreen = global.CloudStyleScreens[route.screen] || global.CloudStyleScreens.overview;
     root.innerHTML = shellMarkup(route, renderScreen({ route, data: global.SAMPLE_DATA, config: global.APP_CONFIG }));
+    global.CloudStyleScreenMounts?.[route.screen]?.(root, { route, data: global.SAMPLE_DATA, config: global.APP_CONFIG });
     document.title = `${root.querySelector("h1")?.textContent || global.APP_CONFIG.productName} · ${global.APP_CONFIG.productName}`;
   }
 

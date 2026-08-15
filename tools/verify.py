@@ -54,6 +54,45 @@ def check_shell_routes(browser, url: str, problems: list[str]) -> None:
     page.close()
 
 
+def check_resource_workflow(browser, url: str, problems: list[str]) -> None:
+    page = browser.new_page(viewport=DESKTOP)
+    add_watchers(page, "resources", problems)
+    page.goto(f"{url}#/resources", wait_until="networkidle", timeout=60_000)
+
+    resource_filter = page.locator("[data-resource-filter]")
+    if resource_filter.count() != 1:
+        problems.append("[resources] missing resource filter")
+    else:
+        resource_filter.fill("edge")
+        page.wait_for_timeout(50)
+        rows = page.locator("[data-resource-row]:visible")
+        if rows.count() != 1 or "Edge gateway" not in rows.first.inner_text():
+            problems.append("[resources] filter did not isolate Edge gateway")
+        else:
+            rows.first.click()
+            page.wait_for_timeout(50)
+            if not page.url.endswith("#/resources/edge-gateway"):
+                problems.append("[resources] resource row did not open its deep link")
+
+    page.goto(f"{url}#/resources/edge-gateway", wait_until="networkidle", timeout=60_000)
+    tabs = page.locator('[role="tab"]')
+    if tabs.count() != 3:
+        problems.append("[resources] detail must expose three tabs")
+    else:
+        for index in range(tabs.count()):
+            tab = tabs.nth(index)
+            panel_id = tab.get_attribute("aria-controls")
+            tab.click()
+            panel = page.locator(f"#{panel_id}")
+            if panel.count() != 1 or not panel.is_visible():
+                problems.append(f"[resources] tab {index + 1} did not reveal its panel")
+        tabs.first.focus()
+        page.keyboard.press("ArrowRight")
+        if page.evaluate("document.activeElement?.getAttribute('role')") != "tab":
+            problems.append("[resources] arrow navigation did not retain tab focus")
+    page.close()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", default="http://127.0.0.1:8000/index.html")
@@ -69,6 +108,7 @@ def main() -> int:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
         check_shell_routes(browser, args.url, problems)
+        check_resource_workflow(browser, args.url, problems)
         browser.close()
 
     if problems:
