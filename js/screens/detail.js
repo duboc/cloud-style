@@ -2,6 +2,9 @@ export function renderDetail({ content, state, esc, demoHtml }) {
   const category = content.categories[state.cat];
   const fact = category.facts[state.fact];
   const demoType = fact.demo || 'chat';
+  const isPack = [
+    'image-studio', 'video-studio', 'analytics', 'databases', 'business-flows',
+  ].includes(demoType);
   return `
     <div class="gc-detail gc-console-surface" style="view-transition-name: gc-detail">
       <div class="gc-breadcrumb">
@@ -24,7 +27,9 @@ export function renderDetail({ content, state, esc, demoHtml }) {
     <div class="gc-device-slot">
       <div class="gc-phone">
         <div class="gc-phone-screen">
-          ${demoHtml(demoType, fact)}
+          ${isPack
+            ? `<div class="gc-demo-pack-host" data-demo-pack-id="${esc(demoType)}"></div>`
+            : demoHtml(demoType, fact)}
         </div>
       </div>
     </div>`;

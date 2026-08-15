@@ -4,6 +4,7 @@ import { renderCover } from './screens/cover.js';
 import { renderCatalog } from './screens/catalog.js';
 import { renderCards } from './screens/cards.js';
 import { renderDetail } from './screens/detail.js';
+import { mountDemoPack, unmountDemoPack } from '../starter/demo-packs/registry.js';
 
 const esc = value => String(value).replace(/[&<>"']/g,
   character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
@@ -35,6 +36,7 @@ export function startApp({ content, demoHtml }) {
   }
 
   function render(state) {
+    screen.querySelectorAll('.gc-demo-pack-host').forEach(unmountDemoPack);
     const context = { config: APP_CONFIG, content, state, esc, mark, pad, demoHtml };
     const renderer = {
       cover: renderCover,
@@ -47,6 +49,10 @@ export function startApp({ content, demoHtml }) {
     setActiveNavigation(state.view);
     gcInitRails(screen);
     gcInitDemos(screen);
+    screen.querySelectorAll('.gc-demo-pack-host').forEach(host => {
+      const fact = content.categories[state.cat]?.facts[state.fact];
+      mountDemoPack(host, host.dataset.demoPackId, fact || {});
+    });
   }
 
   const router = createRouter({

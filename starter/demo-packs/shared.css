@@ -1,0 +1,21 @@
+.gc-demo-pack-host {
+  width: 100%;
+  height: 100%;
+  font-family: var(--gc-font-text);
+  color: var(--gc-ink-600);
+}
+
+.gc-pack-unavailable {
+  display: grid;
+  gap: 1.2cqw;
+  place-content: center;
+  min-height: 100%;
+  padding: 4cqw;
+  text-align: center;
+  background: var(--gc-color-canvas);
+}
+
+.gc-pack-unavailable strong {
+  font-family: var(--gc-font-display);
+  color: var(--gc-ink-900);
+}
