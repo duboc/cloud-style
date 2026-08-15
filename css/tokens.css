@@ -1,215 +1,73 @@
-/* =============================================================================
-   cloud-style — DESIGN TOKENS
-   Design tokens for Google Cloud showcase templates.
-
-   Two kinds of token live here:
-
-   1. ABSOLUTE tokens (colors, font stacks, easings, timings)
-      -> declared on :root, valid anywhere.
-
-   2. RELATIVE tokens (type sizes, radii, spacing)
-      -> declared on .gc-stage, expressed in `cqw` (container query width).
-         1cqw = 1% of the stage width. Because the stage is a fixed 16:9 box
-         sized to the viewport, every cqw value scales the whole design
-         proportionally — a 1920px screen and a 1280px screen render the
-         *identical* layout, just bigger or smaller. Never mix px into these.
-
-   See docs/LAYOUT.md for why the stage works this way.
-   ========================================================================== */
-
 :root {
-  /* ---------------------------------------------------------------------
-     BRAND BLUE — the spine of the identity.
-     Numbers follow a light→dark ramp; the names say what they are FOR,
-     because that's what you actually pick by.
-     --------------------------------------------------------------------- */
-  --gc-blue-action:        #1a73e8; /* primary buttons, active pills        */
-  --gc-blue-action-hover:  #1666d0; /* hover/pressed state of the above     */
-  --gc-blue-brand:         #3f7ae8; /* headings, breadcrumbs, PWA theme     */
-  --gc-blue-glyph:         #4f86e8; /* icon strokes inside tinted tiles     */
-  --gc-blue-header:        #4d8bf5; /* card header bar, card tag chip       */
-  --gc-blue-pulse:         #3576e8; /* attention ring on interactive demos  */
-  --gc-blue-numeral:       #a9c2f0; /* muted "01" counters                  */
-  --gc-blue-outline:       #a3bdf2; /* device / phone frame border          */
+  color-scheme: light;
 
-  /* Blue tints — surfaces. Lighter = further back. */
-  --gc-blue-tint-100:      #e2e9fc; /* icon tile background                 */
-  --gc-blue-tint-090:      #e6edfc; /* menu row hover                       */
-  --gc-blue-tint-080:      #eaf0fd; /* fact card body                       */
-  --gc-blue-tint-070:      #eff3fd; /* menu row rest                        */
-  --gc-blue-tint-060:      #f2f6fe; /* chat titlebar, panel header          */
-  --gc-blue-tint-050:      #f4f8fe; /* outermost ripple                     */
+  --gc-google-blue: #4285f4;
+  --gc-google-red: #ea4335;
+  --gc-google-yellow: #fbbc04;
+  --gc-google-green: #34a853;
 
-  /* ---------------------------------------------------------------------
-     RIPPLE RAMP — the six concentric circles in the background.
-     Ordered outermost (01) to innermost (06). Each step roughly doubles
-     the saturation of the last; the innermost is Google Blue 300.
-     --------------------------------------------------------------------- */
-  --gc-ripple-01: #f4f8fe;
-  --gc-ripple-02: #e9f1fe;
-  --gc-ripple-03: #dae8fd;
-  --gc-ripple-04: #c6dafb;
-  --gc-ripple-05: #abc9fa;
-  --gc-ripple-06: #8ab4f8;
+  --gc-blue-action: #1a73e8;
+  --gc-blue-action-hover: #185abc;
+  --gc-blue-selection: #e8f0fe;
+  --gc-blue-soft: #f1f6ff;
+  --gc-blue-ink: #174ea6;
 
-  /* ---------------------------------------------------------------------
-     INK — text. Darkest is reserved for the wordmark only.
-     --------------------------------------------------------------------- */
-  --gc-ink-900: #1f2329; /* wordmark                                        */
-  --gc-ink-800: #2a2f3a; /* emphasised lede line                            */
-  --gc-ink-700: #3f4654; /* secondary lede line                             */
-  --gc-ink-600: #3c4043; /* body headings, card titles                      */
-  --gc-ink-550: #444746; /* icon buttons on neutral surfaces                */
-  --gc-ink-500: #5f6368; /* body copy, captions                             */
-  --gc-ink-450: #747775; /* input placeholder                               */
-  --gc-ink-400: #9aa0a6; /* disabled                                        */
+  --gc-surface: #ffffff;
+  --gc-surface-canvas: #f8fafd;
+  --gc-surface-subtle: #f1f3f4;
+  --gc-surface-hover: #f5f8fc;
+  --gc-border-subtle: #dfe3e7;
+  --gc-border-strong: #bdc1c6;
 
-  /* ---------------------------------------------------------------------
-     NEUTRAL SURFACES
-     --------------------------------------------------------------------- */
-  --gc-surface:        #ffffff;
-  --gc-surface-sunken: #f0f2f5; /* neutral chip / secondary icon button     */
-  --gc-surface-hover:  #dde3ea; /* hover for the above                      */
-  --gc-surface-alt:    #f0f4f9; /* neutral avatar circle                    */
-  --gc-border:         #e5e7eb; /* default hairline                         */
-  --gc-border-soft:    hsla(140, 1%, 46%, 0.16); /* card hairline           */
+  --gc-ink-strong: #202124;
+  --gc-ink: #3c4043;
+  --gc-ink-muted: #5f6368;
+  --gc-ink-faint: #80868b;
+  --gc-ink-disabled: #9aa0a6;
 
-  /* Semantic roles used by app-like screens. Keep components independent
-     from palette names so a rebrand remains a token-only change. */
-  --gc-color-action:      var(--gc-blue-action);
-  --gc-color-selection:   var(--gc-blue-tint-090);
-  --gc-color-information: var(--gc-blue-brand);
-  --gc-color-live:        var(--gc-success);
-  --gc-color-border:      var(--gc-border);
-  --gc-color-canvas:      var(--gc-surface-alt);
+  --gc-success: #137333;
+  --gc-success-bg: #e6f4ea;
+  --gc-warning: #b06000;
+  --gc-warning-bg: #fef7e0;
+  --gc-error: #b3261e;
+  --gc-error-bg: #fce8e6;
 
-  /* ---------------------------------------------------------------------
-     GOOGLE LOGOTYPE — exact brand values. Do not substitute.
-     Letter order in "Google": G-o-o-g-l-e
-     --------------------------------------------------------------------- */
-  --gc-google-blue:   #4285f4; /* G, g                                      */
-  --gc-google-red:    #ea4335; /* o(1), e                                   */
-  --gc-google-yellow: #fbbc05; /* o(2)                                      */
-  --gc-google-green:  #34a853; /* l                                         */
+  --gc-font-display: "Google Sans", "Product Sans", Arial, sans-serif;
+  --gc-font-text:    "Google Sans Text", "Google Sans", Roboto, Arial, sans-serif;
 
-  /* ---------------------------------------------------------------------
-     SEMANTIC — status circles, badges, callouts.
-     Each pairs a foreground with its tinted background.
-     --------------------------------------------------------------------- */
-  --gc-success:    #188038;  --gc-success-bg: #e0f2e7;
-  --gc-error:      #b3261e;  --gc-error-bg:   #fde7e5;
-  --gc-error-alt:  #c5221f;  --gc-error-bg-alt: #fce8e6;
-  --gc-warning:    #b06000;  --gc-warning-bg: #fef3d9;
-  --gc-accent:     #7627bb;  --gc-accent-bg:  #f0e6fd;
+  --gc-text-xs: 0.75rem;
+  --gc-text-sm: 0.875rem;
+  --gc-text-base: 1rem;
+  --gc-text-lg: 1.125rem;
+  --gc-text-xl: 1.25rem;
+  --gc-text-2xl: 1.75rem;
+  --gc-text-3xl: 2.25rem;
 
-  /* ---------------------------------------------------------------------
-     TYPEFACES
-     Two families, deliberately split by role:
+  --gc-space-1: 0.25rem;
+  --gc-space-2: 0.5rem;
+  --gc-space-3: 0.75rem;
+  --gc-space-4: 1rem;
+  --gc-space-5: 1.25rem;
+  --gc-space-6: 1.5rem;
+  --gc-space-8: 2rem;
+  --gc-space-10: 2.5rem;
+  --gc-space-12: 3rem;
 
-     --gc-font-display  Geometric. Wordmark, big numbers, buttons, chrome.
-     --gc-font-text     Humanist. Anything you actually read in sentences.
+  --gc-radius-sm: 0.5rem;
+  --gc-radius-md: 0.75rem;
+  --gc-radius-lg: 1rem;
+  --gc-radius-pill: 999px;
 
-     Google Sans / Google Sans Text are Google brand fonts. They now serve
-     publicly from fonts.googleapis.com, but licensing for non-Google
-     products is restricted — see docs/DESIGN-SYSTEM.md §Typography.
-     Poppins + DM Sans are the open fallbacks and are what the original
-     deck actually renders with outside a Google machine.
-     --------------------------------------------------------------------- */
-  --gc-font-display: "Google Sans", "Product Sans", Poppins,
-                     "Helvetica Neue", Arial, sans-serif;
-  --gc-font-text:    "Google Sans Text", "DM Sans", Roboto,
-                     "Helvetica Neue", Arial, sans-serif;
-  --gc-font-icon:    "Google Symbols";
+  --gc-shadow-panel: 0 1px 2px rgba(60, 64, 67, 0.08);
+  --gc-shadow-dialog: 0 12px 32px rgba(60, 64, 67, 0.24);
+  --gc-focus-ring: 0 0 0 3px rgba(26, 115, 232, 0.28);
 
-  /* ---------------------------------------------------------------------
-     ELEVATION
-     Shadows that sit inside the stage use cqw so they scale with it.
-     --gc-shadow-action is the one exception: it is a small, fixed,
-     "physical" shadow on a control and reads wrong when scaled.
-     --------------------------------------------------------------------- */
-  --gc-shadow-action:  0 3px 10px rgba(26, 115, 232, 0.22);
-  --gc-shadow-card:    0 0.2cqw 0.6cqw rgba(31, 35, 41, 0.10);
-  --gc-shadow-device:  0 0.8cqw 2.5cqw rgba(31, 35, 41, 0.08);
-  --gc-shadow-soft:    0 0 0.74cqw 0 rgba(0, 0, 0, 0.10);
-  --gc-shadow-overlay: 0 1.38cqw 5.53cqw rgba(0, 0, 0, 0.22);
-  --gc-shadow-sheet:   0 -1.15cqw 4.61cqw rgba(31, 31, 31, 0.16);
+  --gc-header-height: 4rem;
+  --gc-sidebar-width: 14.5rem;
+  --gc-content-max: 78rem;
+  --gc-control-height: 2.5rem;
 
-  /* ---------------------------------------------------------------------
-     MOTION
-     Short and asymmetric: leaving is fast and linear-ish, entering is
-     slower and eased-out. Total < 300ms so navigation never feels laggy.
-     --------------------------------------------------------------------- */
-  --gc-ease-exit:  cubic-bezier(0.4, 0, 1, 1);
-  --gc-ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
-  --gc-dur-exit:   0.10s;
-  --gc-dur-enter:  0.18s;
-  --gc-dur-hover:  0.15s;
-}
-
-/* =============================================================================
-   RELATIVE TOKENS — declared on the stage so `cqw` resolves against it.
-   ========================================================================== */
-.gc-stage {
-  /* --- Type scale (desktop) -------------------------------------------- */
-  --gc-text-wordmark:  10cqw;    /* primary wordmark lockup                 */
-  --gc-text-lede:      2.5cqw;   /* cover subtitle                          */
-  --gc-text-title:     2cqw;     /* article headline                        */
-  --gc-text-heading:   1.6cqw;   /* breadcrumb heading                      */
-  --gc-text-card-head: 1.7cqw;   /* card header badge                       */
-  --gc-text-label:     1.4cqw;   /* menu row label                          */
-  --gc-text-body-lg:   1.3cqw;   /* card title, article lede, buttons       */
-  --gc-text-body:      1.05cqw;  /* article prose                           */
-  --gc-text-caption:   0.95cqw;  /* tag chips                               */
-  --gc-text-logo:      1.65cqw;  /* Google Cloud lockup                     */
-  --gc-text-meta:      1.3cqw;   /* edition line                            */
-
-  /* --- Radii ------------------------------------------------------------ */
-  --gc-radius-tile:   0.8cqw;
-  --gc-radius-row:    1.05cqw;
-  --gc-radius-card:   1.1cqw;
-  --gc-radius-device: 2.6cqw;
-  --gc-radius-pill:   999px;
-
-  /* --- Layout rhythm ---------------------------------------------------- */
-  --gc-gutter:      3.3cqw;   /* left margin for all stage content          */
-  --gc-gutter-text: 3.5cqw;   /* optical inset for text (glyph sidebearing) */
-  --gc-gap-row:     1.05cqw;  /* between menu rows                          */
-  --gc-gap-card:    1.5cqw;   /* between fact cards                         */
-  --gc-measure:     50cqw;    /* max line length for prose                  */
-}
-
-/* =============================================================================
-   MOBILE SCALE OVERRIDE
-
-   Below 768px the stage stops being a container (see cloud-style.css), so
-   `cqw` falls back to resolving against the small viewport — 1cqw == 1vw.
-   The design switches from "one 16:9 slide" to "a scrolling column", and
-   every size roughly triples because 1vw of a phone is much smaller than
-   1cqw of a 16:9 stage.
-   ========================================================================== */
-@media (max-width: 767px) {
-  .gc-stage {
-    --gc-text-wordmark:  13cqw;
-    --gc-text-lede:      6.8cqw;
-    --gc-text-title:     5.6cqw;
-    --gc-text-heading:   4.3cqw;
-    --gc-text-card-head: 5.2cqw;
-    --gc-text-label:     4.1cqw;
-    --gc-text-body-lg:   4.1cqw;
-    --gc-text-body:      3.7cqw;
-    --gc-text-caption:   3.1cqw;
-    --gc-text-logo:      4.4cqw;
-    --gc-text-meta:      3.5cqw;
-
-    --gc-radius-tile:   2.6cqw;
-    --gc-radius-row:    3.6cqw;
-    --gc-radius-card:   3.4cqw;
-    --gc-radius-device: 10cqw;
-
-    --gc-gutter:      6cqw;
-    --gc-gutter-text: 6cqw;
-    --gc-gap-row:     3cqw;
-    --gc-gap-card:    4cqw;
-    --gc-measure:     100%;
-  }
+  --gc-duration-fast: 120ms;
+  --gc-duration-base: 180ms;
+  --gc-ease: cubic-bezier(0.2, 0, 0, 1);
 }

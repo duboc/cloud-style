@@ -1,290 +1,150 @@
-/* cloud-style shell: stage, identity, application chrome, and footer.
+.gc-app { min-height: 100vh; background: var(--gc-surface-canvas); }
 
-   THE STAGE
-   -------------------------------------------------------------------------
-
-   .gc-cover  Full-viewport white canvas. Owns the three geometry variables
-              that position the background ripple. It is NOT the container —
-              it just centres the stage and lets the ripple bleed past it.
-
-   .gc-stage  The 16:9 slide. This is the container query root: every size
-              inside it is a % of ITS width, so the design scales as one
-              unit and never reflows on desktop.
-
-   Geometry:
-     --s    stage width  = min(100vw, 177.78vh)   (177.78 = 16/9 × 100)
-     --h    stage height = --s × 9/16
-     --top  distance from viewport top to the stage's top edge
-   -------------------------------------------------------------------------- */
-.gc-cover {
-  --s: min(100vw, 177.78vh);
-  --h: calc(var(--s) * 9 / 16);
-  --top: calc((100vh - var(--h)) / 2);
-
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.gc-google-signature {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  display: grid;
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  height: 4px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.gc-google-signature i:nth-child(1) { background: var(--gc-google-blue); }
+.gc-google-signature i:nth-child(2) { background: var(--gc-google-red); }
+.gc-google-signature i:nth-child(3) { background: var(--gc-google-yellow); }
+.gc-google-signature i:nth-child(4) { background: var(--gc-google-green); }
+
+.gc-app-header {
+  position: sticky;
+  z-index: 30;
+  top: 0;
+  display: flex;
+  height: var(--gc-header-height);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gc-space-6);
+  padding: 4px var(--gc-space-6) 0;
+  border-bottom: 1px solid var(--gc-border-subtle);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+}
+
+.gc-product {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gc-space-3);
+  color: var(--gc-ink-strong);
+  font-size: var(--gc-text-lg);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.gc-product-mark {
+  position: relative;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--gc-blue-selection);
+}
+
+.gc-product-mark span {
+  position: absolute;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+}
+
+.gc-product-mark span:nth-child(1) { transform: translate(-0.38rem, 0.2rem); background: var(--gc-google-blue); }
+.gc-product-mark span:nth-child(2) { transform: translate(0, -0.35rem); background: var(--gc-google-red); }
+.gc-product-mark span:nth-child(3) { transform: translate(0.38rem, 0.2rem); background: var(--gc-google-yellow); }
+
+.gc-context {
+  display: inline-flex;
+  min-height: 2.25rem;
+  align-items: center;
+  gap: var(--gc-space-2);
+  padding: 0 var(--gc-space-4);
+  border: 1px solid var(--gc-border-subtle);
+  border-radius: var(--gc-radius-pill);
+  color: var(--gc-ink-muted);
+  background: var(--gc-surface);
+  font-size: var(--gc-text-sm);
+}
+
+.gc-context strong { color: var(--gc-success); font-family: var(--gc-font-display); font-weight: 600; }
+.gc-app-body { display: flex; min-height: calc(100vh - var(--gc-header-height)); }
+
+.gc-sidebar {
+  position: sticky;
+  top: var(--gc-header-height);
+  display: flex;
+  width: var(--gc-sidebar-width);
+  height: calc(100vh - var(--gc-header-height));
+  flex: 0 0 var(--gc-sidebar-width);
+  flex-direction: column;
+  padding: var(--gc-space-6) var(--gc-space-4);
+  border-right: 1px solid var(--gc-border-subtle);
   background: var(--gc-surface);
 }
 
-.gc-stage {
-  container-type: inline-size;   /* <- makes 1cqw == 1% of stage width */
-  position: relative;
-  z-index: 10;
-  width: min(100vw, 177.78vh);
-  aspect-ratio: 16 / 9;
-  font-family: var(--gc-font-display);
-}
-
-/* A white veil that mutes the ripple on content-dense screens.
-   Sits between the ripple (z 0) and the stage (z 10). */
-.gc-veil {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  pointer-events: none;
-  background: rgba(255, 255, 255, 0.7);
-}
-
-/* -----------------------------------------------------------------------------
-   3. RIPPLE — six concentric circles, bottom-right, bleeding off-canvas.
-
-   All six share one centre point, expressed against the STAGE geometry so
-   the ripple stays locked to the slide rather than to the window:
-     x = 18% of stage width in from the right edge
-     y = 71% of the way down the stage
-/* -----------------------------------------------------------------------------
-   3. BRAND FOUNDATIONS — Super Cloud Graphic & Progress Bar.
-   Official Google Cloud presentation visual identity elements.
-   -------------------------------------------------------------------------- */
-.gc-progress-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 0.4cqw;
-  background: linear-gradient(90deg,
-    var(--gc-google-red) 0%,
-    var(--gc-google-yellow) 25%,
-    var(--gc-google-green) 50%,
-    var(--gc-google-blue) 100%
-  );
-  z-index: 25;
-}
-
-.gc-supercloud,
-.gc-ripple {
-  position: absolute;
-  right: -4cqw;
-  bottom: -6cqw;
-  width: 54cqw;
-  height: 54cqw;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.95;
-}
-
-.gc-supercloud img,
-.gc-ripple img,
-.gc-supercloud svg,
-.gc-ripple svg {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* -----------------------------------------------------------------------------
-   4. WORDMARK & APPLICATION HEADER BAR
-   -------------------------------------------------------------------------- */
-.gc-wordmark {
-  position: absolute;
-  left: var(--gc-gutter);
-  top: 3.2cqw;
-  width: 44cqw;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.gc-wordmark-brand {
-  display: flex;
-  align-items: center;
-  gap: 1cqw;
-}
-
-.gc-wordmark h1,
-.gc-wordmark .gc-wordmark-text {
-  margin: 0;
-  font-family: var(--gc-font-display);
-  font-size: var(--gc-text-wordmark);
-  line-height: 1;
-  letter-spacing: -0.025em;
-  color: var(--gc-ink-900);
-  cursor: pointer;
-  pointer-events: none;
-  user-select: none;
-  white-space: nowrap;
-}
-
-.gc-wordmark b   { font-weight: 700; }
-.gc-wordmark span { font-weight: 400; }
-
-.gc-status-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4cqw;
-  padding: 0.25cqw 0.7cqw;
-  border-radius: var(--gc-radius-pill);
-  background: rgba(52, 168, 83, 0.1);
-  border: 0.1cqw solid rgba(52, 168, 83, 0.25);
-  color: #1e8e3e;
-  font-family: var(--gc-font-display);
-  font-size: var(--gc-text-caption);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  pointer-events: auto;
-}
-
-.gc-status-dot {
-  width: 0.5cqw;
-  height: 0.5cqw;
-  border-radius: 50%;
-  background: #34a853;
-  box-shadow: 0 0 0.4cqw #34a853;
-}
-
-.gc-app-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.3cqw;
-  background: rgba(241, 243, 244, 0.85);
-  padding: 0.2cqw;
-  border-radius: var(--gc-radius-pill);
-  border: 0.1cqw solid var(--gc-border-soft);
-  white-space: nowrap;
-  pointer-events: auto;
-}
-
-.gc-app-sidebar {
-  position: absolute;
-  left: 2.4cqw;
-  top: 7.5cqw;
-  bottom: 2.5cqw;
-  width: 12cqw;
-  padding-right: 1.4cqw;
-  border-right: 0.1cqw solid var(--gc-color-border);
-}
-
 .gc-sidebar-label {
-  display: block;
-  padding: 0.7cqw 0.9cqw;
-  color: var(--gc-ink-500);
+  margin: 0 var(--gc-space-3) var(--gc-space-3);
+  color: var(--gc-ink-faint);
   font-family: var(--gc-font-display);
-  font-size: 0.72cqw;
-  font-weight: 500;
+  font-size: var(--gc-text-xs);
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-.gc-sidebar-link {
-  display: block;
-  width: 100%;
-  padding: 0.7cqw 0.9cqw;
-  border-radius: 0.55cqw;
-  text-align: left;
-  color: var(--gc-ink-600);
-  font-family: var(--gc-font-display);
-  font-size: 0.9cqw;
-}
-
-.gc-sidebar-link:hover,
-.gc-sidebar-link.active {
-  background: var(--gc-color-selection);
-  color: var(--gc-blue-action);
-}
-
-.gc-app-nav { display: none; }
-.gc-footer { display: none; }
+.gc-sidebar nav { display: grid; gap: var(--gc-space-1); }
 
 .gc-nav-link {
-  padding: 0.3cqw 0.9cqw;
-  border-radius: var(--gc-radius-pill);
-  font-family: var(--gc-font-display);
-  font-size: 0.85cqw;
-  font-weight: 600;
-  color: var(--gc-ink-700);
-  background: transparent;
-  transition: all var(--gc-dur-hover);
-}
-
-.gc-nav-link:hover {
-  color: var(--gc-blue-action);
-  background: rgba(255, 255, 255, 0.6);
-}
-
-.gc-nav-link.active {
-  background: #ffffff;
-  color: var(--gc-blue-action);
-  box-shadow: 0 0.1cqw 0.4cqw rgba(0, 0, 0, 0.08);
-}
-
-/* -----------------------------------------------------------------------------
-   13. FOOTER — Google Cloud lockup + edition line.
-   The logotype is per-letter spans; the colours are brand-exact.
-   -------------------------------------------------------------------------- */
-.gc-footer-logo {
-  position: absolute;
-  left: var(--gc-gutter-text);
-  bottom: 3.2cqw;
   display: flex;
-  align-items: baseline;
-  font-size: var(--gc-text-logo);
+  min-height: 2.75rem;
+  align-items: center;
+  padding: 0 var(--gc-space-4);
+  border-radius: var(--gc-radius-pill);
+  color: var(--gc-ink);
   font-weight: 500;
-}
-.gc-footer-logo .gc-cloud { margin-left: 0.7cqw; color: var(--gc-ink-500); }
-
-.gc-g1 { color: var(--gc-google-blue); }
-.gc-o1 { color: var(--gc-google-red); }
-.gc-o2 { color: var(--gc-google-yellow); }
-.gc-g2 { color: var(--gc-google-blue); }
-.gc-l  { color: var(--gc-google-green); }
-.gc-e  { color: var(--gc-google-red); }
-
-.gc-edition {
-  position: absolute;
-  left: 18.7cqw;
-  bottom: 3.35cqw;
-  font-size: var(--gc-text-meta);
-  font-weight: 400;
-  color: var(--gc-ink-500);
+  text-decoration: none;
 }
 
-/* The header is persistent product chrome, not the cover headline. */
-.gc-wordmark {
-  top: 2.2cqw;
-  width: 93.4cqw;
+.gc-nav-link:hover { background: var(--gc-surface-hover); }
+.gc-nav-link.is-current { color: var(--gc-blue-ink); background: var(--gc-blue-selection); font-weight: 600; }
+
+.gc-sidebar-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--gc-space-2);
+  margin-top: auto;
+  padding: var(--gc-space-4) var(--gc-space-3);
+  border-top: 1px solid var(--gc-border-subtle);
+  color: var(--gc-ink-muted);
+  font-size: var(--gc-text-xs);
 }
 
-.gc-wordmark h1,
-.gc-wordmark .gc-wordmark-text {
-  font-size: 2.8cqw;
-  letter-spacing: -0.035em;
+.gc-status-dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--gc-google-green); }
+
+.gc-main {
+  min-width: 0;
+  flex: 1;
+  padding: var(--gc-space-8) var(--gc-space-10) var(--gc-space-12);
 }
 
-.gc-wordmark-brand {
-  width: 100%;
+.gc-page { width: min(100%, var(--gc-content-max)); margin: 0 auto; }
+
+.gc-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gc-space-8);
+  margin-bottom: var(--gc-space-8);
 }
 
-.gc-app-nav {
-  margin-left: auto;
-}
-
-/* -----------------------------------------------------------------------------
+.gc-page-description { max-width: 42rem; margin-bottom: 0; color: var(--gc-ink-muted); font-size: var(--gc-text-base); }
+.gc-mobile-nav { display: none; }

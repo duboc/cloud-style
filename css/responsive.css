@@ -1,279 +1,72 @@
-/* cloud-style responsive behavior: reduced motion and the mobile composition. */
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(gc-lede),  ::view-transition-new(gc-lede),
-  ::view-transition-old(gc-cta),   ::view-transition-new(gc-cta),
-  ::view-transition-old(gc-menu),  ::view-transition-new(gc-menu),
-  ::view-transition-old(gc-detail),::view-transition-new(gc-detail) {
-    animation-duration: 0.01s;
-    animation-timing-function: linear;
-  }
-  .gc-card--live { animation: none; }
-}
-
-/* =============================================================================
-   15. MOBILE — below 768px the slide becomes a scrolling column.
-
-   The single most important line here is `container-type: normal`. It takes
-   the stage out of container-query mode, so every `cqw` in the design falls
-   back to resolving against the small viewport: 1cqw becomes 1vw. Combined
-   with the token overrides in tokens.css, the whole system re-scales for a
-   phone without a single duplicated component rule.
-
-   Absolute positioning is unwound to `static` so elements simply stack.
-   ========================================================================== */
 @media (max-width: 767px) {
+  :root { --gc-header-height: 3.5rem; --gc-text-3xl: 1.875rem; --gc-text-2xl: 1.5rem; }
 
-  .gc-app-sidebar { display: none; }
-  .gc-app-nav { display: flex; }
+  .gc-app-header { padding-right: var(--gc-space-4); padding-left: var(--gc-space-4); }
+  .gc-product { font-size: var(--gc-text-base); }
+  .gc-product-mark { width: 1.75rem; height: 1.75rem; }
+  .gc-context { overflow: hidden; max-width: 9rem; border: 0; padding: 0; white-space: nowrap; text-overflow: ellipsis; }
+  .gc-context span:nth-child(2), .gc-context strong { display: none; }
 
-  .gc-progress-bar {
-    height: 1.2vw;
-  }
-
-  .gc-supercloud,
-  .gc-ripple {
-    position: absolute;
-    right: -12vw;
-    top: -5vw;
-    bottom: auto;
-    width: 90vw;
-    height: 90vw;
-    opacity: 0.22;
-  }
-
-  .gc-cover {
-    height: auto;
-    min-height: 100%;
-    --top: -18vw;
-  }
-
-  .gc-stage {
-    container-type: normal;    /* <- cqw now means vw */
+  .gc-mobile-nav {
+    position: sticky;
+    z-index: 25;
+    top: var(--gc-header-height);
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-height: 100svh;
-    aspect-ratio: auto;
-    padding: 6cqw 6cqw 8cqw;
-  }
-
-  #screen {
-    display: contents;
-  }
-
-  /* Unwind desktop absolute positioning into normal flow. */
-  .gc-wordmark,
-  .gc-hero-card,
-  .gc-metrics-bar,
-  .gc-menu-header,
-  .gc-lede,
-  .gc-btn--cover,
-  .gc-menu,
-  .gc-detail,
-  .gc-device-slot,
-  .gc-footer-logo,
-  .gc-edition {
-    position: static;
-    inset: auto;
-    transform: none;
-  }
-
-  .gc-wordmark {
-    width: 100%;
-    gap: 4cqw;
-  }
-  .gc-wordmark-brand {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    width: 100%;
-    gap: 2.5cqw;
-  }
-  .gc-wordmark h1,
-  .gc-wordmark .gc-wordmark-text {
-    font-size: 7.2cqw;
-  }
-  .gc-status-chip {
-    align-self: center;
-    padding: 1cqw 2cqw;
-    font-size: 2.7cqw;
-  }
-  .gc-app-nav {
-    grid-column: 1 / -1;
-    justify-self: stretch;
-    justify-content: center;
-    padding: 0.8cqw;
-  }
-  .gc-nav-link {
-    flex: 1;
-    padding: 1.4cqw 2cqw;
-    font-size: 3.1cqw;
-  }
-
-  .gc-hero-card {
-    width: 100%;
-    margin-top: 10cqw;
-    gap: 3cqw;
-  }
-  .gc-hero-tag {
-    padding: 1.2cqw 3cqw;
-  }
-  .gc-hero-copy h2.is-strong {
-    font-size: 9cqw;
-    line-height: 1.06;
-  }
-  .gc-hero-copy p.is-soft {
-    margin-top: 2cqw;
-    font-size: 4.4cqw;
-  }
-  .gc-hero-actions {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2.5cqw;
-  }
-  .gc-btn,
-  .gc-btn-secondary {
-    width: 100%;
-    padding: 3.5cqw 4cqw;
-    font-size: 4.2cqw;
-  }
-  .gc-metrics-bar {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    width: 100%;
-    margin-top: 6cqw;
-    gap: 2cqw;
-  }
-  .gc-metric-tile {
-    min-width: 0;
-    padding: 3cqw 2.5cqw;
-  }
-  .gc-metric-val { font-size: 5.4cqw; }
-  .gc-metric-lbl { font-size: 2.8cqw; }
-
-  .gc-menu-header {
-    width: 100%;
-    margin-top: 10cqw;
-  }
-  .gc-menu-title { font-size: 6cqw; }
-  .gc-menu-subtitle { margin-top: 2cqw; font-size: 3.7cqw; }
-  .gc-lede       { margin-top: 12cqw; }
-  .gc-btn--cover { margin-top: 12cqw; align-self: flex-start; padding: 3cqw 7cqw; }
-  .gc-menu       { margin-top: 6cqw; width: 100%; }
-  .gc-detail,
-  .gc-detail.gc-console-surface {
-    width: 100%;
-    margin-top: 7cqw;
-    padding: 4cqw;
-  }
-  .gc-workflow-page { width: 100%; padding: 0; }
-  .gc-workflow-header { padding-bottom: 5cqw; }
-  .gc-workflow-eyebrow { font-size: 3cqw; }
-  .gc-workflow-header h2 { margin-top: 2cqw; font-size: 7cqw; }
-  .gc-workflow-header p { margin-top: 2cqw; font-size: 3.8cqw; line-height: 1.45; }
-  .gc-workflow-row {
-    grid-template-columns: 1fr auto;
-    min-height: 0;
-    gap: 3cqw;
-    padding: 5cqw 1cqw;
-  }
-  .gc-workflow-copy { gap: 1.5cqw; }
-  .gc-workflow-copy strong { font-size: 4.5cqw; }
-  .gc-workflow-copy > span { font-size: 3.4cqw; }
-  .gc-workflow-meta { grid-column: 1; font-size: 3cqw; }
-  .gc-workflow-open { grid-column: 2; grid-row: 1 / span 2; font-size: 3.7cqw; }
-  .gc-tool-page { width: 100%; margin-top: 5cqw; padding: 0; }
-  .gc-tool-breadcrumb { gap: 1.5cqw; font-size: 3.2cqw; }
-  .gc-tool-header h2 { margin-top: 3cqw; font-size: 6cqw; }
-  .gc-tool-header p { margin-top: 2cqw; font-size: 3.6cqw; }
-  .gc-tool-surface { height: auto; min-height: 130cqw; margin-top: 4cqw; border-radius: 3cqw; }
-
-  .gc-menu-item {
-    height: 15cqw;
-    padding-left: 2cqw;
-    padding-right: 4.5cqw;
-  }
-  .gc-menu-label { margin-left: 3.5cqw; }
-
-  .gc-icon-tile      { width: 11cqw; height: 11cqw; }
-  .gc-icon-tile--sm  { width: 10cqw; height: 10cqw; border-radius: 2.4cqw; }
-  .gc-icon-tile svg  { width: 6cqw; height: 6cqw; }
-
-  .gc-icon-btn       { width: 9.5cqw; height: 9.5cqw; }
-  .gc-icon-btn svg   { width: 5cqw; height: 5cqw; }
-  .gc-breadcrumb .gc-icon-btn { margin-right: 2.5cqw; }
-  .gc-breadcrumb-title { margin-left: 3cqw; }
-
-  /* Card rail: bleed to the screen edges and snap. */
-  .gc-rail {
-    margin: 6cqw -6cqw 0;
-    padding-inline: 6cqw;
-    scroll-padding-inline: 6cqw;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    cursor: auto;
-    touch-action: auto;
-  }
-  .gc-rail-track {
-    height: 86cqw;
-    gap: 4cqw;
-    padding-top: 1.5cqw;
-    padding-bottom: 3cqw;
-  }
-  .gc-card {
-    width: 60cqw;
-    scroll-snap-align: start;
-  }
-  .gc-card-head { padding: 3cqw 4cqw; }
-  .gc-card-body { padding: 4cqw; }
-
-  .gc-article-title { margin-top: 7cqw; }
-  .gc-article-lede  { margin-top: 4cqw; }
-  .gc-article-body  { margin-top: 3cqw; }
-
-  /* Device mock becomes a full-width block below the prose. */
-  .gc-device-slot {
-    margin-top: 10cqw;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    gap: 5cqw;
-  }
-  .gc-phone {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 22.5 / 47;
-    border-width: 1.5cqw;
+    padding: 0 var(--gc-space-3);
+    border-bottom: 1px solid var(--gc-border-subtle);
+    background: rgba(255, 255, 255, 0.98);
+    scrollbar-width: none;
   }
 
-  /* Footer sits at the bottom of the scroll, logo and edition side by side. */
-  .gc-footer {
-    display: flex;
-    align-items: baseline;
-    gap: 5cqw;
-    margin-top: auto;
-    padding-top: 12cqw;
-  }
-  .gc-workspace-list .gc-menu-item {
-    height: auto;
-    min-height: 19cqw;
-    padding: 4cqw 1cqw;
-  }
-  .gc-workspace-list .gc-menu-item:hover,
-  .gc-workspace-list .gc-menu-item:focus-visible {
-    padding-inline: 3cqw;
-  }
-  .gc-workspace-list .gc-menu-label { font-size: 4.8cqw; }
-  .gc-solution-description { font-size: 3.35cqw; line-height: 1.35; }
-  .gc-solution-arrow { font-size: 6cqw; }
-  .gc-footer-logo,
-  .gc-edition {
-    font-size: 3.5cqw;
-  }
-  .gc-edition { margin-left: auto; }
+  .gc-mobile-nav::-webkit-scrollbar { display: none; }
+  .gc-mobile-nav-link { position: relative; display: grid; min-width: max-content; min-height: 3rem; place-items: center; padding: 0 var(--gc-space-3); color: var(--gc-ink-muted); font-weight: 500; text-decoration: none; }
+  .gc-mobile-nav-link.is-current { color: var(--gc-blue-action); }
+  .gc-mobile-nav-link.is-current::after { position: absolute; right: var(--gc-space-2); bottom: 0; left: var(--gc-space-2); height: 3px; border-radius: 3px 3px 0 0; background: var(--gc-blue-action); content: ""; }
+
+  .gc-sidebar { display: none; }
+  .gc-main { padding: var(--gc-space-6) var(--gc-space-4) var(--gc-space-10); }
+  .gc-page-header { flex-direction: column; gap: var(--gc-space-5); margin-bottom: var(--gc-space-6); }
+  .gc-page-header .gc-button { width: 100%; }
+  .gc-page-description { font-size: var(--gc-text-sm); }
+  .gc-breadcrumb { margin-bottom: var(--gc-space-4); }
+
+  .gc-overview-hero { min-height: 0; grid-template-columns: 1fr; }
+  .gc-overview-hero-copy { padding: var(--gc-space-6); }
+  .gc-overview-hero img { position: absolute; right: -5rem; bottom: -2rem; width: 15rem; height: 12rem; opacity: 0.2; }
+  .gc-overview-grid, .gc-settings-layout { grid-template-columns: 1fr; }
+  .gc-panel { padding: var(--gc-space-5); }
+  .gc-resource-panel, .gc-detail-panel, .gc-activity-panel { padding: 0; }
+  .gc-section-heading { gap: var(--gc-space-4); }
+
+  .gc-resource-toolbar { align-items: stretch; flex-direction: column; padding: var(--gc-space-5); }
+  .gc-search-field { width: 100%; }
+  .gc-resource-table thead { display: none; }
+  .gc-resource-table, .gc-resource-table tbody, .gc-resource-table tr, .gc-resource-table th, .gc-resource-table td { display: block; width: 100%; }
+  .gc-resource-table tr { position: relative; padding: var(--gc-space-4) var(--gc-space-5); border-bottom: 1px solid var(--gc-border-subtle); }
+  .gc-resource-table th, .gc-resource-table td { padding: var(--gc-space-1) 0; border: 0; white-space: normal; }
+  .gc-resource-table td { color: var(--gc-ink-muted); }
+  .gc-resource-table .gc-row-action { position: absolute; top: var(--gc-space-4); right: var(--gc-space-5); width: auto; }
+
+  .gc-tabs { overflow-x: auto; padding: 0 var(--gc-space-2); }
+  .gc-tabs button { min-width: max-content; }
+  .gc-tab-content { padding: var(--gc-space-5); }
+  .gc-detail-status { align-items: flex-start; }
+  .gc-summary-list > div, .gc-detail-list > div { align-items: flex-start; flex-direction: column; gap: var(--gc-space-1); }
+  .gc-summary-list dd, .gc-detail-list dd { text-align: left; }
+
+  .gc-activity-item { grid-template-columns: auto minmax(0, 1fr) auto; padding: var(--gc-space-4) var(--gc-space-5); }
+  .gc-activity-item time { grid-column: 2; }
+  .gc-activity-item .gc-status { grid-row: 1 / span 2; grid-column: 3; }
+  .gc-state { min-height: 12rem; padding: var(--gc-space-6); }
+  .gc-state .gc-activity-list { width: calc(100% + 2 * var(--gc-space-6)); }
+
+  .gc-form-actions { flex-direction: column-reverse; }
+  .gc-form-actions .gc-button { width: 100%; }
+  .gc-dialog .gc-form-actions { flex-direction: column-reverse; }
 }
 
-/* On desktop the footer wrapper must not create a box — its two children are
-   positioned absolutely against the stage. `display: contents` removes it. */
-@media (min-width: 768px) {
-  .gc-footer { display: none; }
+@media (min-width: 1800px) {
+  :root { --gc-content-max: 90rem; }
+  .gc-main { padding-right: 4.5rem; padding-left: 4.5rem; }
 }

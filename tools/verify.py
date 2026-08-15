@@ -130,6 +130,37 @@ def check_activity_and_settings(browser, url: str, problems: list[str]) -> None:
     page.close()
 
 
+def check_layout_and_accessibility(browser, url: str, problems: list[str]) -> None:
+    for label, viewport, mobile in (
+        ("desktop", DESKTOP, False),
+        ("4k", {"width": 3840, "height": 2160}, False),
+        ("mobile", MOBILE, True),
+    ):
+        page = browser.new_page(viewport=viewport, is_mobile=mobile, has_touch=mobile)
+        add_watchers(page, label, problems)
+        page.goto(f"{url}#/overview", wait_until="networkidle", timeout=60_000)
+        overflow = page.evaluate("document.documentElement.scrollWidth - window.innerWidth")
+        if overflow > 1:
+            problems.append(f"[{label}] horizontal overflow is {overflow}px")
+        primary = page.locator(".gc-button--primary:visible")
+        if primary.count() > 1:
+            problems.append(f"[{label}] overview exposes more than one primary action")
+        if primary.count() == 1:
+            primary.focus()
+            shadow = primary.evaluate("element => getComputedStyle(element).boxShadow")
+            if shadow == "none":
+                problems.append(f"[{label}] primary action has no visible focus ring")
+        page.close()
+
+    reduced = browser.new_page(viewport=DESKTOP, reduced_motion="reduce")
+    add_watchers(reduced, "reduced-motion", problems)
+    reduced.goto(f"{url}#/activity?state=loading", wait_until="networkidle", timeout=60_000)
+    duration = reduced.locator(".gc-spinner").evaluate("element => getComputedStyle(element).animationDuration")
+    if duration not in {"0s", "1e-05s", "0.00001s"}:
+        problems.append(f"[reduced-motion] spinner duration remains {duration}")
+    reduced.close()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", default="http://127.0.0.1:8000/index.html")
@@ -147,6 +178,7 @@ def main() -> int:
         check_shell_routes(browser, args.url, problems)
         check_resource_workflow(browser, args.url, problems)
         check_activity_and_settings(browser, args.url, problems)
+        check_layout_and_accessibility(browser, args.url, problems)
         browser.close()
 
     if problems:

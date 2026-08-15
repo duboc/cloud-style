@@ -96,6 +96,23 @@ class RepositoryContractsTest(unittest.TestCase):
         self.assertIn('--gc-font-display: "Google Sans"', tokens)
         self.assertIn('--gc-font-text:    "Google Sans Text"', tokens)
 
+    def test_css_exposes_application_tokens(self):
+        tokens = read("css/tokens.css")
+        for token in ("--gc-space-4", "--gc-border-subtle", "--gc-surface", "--gc-focus-ring"):
+            self.assertIn(token, tokens)
+
+    def test_css_does_not_define_presentation_primitives(self):
+        styles = "\n".join(read(relative) for relative in (
+            "css/tokens.css",
+            "css/cloud-style.css",
+            "css/shell.css",
+            "css/screens.css",
+            "css/responsive.css",
+        ))
+        for primitive in (".gc-stage", ".gc-phone", ".gc-device-slot", ".gc-rail", ".gc-footer"):
+            self.assertNotIn(primitive, styles)
+        self.assertNotIn("aspect-ratio: 16 / 9", styles)
+
 
 if __name__ == "__main__":
     unittest.main()
