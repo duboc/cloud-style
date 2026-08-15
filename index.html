@@ -175,8 +175,8 @@ function cards(ci) {
       <div class="gc-rail gc-no-scrollbar">
         <div class="gc-rail-track">
           ${c.facts.map((f, i) => `
-            <article class="gc-card${f.live ? ' gc-card--live' : ''}"
-                     data-go="article" data-cat="${ci}" data-fact="${i}">
+            <button type="button" class="gc-card${f.live ? ' gc-card--live' : ''}"
+                    data-go="article" data-cat="${ci}" data-fact="${i}">
               <div class="gc-card-head">
                 <span>${mark(B.cardBold, B.cardLight)}</span>
                 <span class="gc-card-num">${i + 1}</span>
@@ -185,7 +185,7 @@ function cards(ci) {
                 <p class="gc-card-title">${esc(f.title)}</p>
                 ${f.tag ? `<span class="gc-tag">${esc(f.tag)}</span>` : ''}
               </div>
-            </article>`).join('')}
+            </button>`).join('')}
         </div>
       </div>
     </div>`;
@@ -538,11 +538,21 @@ function html() {
   }
 }
 
+function setActiveNavigation(view) {
+  document.querySelectorAll('.gc-nav-link').forEach(button => {
+    const active = button.dataset.go === view ||
+      (button.dataset.go === 'menu' && ['cards', 'article'].includes(view));
+    button.classList.toggle('active', active);
+    if (active) button.setAttribute('aria-current', 'page');
+    else button.removeAttribute('aria-current');
+  });
+}
+
 function render() {
   screen.innerHTML = html();
   /* The veil calms the ripple wherever content is dense. */
   veil.hidden = (state.view === 'cover' || state.view === 'menu');
-  badge.hidden = (state.view !== 'article');
+  setActiveNavigation(state.view);
   gcInitRails(screen);
   gcInitDemos(screen);
 }
@@ -567,23 +577,6 @@ document.addEventListener('click', e => {
 /* The wordmark is always a route home. */
 document.getElementById('wordmark').addEventListener('click',
   () => go({ view: 'cover' }));
-
-/* Badge cycles through demo modes on article screen. */
-const badge = document.getElementById('badge');
-if (badge) {
-  badge.addEventListener('click', () => {
-    if (state.view !== 'article') return;
-    const demoTypes = ['chat', 'camera', 'video', 'metrics', 'security', 'buttons'];
-    const curDemo = CATS[state.cat].facts[state.fact].demo || 'chat';
-    const nextIdx = (demoTypes.indexOf(curDemo) + 1) % demoTypes.length;
-    CATS[state.cat].facts[state.fact].demo = demoTypes[nextIdx];
-    const phoneScreen = document.querySelector('.gc-phone-screen');
-    if (phoneScreen) {
-      phoneScreen.innerHTML = demoHtml(demoTypes[nextIdx], CATS[state.cat].facts[state.fact]);
-      gcInitDemos(phoneScreen);
-    }
-  });
-}
 
 gcOnKeys({
   home: () => go({ view: 'cover' }),

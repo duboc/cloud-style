@@ -62,8 +62,10 @@ def main() -> int:
         page.screenshot(path=str(out / "template-cover.png"))
         print("  template-cover.png")
 
-        page.locator(".gc-btn--cover").click()
+        page.locator(".gc-hero-actions .gc-btn").click()
         page.wait_for_timeout(800)
+        if page.locator('.gc-nav-link[aria-current="page"]').text_content() != "Catálogo de Demos":
+            problems.append("[desktop] catalog navigation does not expose aria-current")
         page.screenshot(path=str(out / "template-menu.png"))
         print("  template-menu.png")
 
@@ -72,7 +74,9 @@ def main() -> int:
         page.screenshot(path=str(out / "template-cards.png"))
         print("  template-cards.png")
 
-        page.locator(".gc-card").first.click()
+        first_card = page.locator(".gc-card").first
+        first_card.focus()
+        page.keyboard.press("Enter")
         page.wait_for_timeout(800)
         page.screenshot(path=str(out / "template-article.png"))
         print("  template-article.png")
@@ -112,7 +116,9 @@ def main() -> int:
         m.screenshot(path=str(out / "template-mobile-cover.png"), full_page=True)
         print("  template-mobile-cover.png")
 
-        m.locator(".gc-btn--cover").click()
+        mobile_action = m.locator(".gc-hero-actions .gc-btn")
+        mobile_action.focus()
+        m.keyboard.press("Enter")
         m.wait_for_timeout(800)
         m.screenshot(path=str(out / "template-mobile-menu.png"), full_page=True)
         print("  template-mobile-menu.png")
