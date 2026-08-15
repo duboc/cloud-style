@@ -67,7 +67,7 @@ window.CONTENT = {
           body: 'Combinando o Nano Banana 2 para geração e edição visual de alta fidelidade com variantes do Gemma 3 otimizadas para português, o Vertex AI permite personalizar weights de fundação com fine-tuning eficiente e LoRA. Veja como empresas no Brasil criam experiências visuais e conversacionais sob medida preservando a privacidade dos dados corporativos.',
           tag: '#Gemma3',
           live: false,
-          demo: 'camera',
+          demo: 'image-studio',
         },
       ],
     },

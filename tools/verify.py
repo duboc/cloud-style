@@ -43,6 +43,8 @@ def main() -> int:
     ap.add_argument("--out", default="docs/screenshots")
     ap.add_argument("--update-screenshots", action="store_true",
                     help="write every canonical manifest capture to docs/screenshots")
+    ap.add_argument("--demo", choices=["image-studio"],
+                    help="verify the interaction scenario for one demo pack")
     args = ap.parse_args()
 
     out = pathlib.Path(args.out)
@@ -172,6 +174,24 @@ def main() -> int:
             problems.append("[reduced-motion] live-card pulse is still active")
         reduced.close()
 
+        if args.demo == "image-studio":
+            demo = browser.new_page(viewport=DESKTOP)
+            watch(demo, "image-studio")
+            demo.goto(args.url, wait_until="networkidle", timeout=60_000)
+            demo.locator(".gc-primary-action").click()
+            demo.locator(".gc-menu-item").first.click()
+            image_card = demo.locator(".gc-card").nth(2)
+            image_card.focus()
+            demo.keyboard.press("Enter")
+            for action in ("crop", "retouch", "compare"):
+                demo.locator(f'[data-action="{action}"]').click()
+                if demo.locator(f'[data-action="{action}"]').get_attribute("aria-pressed") != "true":
+                    problems.append(f"[image-studio] {action} did not enter its active state")
+            demo.locator('[data-action="approve"]').click()
+            if "approved" not in demo.locator('[data-role="history"]').inner_text().lower():
+                problems.append("[image-studio] approval did not create an audit entry")
+            demo.close()
+
         if args.update_screenshots:
             parsed = urlsplit(args.url)
             origin = f"{parsed.scheme}://{parsed.netloc}"
@@ -196,6 +216,19 @@ def main() -> int:
                     capture.keyboard.press("Enter")
                 if setup == "focus-primary":
                     capture.locator("#primary").focus()
+                if setup and setup.startswith("image-studio"):
+                    capture.locator(".gc-primary-action").click()
+                    capture.locator(".gc-menu-item").first.click()
+                    image_card = capture.locator(".gc-card").nth(2)
+                    image_card.focus()
+                    capture.keyboard.press("Enter")
+                    if setup == "image-studio-compare":
+                        capture.locator('[data-action="retouch"]').click()
+                        capture.locator('[data-action="compare"]').click()
+                    if setup == "image-studio-approved":
+                        capture.locator('[data-action="crop"]').click()
+                        capture.locator('[data-action="retouch"]').click()
+                        capture.locator('[data-action="approve"]').click()
                 capture.wait_for_timeout(300)
                 target = capture.locator(case["selector"])
                 if target.count() != 1:

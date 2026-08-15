@@ -1,3 +1,5 @@
+import { imageStudioPack } from './image-studio/index.js';
+
 const packs = new Map();
 const activePacks = new WeakMap();
 
@@ -47,3 +49,5 @@ export function mountDemoPack(host, id, data = {}) {
   pack.mount?.(host, data);
   return pack;
 }
+
+registerDemoPack(imageStudioPack);

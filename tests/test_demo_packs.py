@@ -16,6 +16,17 @@ class DemoPackContractTest(unittest.TestCase):
         for pack_id in ("image-studio", "video-studio", "analytics", "databases", "business-flows"):
             self.assertEqual(source.count(f"'{pack_id}'"), 1)
 
+    def test_image_studio_has_meaningful_controls(self):
+        source = (ROOT / "starter/demo-packs/image-studio/index.js").read_text(encoding="utf-8")
+        for control in (
+            'data-action="crop"',
+            'data-action="retouch"',
+            'data-action="compare"',
+            'data-action="approve"',
+        ):
+            self.assertIn(control, source)
+        self.assertIn("aria-pressed", source)
+
 
 if __name__ == "__main__":
     unittest.main()
