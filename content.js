@@ -52,7 +52,7 @@ window.CONTENT = {
           body: 'Organizações modernas estão substituindo fluxos de trabalho monolíticos por agentes autônomos alimentados pelo Gemini 3.1 Pro. No Vertex AI Agent Builder, modelos de fundação conectam-se diretamente a bancos de dados corporativos, APIs internas e serviços de grounding seguros. Descubra como equipes líderes alcançam baixíssima latência e máxima precisão ao executar tarefas complexas multi-etapas enquanto aplicam políticas de governança e segurança corporativa em tempo real.',
           tag: '#AgentesIA',
           live: true,
-          demo: 'chat',
+          demo: 'image-studio',
         },
         {
           title: 'Replace a background and refine the composition',
@@ -60,7 +60,7 @@ window.CONTENT = {
           body: 'O Gemini 3.1 Flash-Lite traz uma janela de contexto massiva capaz de analisar horas de vídeo, gravações de áudio e centenas de páginas de documentação técnica em um único prompt. Esta sessão apresenta arquiteturas de RAG sem necessidade de fragmentação complexa de dados. Comparamos o processamento direto de contextos longos contra busca vetorial tradicional, demonstrando ganhos massivos de desempenho em produção.',
           tag: '#Multimodal',
           live: true,
-          demo: 'video',
+          demo: 'image-studio',
         },
         {
           title: 'Review and approve a generated visual',

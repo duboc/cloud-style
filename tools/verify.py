@@ -103,13 +103,28 @@ def main() -> int:
         page.wait_for_timeout(800)
         page.screenshot(path=str(out / "template-article.png"))
         print("  template-article.png")
-        if page.locator(".gc-console-surface").count() == 0:
-            problems.append("[desktop] detail is missing its Console surface")
+        if page.locator(".gc-tool-surface").count() != 1:
+            problems.append("[desktop] selected workflow must expose one tool surface")
 
         # The article screen must actually have rendered — if the rail's drag
         # handler swallows the click, this is where you find out.
-        if page.locator(".gc-article-title").count() == 0:
-            problems.append("[desktop] clicking a card did not open the article")
+        if page.locator(".gc-tool-page").count() != 1:
+            problems.append("[desktop] opening a workflow did not mount its tool page")
+
+        # Every solution must follow the same app-workspace route contract.
+        for solution_index in range(5):
+            page.locator('.gc-sidebar-link[data-go="menu"]').click()
+            page.wait_for_timeout(250)
+            page.locator(".gc-menu-item").nth(solution_index).click()
+            page.wait_for_timeout(250)
+            row = page.locator(".gc-workflow-row").first
+            row.focus()
+            page.keyboard.press("Enter")
+            page.wait_for_timeout(250)
+            if page.locator(".gc-tool-page").count() != 1:
+                problems.append(f"[desktop] solution {solution_index + 1} did not open a tool workspace")
+            if page.locator(".gc-phone, .gc-device-slot").count() != 0:
+                problems.append(f"[desktop] solution {solution_index + 1} restored a slide-style device frame")
 
         # ---- scaling: the layout must scale, not reflow ----------------------
         # Same DOM, two widths: the wordmark's width as a FRACTION of the stage

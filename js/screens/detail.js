@@ -6,31 +6,22 @@ export function renderDetail({ content, state, esc, demoHtml }) {
     'image-studio', 'video-studio', 'analytics', 'databases', 'business-flows',
   ].includes(demoType);
   return `
-    <div class="gc-detail gc-console-surface" style="view-transition-name: gc-detail">
-      <div class="gc-breadcrumb">
-        <button class="gc-icon-btn" data-go="cover" aria-label="Home">
-          <svg><use href="#gc-icon-home"/></svg>
-        </button>
-        <button class="gc-icon-btn" data-go="cards" data-cat="${state.cat}" aria-label="Back">
-          <svg><use href="#gc-icon-back"/></svg>
-        </button>
-        <span class="gc-icon-tile gc-icon-tile--sm">
-          <svg><use href="#${esc(category.icon)}"/></svg>
-        </span>
-        <h2 class="gc-breadcrumb-title">${esc(category.title)} | ${esc(content.brand.cardBold)}${esc(content.brand.cardLight)} ${state.fact + 1}</h2>
-      </div>
-      <p class="gc-article-title">${esc(fact.title)}</p>
-      <p class="gc-article-lede">${esc(fact.lede)}</p>
-      <p class="gc-article-body">${esc(fact.body)}</p>
-    </div>
-
-    <div class="gc-device-slot">
-      <div class="gc-phone">
-        <div class="gc-phone-screen">
-          ${isPack
-            ? `<div class="gc-demo-pack-host" data-demo-pack-id="${esc(demoType)}"></div>`
-            : demoHtml(demoType, fact)}
+    <section class="gc-detail gc-tool-page" style="view-transition-name: gc-detail">
+      <header class="gc-tool-header">
+        <div class="gc-tool-breadcrumb">
+          <button data-go="menu">Solutions</button>
+          <span>/</span>
+          <button data-go="cards" data-cat="${state.cat}">${esc(category.title)}</button>
+          <span>/</span>
+          <span>${esc(fact.title)}</span>
         </div>
+        <h2>${esc(fact.title)}</h2>
+        <p>${esc(fact.lede)}</p>
+      </header>
+      <div class="gc-tool-surface">
+        ${isPack
+          ? `<div class="gc-demo-pack-host" data-demo-pack-id="${esc(demoType)}"></div>`
+          : demoHtml(demoType, fact)}
       </div>
-    </div>`;
+    </section>`;
 }

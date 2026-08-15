@@ -11,8 +11,8 @@ SCREENSHOT_CASES = [
     {"name": "component-buttons-focus", "path": "/templates/06-screen-catalog.html", "viewport": (1280, 720), "selector": "#buttons", "setup": "focus-primary"},
     {"name": "component-status", "path": "/templates/06-screen-catalog.html", "viewport": (1280, 720), "selector": "#status"},
     {"name": "component-console-surface", "path": "/templates/06-screen-catalog.html", "viewport": (1280, 720), "selector": "#surface"},
-    {"name": "demo-image-studio-desktop", "path": "/index.html", "viewport": (1280, 720), "selector": ".gc-phone", "setup": "image-studio"},
-    {"name": "demo-image-studio-mobile", "path": "/index.html", "viewport": (390, 844), "selector": ".gc-phone", "setup": "image-studio", "mobile": True},
-    {"name": "component-image-studio-compare", "path": "/index.html", "viewport": (1280, 720), "selector": ".gc-phone", "setup": "image-studio-compare"},
-    {"name": "component-image-studio-approved", "path": "/index.html", "viewport": (1280, 720), "selector": ".gc-phone", "setup": "image-studio-approved"},
+    {"name": "demo-image-studio-desktop", "path": "/index.html", "viewport": (1280, 720), "selector": ".gc-tool-surface", "setup": "image-studio"},
+    {"name": "demo-image-studio-mobile", "path": "/index.html", "viewport": (390, 844), "selector": ".gc-tool-surface", "setup": "image-studio", "mobile": True},
+    {"name": "component-image-studio-compare", "path": "/index.html", "viewport": (1280, 720), "selector": ".gc-tool-surface", "setup": "image-studio-compare"},
+    {"name": "component-image-studio-approved", "path": "/index.html", "viewport": (1280, 720), "selector": ".gc-tool-surface", "setup": "image-studio-approved"},
 ]

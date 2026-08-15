@@ -181,6 +181,11 @@
   .gc-workflow-copy > span { font-size: 3.4cqw; }
   .gc-workflow-meta { grid-column: 1; font-size: 3cqw; }
   .gc-workflow-open { grid-column: 2; grid-row: 1 / span 2; font-size: 3.7cqw; }
+  .gc-tool-page { width: 100%; margin-top: 5cqw; padding: 0; }
+  .gc-tool-breadcrumb { gap: 1.5cqw; font-size: 3.2cqw; }
+  .gc-tool-header h2 { margin-top: 3cqw; font-size: 6cqw; }
+  .gc-tool-header p { margin-top: 2cqw; font-size: 3.6cqw; }
+  .gc-tool-surface { height: auto; min-height: 130cqw; margin-top: 4cqw; border-radius: 3cqw; }
 
   .gc-menu-item {
     height: 15cqw;

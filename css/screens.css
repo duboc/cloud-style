@@ -645,4 +645,25 @@
 .gc-workflow-meta { color: var(--gc-ink-500); font: 500 0.78cqw var(--gc-font-display); }
 .gc-workflow-open { justify-self: end; color: var(--gc-blue-action); font: 500 0.9cqw var(--gc-font-display); }
 
+.gc-tool-page {
+  right: auto;
+  top: 8.5cqw;
+  width: 80cqw;
+}
+
+.gc-tool-header { padding-bottom: 1.2cqw; }
+.gc-tool-breadcrumb { display: flex; gap: 0.5cqw; align-items: center; color: var(--gc-ink-500); font: 0.78cqw var(--gc-font-text); }
+.gc-tool-breadcrumb button { color: var(--gc-blue-action); font: inherit; background: transparent; }
+.gc-tool-breadcrumb span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gc-tool-header h2 { margin: 0.7cqw 0 0; color: var(--gc-ink-900); font: 500 1.55cqw/1.2 var(--gc-font-display); }
+.gc-tool-header p { margin: 0.35cqw 0 0; color: var(--gc-ink-500); font: 0.9cqw/1.35 var(--gc-font-text); }
+.gc-tool-surface {
+  height: 39cqw;
+  overflow: hidden;
+  border: 0.1cqw solid var(--gc-color-border);
+  border-radius: 0.9cqw;
+  background: var(--gc-surface);
+  box-shadow: var(--gc-shadow-card);
+}
+
 /* -----------------------------------------------------------------------------

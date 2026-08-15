@@ -72,7 +72,7 @@ class RepositoryContractsTest(unittest.TestCase):
         self.assertEqual(cover.count("gc-primary-action"), 1)
         self.assertIn("gc-workspace-list", catalog)
         self.assertIn("gc-workflow-page", cards)
-        self.assertIn("gc-console-surface", detail)
+        self.assertIn("gc-tool-surface", detail)
 
     def test_workspace_uses_neutral_template_language(self):
         config = (ROOT / "js/config.js").read_text(encoding="utf-8").lower()
@@ -101,6 +101,32 @@ class RepositoryContractsTest(unittest.TestCase):
         self.assertIn("gc-workflow-row", source)
         for rejected in ("gc-icon-tile", "gc-card-head", "gc-tag", "gc-rail"):
             self.assertNotIn(rejected, source)
+
+    def test_selected_workflows_use_full_application_workspace(self):
+        source = (ROOT / "js/screens/detail.js").read_text(encoding="utf-8")
+        self.assertIn("gc-tool-page", source)
+        self.assertIn("gc-tool-surface", source)
+        self.assertIn("gc-tool-breadcrumb", source)
+        for rejected in (
+            "gc-device-slot",
+            "gc-phone",
+            "gc-breadcrumb",
+            "gc-icon-btn",
+            "gc-article-body",
+        ):
+            self.assertNotIn(rejected, source)
+
+    def test_screen_renderers_do_not_restore_slide_primitives(self):
+        sources = "\n".join(
+            (ROOT / path).read_text(encoding="utf-8")
+            for path in (
+                "js/screens/catalog.js",
+                "js/screens/cards.js",
+                "js/screens/detail.js",
+            )
+        )
+        for rejected in ("gc-menu-num", "gc-card-head", "gc-device-slot", "gc-phone"):
+            self.assertNotIn(rejected, sources)
 
     def test_screenshot_manifest_has_required_viewports(self):
         from tools.screenshot_manifest import SCREENSHOT_CASES
