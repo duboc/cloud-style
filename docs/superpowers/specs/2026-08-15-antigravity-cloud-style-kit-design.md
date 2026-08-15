@@ -21,6 +21,7 @@ The result must combine the operational clarity of Google Cloud Console with the
 - **Two supported entry points.** Cloning this repository and installing the kit into an existing repository are equally valid workflows.
 - **Evidence before completion.** Antigravity must verify desktop, mobile, accessibility, interaction, and browser-console behavior before it reports success.
 - **Preserve existing applications.** Adoption must not rewrite application architecture merely to simplify styling.
+- **Always recognizable as Google Cloud.** Every supported preset and demo pack must use the approved Google Cloud visual language. A result that reads as a generic blue SaaS dashboard fails the design contract.
 
 ## Scope
 
@@ -32,6 +33,7 @@ The result must combine the operational clarity of Google Cloud Console with the
 - A stable separation between the presentation shell, theme, content, and interactive demos.
 - Framework-neutral guidance with concrete adapters for plain HTML and common component frameworks.
 - Reference screenshots and explicit visual acceptance criteria.
+- A complete screenshot catalog for screens, components, demo packs, responsive layouts, and important interaction states.
 - Automated validation that can be invoked by Antigravity and by a developer.
 - Documentation for clone and portable-install paths.
 
@@ -43,6 +45,7 @@ The result must combine the operational clarity of Google Cloud Console with the
 - Automatic deployment to Google Cloud.
 - An npm installer in the first release. A documented file-copy installation is sufficient.
 - Replacing the application's business logic, framework, router, state management, or back end during adoption.
+- A neutral or non-Google brand mode. Cloud Style is intentionally specific to Google Cloud experiences.
 
 ## Supported workflows
 
@@ -115,14 +118,19 @@ cloud-style/
 │   │       │   ├── adoption-guide.md
 │   │       │   └── failure-examples.md
 │   │       └── assets/
-│   │           └── reference screenshots
+│   │           └── approved reference screenshots
 │   └── workflows/
 │       ├── create-cloud-demo.md
 │       ├── adopt-cloud-style.md
 │       └── verify-cloud-style.md
 ├── starter/
 │   ├── shell/
-│   ├── demos/
+│   ├── demo-packs/
+│   │   ├── image-studio/
+│   │   ├── video-studio/
+│   │   ├── analytics/
+│   │   ├── databases/
+│   │   └── business-flows/
 │   └── presets/
 ├── css/
 ├── js/
@@ -158,6 +166,23 @@ No Summit-specific label, metric, hashtag, or demo script may be required by the
 
 ## Visual language contract
 
+### Google Cloud identity invariants
+
+Cloud Style must always look like a Google Cloud experience. Antigravity must preserve the following identity signals in both creation and adoption workflows:
+
+- Google Sans for wordmarks, headings, navigation, controls, numeric emphasis, and application chrome.
+- Google Sans Text for paragraphs, descriptions, dense labels, tables, and other sustained reading.
+- The existing Google Cloud Super Cloud artwork as the canonical large identity asset.
+- The official Google blue, red, yellow, and green values when the multicolor Google identity is used.
+- Google Cloud blue roles for primary action, current selection, links, and informational emphasis.
+- White and pale neutral working surfaces, restrained elevation, clear borders, and Console-like information hierarchy.
+- A thin Google color strip or equivalent approved multicolor signature where it strengthens product identity without competing with content.
+- The exact Google Cloud footer logotype treatment defined by the design system.
+
+The Super Cloud artwork may dominate the marketing entrance. On working screens it must become a restrained crop, watermark, or background accent so operational content remains primary. Antigravity must not redraw, recolor, distort, or replace the approved asset with a generic gradient blob.
+
+Google Sans is mandatory for Cloud Style output. Installation and usage documentation must state that Cloud Style is intended for authorized Google Cloud demos, internal material, partner experiences, and other contexts where use of Google brand assets and fonts is permitted.
+
 ### Console qualities
 
 - Clear information hierarchy and predictable navigation.
@@ -183,6 +208,73 @@ Desktop remains a composed 16:9 presentation surface. Mobile is a separately des
 ### Interactive promise
 
 Any card, badge, pulse, status, or device that appears interactive must respond meaningfully. Static placeholders must not use live indicators.
+
+## Demo packs
+
+Demo packs are reusable, working capability modules. Antigravity may compose multiple packs into one end-to-end story. Each pack must include a catalog entry, component contract, realistic sample data, meaningful interaction, content schema, responsive behavior, accessible states, verification scenario, and reference screenshots.
+
+### Image Studio
+
+Supports image generation or import, crop, retouch, comparison, prompt or edit history, review, and approval. It must show a real before-and-after or edit-state change rather than a static gallery.
+
+### Video Studio
+
+Supports media import, playback, trim selection, captions, chapters, review comments, and export status. The reference demo may simulate processing, but timeline controls and review states must work.
+
+### Data Analytics
+
+Supports a query or exploration input, filters, charts, supporting evidence, and an explanation of an operational decision. Charts must use labeled quantities and units and must not exist only as decorative dashboard filler.
+
+### Databases
+
+Supports schema or collection inspection, safe query execution, database health, replication or topology, and explainable operational status. Demonstrations must clearly distinguish simulated sample data from a live database connection.
+
+### Business Flows
+
+Supports requests, agent or automation steps, human approvals, handoffs, exceptions, audit history, and completion states. A flow must show state transitions and accountability, not only a static node diagram.
+
+## Screenshot catalog
+
+Screenshots are product artifacts and verification evidence. The repository must generate and maintain them rather than relying on manually selected marketing captures.
+
+### Required screen captures
+
+- Marketing entrance for Showcase and Hybrid presets.
+- Console workspace for Console and Hybrid presets.
+- Demo catalog with all five demo packs.
+- Category or track detail.
+- Individual demo detail for Image Studio, Video Studio, Data Analytics, Databases, and Business Flows.
+- Architecture or evidence view when included by the preset.
+- Empty, loading, success, warning, and error states used by the reference application.
+
+### Required component captures
+
+- Application bar and navigation.
+- Wordmark and Google Cloud identity treatments.
+- Buttons, icon buttons, tabs, chips, and status indicators.
+- Menu rows, catalog tiles, cards, breadcrumbs, and metrics.
+- Forms, inputs, filters, selectors, and dialogs.
+- Charts, data surfaces, database topology, flow nodes, and audit events.
+- Device or embedded-demo frame when the preset uses one.
+- Each demo pack's principal interactive component and important states.
+
+### Viewports and states
+
+Every required screen must have a desktop capture at 1280×720 and a mobile capture at 390×844. The canonical overview and working screen must also have a 3840×2160 scale capture. Component captures may use a dedicated component showcase viewport, but the capture must include the complete component without clipping.
+
+Interactive components must capture rest, focus, active or selected, success, and error states when those states exist. Reduced-motion verification does not require duplicate screenshots unless motion changes the final layout.
+
+### Storage and naming
+
+Generated captures belong under `docs/screenshots/` with stable, descriptive names:
+
+```text
+<preset>-<screen>-<viewport>.png
+component-<name>-<state>.png
+demo-<pack>-<screen>-<viewport>.png
+```
+
+The verification report must identify the source route or state for each capture. Reference screenshots used by the Antigravity skill must be copied from this verified catalog so the agent and repository documentation use the same visual truth.
 
 ## Presets
 
@@ -231,10 +323,13 @@ The design is successfully implemented when all of the following are true:
 4. Adoption preserves the existing framework, routes, data flow, behavior, and tests unless separately approved.
 5. Product identity, content, and demo assignment are configurable outside the shell.
 6. At least one meaningful interactive demo is available in the reference starter.
-7. The reference implementation passes desktop and mobile visual checks, keyboard checks, reduced-motion checks, and console-error checks.
-8. Antigravity produces screenshots and a verification walkthrough before claiming completion.
-9. Documentation explains both entry paths with copyable commands and example prompts.
-10. No Claude Code or Codex integration files are added as part of this feature.
+7. All five required demo packs are available with meaningful interactions and isolated contracts.
+8. Every preset and demo pack is recognizably Google Cloud and uses Google Sans and Google Sans Text for their defined roles.
+9. The verified screenshot catalog contains all required screen, component, viewport, and state captures.
+10. The reference implementation passes desktop and mobile visual checks, keyboard checks, reduced-motion checks, and console-error checks.
+11. Antigravity produces screenshots and a verification walkthrough before claiming completion.
+12. Documentation explains both entry paths with copyable commands and example prompts.
+13. No Claude Code or Codex integration files are added as part of this feature.
 
 ## Documentation deliverables
 
@@ -242,7 +337,8 @@ The design is successfully implemented when all of the following are true:
 - An Antigravity quickstart with example `/create-cloud-demo`, `/adopt-cloud-style`, and `/verify-cloud-style` prompts.
 - A portable installation guide.
 - Updated design-system documentation that reflects the current Console and marketing hybrid.
-- Reference screenshots for every preset on desktop and mobile.
+- Generated screen and component screenshot catalog as specified above.
+- Approved Google Cloud identity asset and typography usage guidance for Antigravity.
 
 ## Implementation sequencing constraints
 
@@ -251,9 +347,8 @@ The implementation plan must address current template blockers before treating t
 The implementation plan should then proceed in this order:
 
 1. Stabilize and verify the reference application.
-2. Separate shell, theme, content, demos, and presets.
+2. Separate shell, theme, content, demo packs, and presets.
 3. Write Antigravity rules and the Cloud Style skill.
 4. Write create, adopt, and verify workflows.
 5. Validate both entry paths in clean test workspaces.
 6. Update documentation and reference screenshots.
-
