@@ -24,26 +24,27 @@ window.CONTENT = {
 
   brand: {
     /* The wordmark split in two: bold prefix, light suffix (~10 chars total). */
-    wordmarkBold: 'Summit ',
-    wordmarkLight: 'Brasil',
+    wordmarkBold: 'Cloud ',
+    wordmarkLight: 'Workspace',
 
     /* Cover lede. First two lines render bold, last two regular.
        Break the lines yourself — this is a poster, not a paragraph. */
-    ledeStrong: ['A Empresa Agêntica', 'em escala'],
-    ledeSoft:   ['Workflows inteligentes e IA', 'no Google Cloud'],
+    ledeStrong: ['Build your next', 'cloud application'],
+    ledeSoft:   ['Start with an adaptable workflow', 'designed for Google Cloud'],
 
-    cta: 'Explorar sessões e demos',
-    edition: 'Google Cloud Summit Brasil 2026',
+    cta: 'Open workspace',
+    edition: 'Google Cloud application starter',
 
     /* Prefix for the miniature wordmark in each card header. */
-    cardBold: 'Summit ',
-    cardLight: 'Brasil',
+    cardBold: 'Cloud ',
+    cardLight: 'Workspace',
   },
 
   categories: [
     {
       icon: 'gc-icon-identity',
-      title: 'Agentes de IA e Empresa Agêntica',
+      title: 'Image editing',
+      description: 'Create, transform, compare, and approve visual assets.',
       facts: [
         {
           title: 'IA Generativa evolui de protótipos para agentes autônomos em produção',
@@ -74,7 +75,8 @@ window.CONTENT = {
 
     {
       icon: 'gc-icon-catalog',
-      title: 'Infraestrutura Moderna e AI Hypercomputer',
+      title: 'Video editing',
+      description: 'Review footage, edit timelines, and prepare delivery.',
       facts: [
         {
           title: 'Orquestração de workloads de IA com GKE Autopilot e TPUs Ironwood',
@@ -105,7 +107,8 @@ window.CONTENT = {
 
     {
       icon: 'gc-icon-support',
-      title: 'Dados Unificados e Inteligência em Tempo Real',
+      title: 'Data analytics',
+      description: 'Query, visualize, and explain decisions with evidence.',
       facts: [
         {
           title: 'Lakehouse unificado no BigQuery Studio com formatos abertos de tabela',
@@ -136,7 +139,8 @@ window.CONTENT = {
 
     {
       icon: 'gc-icon-mobile-check',
-      title: 'Segurança com IA e BeyondCorp Zero Trust',
+      title: 'Databases',
+      description: 'Explore schemas, query safely, and inspect system health.',
       facts: [
         {
           title: 'Arquitetura Zero Trust e acesso contextual com BeyondCorp Enterprise',
@@ -159,7 +163,8 @@ window.CONTENT = {
 
     {
       icon: 'gc-icon-open',
-      title: 'Inovação Local e Ecossistema Brasil',
+      title: 'Business flows',
+      description: 'Automate requests, approvals, exceptions, and handoffs.',
       facts: [
         {
           title: 'Cloud Space São Paulo e co-criação de soluções de nuvem na América Latina',

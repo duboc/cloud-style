@@ -23,6 +23,9 @@
    ========================================================================== */
 @media (max-width: 767px) {
 
+  .gc-app-sidebar { display: none; }
+  .gc-app-nav { display: flex; }
+
   .gc-progress-bar {
     height: 1.2vw;
   }
@@ -229,6 +232,18 @@
     margin-top: auto;
     padding-top: 12cqw;
   }
+  .gc-workspace-list .gc-menu-item {
+    height: auto;
+    min-height: 19cqw;
+    padding: 4cqw 1cqw;
+  }
+  .gc-workspace-list .gc-menu-item:hover,
+  .gc-workspace-list .gc-menu-item:focus-visible {
+    padding-inline: 3cqw;
+  }
+  .gc-workspace-list .gc-menu-label { font-size: 4.8cqw; }
+  .gc-solution-description { font-size: 3.35cqw; line-height: 1.35; }
+  .gc-solution-arrow { font-size: 6cqw; }
   .gc-footer-logo,
   .gc-edition {
     font-size: 3.5cqw;
@@ -239,5 +254,5 @@
 /* On desktop the footer wrapper must not create a box — its two children are
    positioned absolutely against the stage. `display: contents` removes it. */
 @media (min-width: 768px) {
-  .gc-footer { display: contents; }
+  .gc-footer { display: none; }
 }

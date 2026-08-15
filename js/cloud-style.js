@@ -29,7 +29,9 @@ function gcNavigate(update) {
     update();
     return Promise.resolve();
   }
-  return document.startViewTransition(update).finished.catch(function () {});
+  var transition = document.startViewTransition(update);
+  transition.ready.catch(function () {});
+  return transition.finished.catch(function () {});
 }
 
 /**

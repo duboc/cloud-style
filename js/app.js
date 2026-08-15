@@ -26,7 +26,7 @@ export function startApp({ content, demoHtml }) {
   });
 
   function setActiveNavigation(view) {
-    document.querySelectorAll('.gc-nav-link').forEach(button => {
+    document.querySelectorAll('.gc-nav-link, .gc-sidebar-link').forEach(button => {
       const active = button.dataset.go === view ||
         (button.dataset.go === 'menu' && ['cards', 'article'].includes(view));
       button.classList.toggle('active', active);
@@ -45,7 +45,7 @@ export function startApp({ content, demoHtml }) {
       article: renderDetail,
     }[state.view] || renderCover;
     screen.innerHTML = renderer(context);
-    veil.hidden = state.view === 'cover' || state.view === 'menu';
+    veil.hidden = state.view === 'cover';
     setActiveNavigation(state.view);
     gcInitRails(screen);
     gcInitDemos(screen);

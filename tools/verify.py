@@ -83,12 +83,12 @@ def main() -> int:
 
         page.locator(".gc-hero-actions .gc-btn").click()
         page.wait_for_timeout(800)
-        if page.locator('.gc-nav-link[aria-current="page"]').text_content() != "Catálogo de Demos":
+        if page.locator('.gc-nav-link[aria-current="page"]').text_content() != "Solutions":
             problems.append("[desktop] catalog navigation does not expose aria-current")
         page.screenshot(path=str(out / "template-menu.png"))
         print("  template-menu.png")
-        if page.locator(".gc-console-surface").count() == 0:
-            problems.append("[desktop] catalog is missing its Console surface")
+        if page.locator(".gc-workspace-list").count() != 1:
+            problems.append("[desktop] Solutions must expose one workspace list")
 
         page.locator(".gc-menu-item").first.click()
         page.wait_for_timeout(800)

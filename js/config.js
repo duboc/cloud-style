@@ -1,17 +1,17 @@
 export const APP_CONFIG = Object.freeze({
   preset: 'hybrid',
   defaultView: 'cover',
-  status: 'DEMO CONSOLE',
+  status: 'PROJECT: STARTER-APP',
   navigation: {
-    cover: 'Visão Geral',
-    menu: 'Catálogo de Demos',
+    cover: 'Overview',
+    menu: 'Solutions',
   },
-  heroTag: '#GoogleCloudSummit2026',
-  catalogTitle: 'Catálogo de Demos & Trilhas Tecnológicas',
-  catalogSubtitle: 'Selecione uma trilha para interagir com as demonstrações e arquiteturas ao vivo.',
+  heroTag: 'BUILD WITH GOOGLE CLOUD',
+  catalogTitle: 'Choose what you want to build',
+  catalogSubtitle: 'Start with a workflow, connect your data, and customize the experience for your use case.',
   metrics: [
-    { value: '05', label: 'Trilhas Tecnológicas' },
-    { value: '15+', label: 'Demos Interativas' },
-    { value: '3.1', label: 'Gemini Engine' },
+    { value: '05', label: 'Solution starters' },
+    { value: '100%', label: 'Customizable' },
+    { value: 'A11y', label: 'Accessible by default' },
   ],
 });

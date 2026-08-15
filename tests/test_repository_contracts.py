@@ -70,9 +70,30 @@ class RepositoryContractsTest(unittest.TestCase):
         cards = (ROOT / "js/screens/cards.js").read_text(encoding="utf-8")
         detail = (ROOT / "js/screens/detail.js").read_text(encoding="utf-8")
         self.assertEqual(cover.count("gc-primary-action"), 1)
-        self.assertIn("gc-console-surface", catalog)
+        self.assertIn("gc-workspace-list", catalog)
         self.assertIn("gc-console-surface", cards)
         self.assertIn("gc-console-surface", detail)
+
+    def test_workspace_uses_neutral_template_language(self):
+        config = (ROOT / "js/config.js").read_text(encoding="utf-8").lower()
+        catalog = (ROOT / "js/screens/catalog.js").read_text(encoding="utf-8")
+        for rejected in ("catálogo", "catalogo", "demo console", "demos interativas"):
+            self.assertNotIn(rejected, config)
+        for rejected_markup in ("gc-icon-tile", "gc-menu-badge", "gc-menu-num"):
+            self.assertNotIn(rejected_markup, catalog)
+        self.assertIn("gc-solution-description", catalog)
+
+    def test_workspace_has_application_shell(self):
+        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        shell = (ROOT / "css/shell.css").read_text(encoding="utf-8")
+        self.assertIn('class="gc-app-sidebar"', html)
+        self.assertIn(".gc-app-sidebar", shell)
+        self.assertIn(".gc-footer { display: none; }", shell)
+
+    def test_navigation_handles_skipped_view_transitions(self):
+        source = (ROOT / "js/cloud-style.js").read_text(encoding="utf-8")
+        self.assertIn("transition.ready.catch", source)
+        self.assertIn("transition.finished.catch", source)
 
     def test_screenshot_manifest_has_required_viewports(self):
         from tools.screenshot_manifest import SCREENSHOT_CASES

@@ -175,6 +175,59 @@
   box-shadow: var(--gc-shadow-action);
 }
 
+/* App-first solution launcher. Text carries the information hierarchy; the
+   list uses Console-like dividers instead of nested cards and category icons. */
+.gc-workspace-list {
+  gap: 0;
+  width: 48cqw;
+  border-top: 0.1cqw solid var(--gc-color-border);
+}
+
+.gc-workspace-list .gc-menu-item {
+  height: 5.35cqw;
+  padding: 0 0.4cqw;
+  border: 0;
+  border-bottom: 0.1cqw solid var(--gc-color-border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.gc-workspace-list .gc-menu-item:hover,
+.gc-workspace-list .gc-menu-item:focus-visible {
+  padding-inline: 1.1cqw;
+  border-color: var(--gc-color-border);
+  background: var(--gc-color-selection);
+  box-shadow: none;
+  transform: none;
+}
+
+.gc-menu-copy {
+  display: grid;
+  flex: 1;
+  gap: 0.35cqw;
+}
+
+.gc-workspace-list .gc-menu-label {
+  margin: 0;
+  font-family: var(--gc-font-display);
+  font-size: 1.25cqw;
+  font-weight: 500;
+}
+
+.gc-solution-description {
+  font-family: var(--gc-font-text);
+  font-size: 0.86cqw;
+  color: var(--gc-ink-500);
+}
+
+.gc-solution-arrow {
+  color: var(--gc-blue-action);
+  font-family: var(--gc-font-display);
+  font-size: 1.6cqw;
+}
+
+
 /* -----------------------------------------------------------------------------
    6. BUTTONS
    -------------------------------------------------------------------------- */
@@ -519,6 +572,17 @@
   font-weight: 400;
   line-height: 1.7;
   color: var(--gc-ink-500);
+}
+
+@media (min-width: 768px) {
+  .gc-hero-card,
+  .gc-metrics-bar,
+  .gc-menu-header,
+  .gc-menu,
+  .gc-detail { left: 17cqw; }
+  .gc-hero-card,
+  .gc-metrics-bar { width: 38cqw; }
+  .gc-menu-header { width: 48cqw; }
 }
 
 /* -----------------------------------------------------------------------------
