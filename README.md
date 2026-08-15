@@ -107,12 +107,14 @@ relative to the phone.
 ## Verifying a change
 
 ```bash
-python3 -m http.server 8000 &
-python3 tools/verify.py
+python -m pip install -r requirements-dev.txt
+python -m playwright install chromium
+python -m http.server 8000
+# In another terminal:
+python tools/verify.py
 ```
 
-Writes fresh screenshots to `docs/screenshots/` and fails on console errors. Requires
-`pip install playwright && playwright install chromium`.
+Writes fresh screenshots to `docs/screenshots/` and fails on console errors.
 
 ---
 

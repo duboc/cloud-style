@@ -13,7 +13,8 @@ Options:
     --out  docs/screenshots                   where to write template-*.png
 
 Requires:
-    pip install playwright && playwright install chromium
+    python -m pip install -r requirements-dev.txt
+    python -m playwright install chromium
 """
 
 import argparse
@@ -23,8 +24,11 @@ import sys
 try:
     from playwright.sync_api import sync_playwright
 except ImportError:
-    sys.exit("playwright not installed:\n"
-             "  pip install playwright && playwright install chromium")
+    sys.exit(
+        "Verification dependency missing. Run:\n"
+        "  python -m pip install -r requirements-dev.txt\n"
+        "  python -m playwright install chromium"
+    )
 
 DESKTOP = {"width": 1600, "height": 900}
 MOBILE = {"width": 390, "height": 844}
