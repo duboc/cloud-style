@@ -93,6 +93,43 @@ def check_resource_workflow(browser, url: str, problems: list[str]) -> None:
     page.close()
 
 
+def check_activity_and_settings(browser, url: str, problems: list[str]) -> None:
+    page = browser.new_page(viewport=DESKTOP)
+    add_watchers(page, "states", problems)
+    for state in ("loading", "empty", "success", "warning", "error"):
+        page.goto(f"{url}#/activity?state={state}", wait_until="networkidle", timeout=60_000)
+        region = page.locator(f'[data-state="{state}"]')
+        if region.count() != 1 or not region.is_visible():
+            problems.append(f"[states] activity state {state!r} is not visible")
+
+    page.goto(f"{url}#/settings", wait_until="networkidle", timeout=60_000)
+    display_name = page.locator('[name="displayName"]')
+    form = page.locator("[data-settings-form]")
+    if display_name.count() != 1 or form.count() != 1:
+        problems.append("[settings] missing settings form or display-name field")
+    else:
+        display_name.fill("")
+        form.locator('[type="submit"]').click()
+        if page.locator("#display-name-error").count() != 1:
+            problems.append("[settings] empty display name has no inline error")
+        if page.evaluate("document.activeElement?.getAttribute('name')") != "displayName":
+            problems.append("[settings] invalid field did not receive focus")
+        display_name.fill("Temporary name")
+        page.locator("[data-cancel-settings]").click()
+        if display_name.input_value() != "Google Cloud App":
+            problems.append("[settings] cancel did not restore the default display name")
+        display_name.fill("Operations App")
+        form.locator('[type="submit"]').click()
+        dialog = page.locator("dialog[open]")
+        if dialog.count() != 1:
+            problems.append("[settings] save did not open confirmation dialog")
+        else:
+            dialog.locator("[data-confirm-save]").click()
+            if "saved" not in page.locator("[data-settings-status]").inner_text().lower():
+                problems.append("[settings] confirmation did not announce saved state")
+    page.close()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", default="http://127.0.0.1:8000/index.html")
@@ -109,6 +146,7 @@ def main() -> int:
         browser = playwright.chromium.launch()
         check_shell_routes(browser, args.url, problems)
         check_resource_workflow(browser, args.url, problems)
+        check_activity_and_settings(browser, args.url, problems)
         browser.close()
 
     if problems:
