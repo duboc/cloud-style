@@ -129,6 +129,28 @@ class RepositoryContractsTest(unittest.TestCase):
             "components-app-surfaces",
         })
 
+    def test_google_cloud_identity_assets_exist(self):
+        png_header = b"\x89PNG\r\n\x1a\n"
+        for asset in (
+            "assets/google-cloud.png",
+            "assets/google-cloud-logo.png",
+            "assets/app-icon.png",
+            "assets/supercloud.png",
+        ):
+            path = ROOT / asset
+            self.assertTrue(path.is_file(), f"{asset} must exist")
+            data = path.read_bytes()
+            self.assertTrue(data.startswith(png_header), f"{asset} must be a valid PNG")
+            if asset != "assets/supercloud.png":
+                # Ensure transparent RGBA color type (type 6)
+                color_type = data[25]
+                self.assertEqual(color_type, 6, f"{asset} must be an RGBA PNG with transparency")
+        app_js = read("js/app.js")
+        self.assertIn('src="assets/google-cloud.png"', app_js)
+        index_html = read("index.html")
+        self.assertIn('href="assets/google-cloud.png"', index_html)
+
 
 if __name__ == "__main__":
     unittest.main()
+

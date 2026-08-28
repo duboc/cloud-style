@@ -42,25 +42,12 @@
 }
 
 .gc-product-mark {
-  position: relative;
-  display: grid;
+  display: block;
   width: 2rem;
   height: 2rem;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--gc-blue-selection);
+  flex-shrink: 0;
+  object-fit: contain;
 }
-
-.gc-product-mark span {
-  position: absolute;
-  width: 0.45rem;
-  height: 0.45rem;
-  border-radius: 50%;
-}
-
-.gc-product-mark span:nth-child(1) { transform: translate(-0.38rem, 0.2rem); background: var(--gc-google-blue); }
-.gc-product-mark span:nth-child(2) { transform: translate(0, -0.35rem); background: var(--gc-google-red); }
-.gc-product-mark span:nth-child(3) { transform: translate(0.38rem, 0.2rem); background: var(--gc-google-yellow); }
 
 .gc-context {
   display: inline-flex;
