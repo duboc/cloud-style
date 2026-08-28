@@ -130,7 +130,7 @@ def check_activity_and_settings(browser, url: str, problems: list[str]) -> None:
             problems.append("[settings] invalid field did not receive focus")
         display_name.fill("Temporary name")
         page.locator("[data-cancel-settings]").click()
-        if display_name.input_value() != "Google Cloud App":
+        if display_name.input_value() != "App":
             problems.append("[settings] cancel did not restore the default display name")
         display_name.fill("Operations App")
         form.locator('[type="submit"]').click()

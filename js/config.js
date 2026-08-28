@@ -1,6 +1,6 @@
 (function configureApplication(global) {
   global.APP_CONFIG = Object.freeze({
-    productName: "Google Cloud App",
+    productName: "App",
     projectLabel: "sample-project",
     environmentLabel: "Production",
     navigation: Object.freeze([

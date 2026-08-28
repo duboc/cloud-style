@@ -32,7 +32,7 @@
       { id: "op-1046", label: "Database backup", actor: "system", time: "09:56", outcome: "Warning" },
     ]),
     settings: Object.freeze({
-      displayName: "Google Cloud App",
+      displayName: "App",
       environment: "Production",
       notifications: true,
     }),
