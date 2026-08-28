@@ -6,31 +6,31 @@
   --gc-google-yellow: #fbbc04;
   --gc-google-green: #34a853;
 
-  --gc-blue-action: #1a73e8;
-  --gc-blue-action-hover: #185abc;
-  --gc-blue-selection: #e8f0fe;
-  --gc-blue-soft: #f1f6ff;
-  --gc-blue-ink: #174ea6;
+  --gc-blue-action: #0b57d0;
+  --gc-blue-action-hover: #0842a0;
+  --gc-blue-selection: #d3e3fd;
+  --gc-blue-soft: #edf2fa;
+  --gc-blue-ink: #041e49;
 
   --gc-surface: #ffffff;
   --gc-surface-canvas: #f8fafd;
-  --gc-surface-subtle: #f1f3f4;
-  --gc-surface-hover: #f5f8fc;
-  --gc-border-subtle: #dfe3e7;
-  --gc-border-strong: #bdc1c6;
+  --gc-surface-subtle: #f0f4f9;
+  --gc-surface-hover: #e9eef6;
+  --gc-border-subtle: #e0e2ec;
+  --gc-border-strong: #74777f;
 
-  --gc-ink-strong: #202124;
-  --gc-ink: #3c4043;
-  --gc-ink-muted: #5f6368;
-  --gc-ink-faint: #80868b;
-  --gc-ink-disabled: #9aa0a6;
+  --gc-ink-strong: #1f1f1f;
+  --gc-ink: #444746;
+  --gc-ink-muted: #5e5e5e;
+  --gc-ink-faint: #74777f;
+  --gc-ink-disabled: #c4c7d0;
 
-  --gc-success: #137333;
-  --gc-success-bg: #e6f4ea;
-  --gc-warning: #b06000;
-  --gc-warning-bg: #fef7e0;
-  --gc-error: #b3261e;
-  --gc-error-bg: #fce8e6;
+  --gc-success: #146c2e;
+  --gc-success-bg: #c4eed0;
+  --gc-warning: #8f4c00;
+  --gc-warning-bg: #ffdf99;
+  --gc-error: #ba1a1a;
+  --gc-error-bg: #ffdad6;
 
   --gc-font-display: "Google Sans", "Product Sans", Arial, sans-serif;
   --gc-font-text:    "Google Sans Text", "Google Sans", Roboto, Arial, sans-serif;
@@ -53,21 +53,23 @@
   --gc-space-10: 2.5rem;
   --gc-space-12: 3rem;
 
+  --gc-radius-xs: 0.25rem;
   --gc-radius-sm: 0.5rem;
   --gc-radius-md: 0.75rem;
   --gc-radius-lg: 1rem;
+  --gc-radius-xl: 1.75rem;
   --gc-radius-pill: 999px;
 
-  --gc-shadow-panel: 0 1px 2px rgba(60, 64, 67, 0.08);
-  --gc-shadow-dialog: 0 12px 32px rgba(60, 64, 67, 0.24);
-  --gc-focus-ring: 0 0 0 3px rgba(26, 115, 232, 0.28);
+  --gc-shadow-panel: 0 1px 2px 0 rgba(60, 64, 67, 0.12), 0 1px 3px 1px rgba(60, 64, 67, 0.08);
+  --gc-shadow-dialog: 0 12px 32px 4px rgba(0, 0, 0, 0.14), 0 4px 8px 3px rgba(0, 0, 0, 0.1);
+  --gc-focus-ring: 0 0 0 3px rgba(11, 87, 208, 0.35);
 
   --gc-header-height: 4rem;
   --gc-sidebar-width: 14.5rem;
   --gc-content-max: 78rem;
   --gc-control-height: 2.5rem;
 
-  --gc-duration-fast: 120ms;
-  --gc-duration-base: 180ms;
+  --gc-duration-fast: 150ms;
+  --gc-duration-base: 200ms;
   --gc-ease: cubic-bezier(0.2, 0, 0, 1);
 }

@@ -145,8 +145,11 @@ class RepositoryContractsTest(unittest.TestCase):
                 # Ensure transparent RGBA color type (type 6)
                 color_type = data[25]
                 self.assertEqual(color_type, 6, f"{asset} must be an RGBA PNG with transparency")
+        svg_logo = ROOT / "assets/google-cloud-logo-fullcolor.svg"
+        self.assertTrue(svg_logo.is_file(), "assets/google-cloud-logo-fullcolor.svg must exist")
+        self.assertIn("<svg", svg_logo.read_text(encoding="utf-8"))
         app_js = read("js/app.js")
-        self.assertIn('src="assets/google-cloud.png"', app_js)
+        self.assertIn('src="assets/google-cloud-logo-fullcolor.svg"', app_js)
         index_html = read("index.html")
         self.assertIn('href="assets/google-cloud.png"', index_html)
 

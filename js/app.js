@@ -14,7 +14,7 @@
         <div class="gc-google-signature" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
         <header class="gc-app-header">
           <a class="gc-product" href="#/overview" aria-label="${global.APP_CONFIG.productName} home">
-            <img class="gc-product-mark" src="assets/google-cloud.png" alt="" aria-hidden="true">
+            <img class="gc-product-logo gc-product-mark" src="assets/google-cloud-logo-fullcolor.svg" alt="" aria-hidden="true">
             <span>${global.APP_CONFIG.productName}</span>
           </a>
           <div class="gc-context" aria-label="Current project and environment">

@@ -3,7 +3,7 @@
 
   .gc-app-header { padding-right: var(--gc-space-4); padding-left: var(--gc-space-4); }
   .gc-product { font-size: var(--gc-text-base); }
-  .gc-product-mark { width: 1.75rem; height: 1.75rem; }
+  .gc-product-logo, .gc-product-mark { height: 1.125rem; width: auto; }
   .gc-context { overflow: hidden; max-width: 9rem; border: 0; padding: 0; white-space: nowrap; text-overflow: ellipsis; }
   .gc-context span:nth-child(2), .gc-context strong { display: none; }
 

@@ -41,10 +41,11 @@
   text-decoration: none;
 }
 
+.gc-product-logo,
 .gc-product-mark {
   display: block;
-  width: 2rem;
-  height: 2rem;
+  height: 1.25rem;
+  width: auto;
   flex-shrink: 0;
   object-fit: contain;
 }
@@ -97,11 +98,14 @@
   padding: 0 var(--gc-space-4);
   border-radius: var(--gc-radius-pill);
   color: var(--gc-ink);
+  font-family: var(--gc-font-display);
+  font-size: var(--gc-text-sm);
   font-weight: 500;
   text-decoration: none;
+  transition: background var(--gc-duration-fast) var(--gc-ease), color var(--gc-duration-fast) var(--gc-ease);
 }
 
-.gc-nav-link:hover { background: var(--gc-surface-hover); }
+.gc-nav-link:hover { background: var(--gc-surface-hover); color: var(--gc-ink-strong); }
 .gc-nav-link.is-current { color: var(--gc-blue-ink); background: var(--gc-blue-selection); font-weight: 600; }
 
 .gc-sidebar-meta {
