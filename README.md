@@ -4,6 +4,22 @@ Cloud Style is a framework-free foundation for applications that should feel nat
 
 The sample is intentionally ordinary: Overview, Resources, Activity, Settings, a resource detail route, application states, and a validated form. Replace what your product does while preserving how the shell, hierarchy, states, and controls work.
 
+| Overview | Resources |
+|---|---|
+| ![Overview](docs/screenshots/app-overview-desktop.png) | ![Resources](docs/screenshots/app-resources-desktop.png) |
+
+| Resource detail | Settings & validation |
+|---|---|
+| ![Resource detail](docs/screenshots/app-resource-detail-desktop.png) | ![Settings](docs/screenshots/app-settings-validation.png) |
+
+| Activity feedback states | Component surfaces |
+|---|---|
+| ![Activity feedback states](docs/screenshots/app-activity-states.png) | ![Component surfaces](docs/screenshots/components-app-surfaces.png) |
+
+| Mobile overview | Mobile resources |
+|---|---|
+| ![Mobile overview](docs/screenshots/app-overview-mobile.png) | ![Mobile resources](docs/screenshots/app-resources-mobile.png) |
+
 ## Run the sample
 
 ```powershell
